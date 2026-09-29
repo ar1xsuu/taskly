@@ -42,9 +42,10 @@ export function searchAll(state: AppState, query: string): SearchResults {
     .slice(0, 8)
     .map((s) => ({ id: s.id, title: s.name, subtitle: classLabel(s.classId), category: 'Students' }))
 
+  const audienceLabel: Record<string, string> = { all: 'All SHS Teachers', grade11: 'Grade 11', grade12: 'Grade 12' }
   empty.Announcements = state.announcementsList
     .filter((a) => a.title.toLowerCase().includes(q) || a.content.toLowerCase().includes(q))
-    .map((a) => ({ id: a.id, title: a.title, subtitle: a.classId === 'all' ? 'All Classes' : classLabel(a.classId), category: 'Announcements' }))
+    .map((a) => ({ id: a.id, title: a.title, subtitle: audienceLabel[a.audience] ?? a.audience, category: 'Announcements' }))
 
   empty.Resources = state.resourcesList
     .filter((r) => r.name.toLowerCase().includes(q) || r.folder.toLowerCase().includes(q) || r.tags.some((tg) => tg.toLowerCase().includes(q)))
