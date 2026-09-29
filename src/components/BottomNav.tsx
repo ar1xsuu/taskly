@@ -12,7 +12,10 @@ const items: { key: PageKey; label: string; icon: React.ElementType }[] = [
 
 // Every page in the app maps onto one of the five tabs so the right icon
 // stays highlighted no matter how deep the person has navigated.
+// (login/admin* pages never reach this component — they render outside the
+// Teacher shell entirely — but the Record type must stay exhaustive.)
 const groupMap: Record<PageKey, PageKey> = {
+  login: 'home',
   home: 'home',
   search: 'home',
   work: 'work',
@@ -29,6 +32,14 @@ const groupMap: Record<PageKey, PageKey> = {
   notifications: 'more',
   archive: 'more',
   templates: 'more',
+  adminHome: 'home',
+  adminTeachers: 'home',
+  adminTeacherProfile: 'home',
+  adminClasses: 'home',
+  adminReports: 'home',
+  adminAnnouncements: 'home',
+  adminNotifications: 'home',
+  systemAdminHome: 'home',
 }
 
 export default function BottomNav({ active, onNavigate }: { active: PageKey; onNavigate: (p: PageKey) => void }) {

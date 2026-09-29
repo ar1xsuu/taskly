@@ -227,3 +227,20 @@ export function SegmentedControl<T extends string>({ options, value, onChange }:
     </div>
   )
 }
+
+const checkInStyles: Record<string, { cls: string; label: string; mark: string }> = {
+  Started: { cls: 'bg-primary-50 text-primary-700', label: 'Class Started', mark: '●' },
+  'Not Recorded': { cls: 'bg-amber-500/10 text-amber-600', label: 'Attendance Not Recorded', mark: '◐' },
+  'Needs Verification': { cls: 'bg-coral-500/10 text-coral-600', label: 'Requires Verification', mark: '▲' },
+}
+
+// The mark + label mean status is never carried by color alone.
+export function CheckInBadge({ status }: { status: 'Started' | 'Not Recorded' | 'Needs Verification' }) {
+  const s = checkInStyles[status]
+  return (
+    <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap ${s.cls}`}>
+      <span aria-hidden="true" className="text-[9px]">{s.mark}</span>
+      {s.label}
+    </span>
+  )
+}

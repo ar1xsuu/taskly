@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Upload } from 'lucide-react'
+import { Upload, X, Plus } from 'lucide-react'
 import type { AppState } from '../state/store'
 import type { Priority, EventType, RecurrenceRule } from '../types'
 import { Sheet, Field, inputClass, PrimaryButton } from './common'
@@ -23,7 +23,7 @@ export function AddTaskSheet({
   editingTaskId?: string
   initialTemplateId?: string
 }) {
-  const { classes, templates } = state
+  const { classes, templates, resourcesList } = state
   const editingTask = editingTaskId ? state.tasks.find((t) => t.id === editingTaskId) : undefined
   const taskTemplates = templates.filter((t) => t.kind === 'task')
   const initialTemplate = initialTemplateId ? taskTemplates.find((t) => t.id === initialTemplateId) : undefined
@@ -33,7 +33,9 @@ export function AddTaskSheet({
   const [deadline, setDeadline] = useState(editingTask?.deadline ?? defaultDeadline ?? '')
   const [priority, setPriority] = useState<Priority>(editingTask?.priority ?? initialTemplate?.priority ?? 'Normal')
   const [recurrence, setRecurrence] = useState<RecurrenceRule>(editingTask?.recurrence ?? 'None')
-  const [attachmentName, setAttachmentName] = useState(editingTask?.attachments[0] ?? '')
+  const [attachments, setAttachments] = useState<string[]>(editingTask?.attachments ?? [])
+  const [newAttachment, setNewAttachment] = useState('')
+  const [trackSubmissions, setTrackSubmissions] = useState(!!editingTask?.submissions)
 
   const selectedClass = classes.find((c) => c.id === classId)
 
@@ -45,13 +47,25 @@ export function AddTaskSheet({
     if (t.priority) setPriority(t.priority)
   }
 
+  function addAttachment(name: string) {
+    const trimmed = name.trim()
+    if (!trimmed || attachments.includes(trimmed)) return
+    setAttachments((prev) => [...prev, trimmed])
+  }
+
+  function removeAttachment(name: string) {
+    setAttachments((prev) => prev.filter((a) => a !== name))
+  }
+
   function reset() {
     setTitle('')
     setDescription('')
     setDeadline(defaultDeadline ?? '')
     setPriority('Normal')
     setRecurrence('None')
-    setAttachmentName('')
+    setAttachments([])
+    setNewAttachment('')
+    setTrackSubmissions(false)
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -65,23 +79,29 @@ export function AddTaskSheet({
         subject: selectedClass.subject,
         deadline,
         priority,
-        attachments: attachmentName ? [attachmentName] : [],
+        attachments,
         recurrence,
       })
+      if (trackSubmissions !== !!editingTask?.submissions) {
+        state.setSubmissionTracking(editingTaskId, trackSubmissions)
+      }
       onClose()
       onCreated?.(editingTaskId)
       return
     }
-    const task = state.addTask({
-      title: title.trim(),
-      description: description.trim() || 'No additional instructions.',
-      classId,
-      subject: selectedClass.subject,
-      deadline,
-      priority,
-      attachments: attachmentName ? [attachmentName] : [],
-      recurrence,
-    })
+    const task = state.addTask(
+      {
+        title: title.trim(),
+        description: description.trim() || 'No additional instructions.',
+        classId,
+        subject: selectedClass.subject,
+        deadline,
+        priority,
+        attachments,
+        recurrence,
+      },
+      trackSubmissions,
+    )
     reset()
     onClose()
     onCreated?.(task.id)
@@ -139,92 +159,127 @@ export function AddTaskSheet({
             <option value="Custom">Custom</option>
           </select>
         </Field>
-        <Field label="Attach file (optional)">
-          <input className={inputClass} value={attachmentName} onChange={(e) => setAttachmentName(e.target.value)} placeholder="e.g. Chapter3_Guidelines.pdf" />
+
+        <Field label="Attachments (optional)">
+          {attachments.length > 0 && (
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {attachments.map((a) => (
+                <span key={a} className="inline-flex items-center gap-1.5 rounded-full bg-ink-100 text-ink-700 text-xs font-medium pl-2.5 pr-1.5 py-1">
+                  {a}
+                  <button type="button" onClick={() => removeAttachment(a)} aria-label={`Remove ${a}`} className="h-4 w-4 flex items-center justify-center rounded-full active:bg-ink-200">
+                    <X size={11} />
+                  </button>
+                </span>
+              ))}
+            </div>
+          )}
+          {resourcesList.length > 0 && (
+            <select
+              className={`${inputClass} mb-2`}
+              defaultValue=""
+              onChange={(e) => {
+                if (e.target.value) addAttachment(e.target.value)
+                e.target.value = ''
+              }}
+            >
+              <option value="">Attach from Resource Library...</option>
+              {resourcesList.map((r) => (
+                <option key={r.id} value={r.name}>{r.name}</option>
+              ))}
+            </select>
+          )}
+          <div className="flex items-center gap-2">
+            <input
+              className={inputClass}
+              value={newAttachment}
+              onChange={(e) => setNewAttachment(e.target.value)}
+              placeholder="Or type a file name to attach"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  addAttachment(newAttachment)
+                  setNewAttachment('')
+                }
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => {
+                addAttachment(newAttachment)
+                setNewAttachment('')
+              }}
+              aria-label="Add attachment"
+              className="h-10 w-10 shrink-0 rounded-xl bg-ink-100 text-ink-600 flex items-center justify-center active:bg-ink-200"
+            >
+              <Plus size={16} />
+            </button>
+          </div>
         </Field>
+
+        <Field label="Submissions" hint="Generates a Pending entry for every student in this class, ready to track in Work → Submissions.">
+          <label className="flex items-center gap-2.5 rounded-xl border border-ink-200 px-3.5 py-2.5">
+            <input
+              type="checkbox"
+              checked={trackSubmissions}
+              onChange={(e) => setTrackSubmissions(e.target.checked)}
+              className="h-4 w-4 rounded accent-primary-500"
+            />
+            <span className="text-sm text-ink-700">Track student submissions for this task</span>
+          </label>
+        </Field>
+
         <PrimaryButton type="submit" className="mt-2">{editingTaskId ? 'Save Changes' : 'Create Task'}</PrimaryButton>
       </form>
     </Sheet>
   )
 }
 
-export function AddAnnouncementSheet({
+export function AddClassSheet({
   open,
   onClose,
   state,
-  editingAnnouncementId,
-  initialTemplateId,
+  editingClassId,
 }: {
   open: boolean
   onClose: () => void
   state: AppState
-  editingAnnouncementId?: string
-  initialTemplateId?: string
+  editingClassId?: string
 }) {
-  const { classes, templates, addAnnouncement, updateAnnouncement } = state
-  const editing = editingAnnouncementId ? state.announcementsList.find((a) => a.id === editingAnnouncementId) : undefined
-  const announcementTemplates = templates.filter((t) => t.kind === 'announcement')
-  const initialTemplate = initialTemplateId ? announcementTemplates.find((t) => t.id === initialTemplateId) : undefined
-  const [title, setTitle] = useState(editing?.title ?? initialTemplate?.title ?? '')
-  const [content, setContent] = useState(editing?.content ?? initialTemplate?.body ?? '')
-  const [classId, setClassId] = useState<string>(editing?.classId ?? 'all')
-  const [scheduledFor, setScheduledFor] = useState(editing?.scheduledFor ?? '')
+  const editingClass = editingClassId ? state.classes.find((c) => c.id === editingClassId) : undefined
+  const [name, setName] = useState(editingClass?.name ?? '')
+  const [subject, setSubject] = useState(editingClass?.subject ?? '')
 
-  function applyTemplate(id: string) {
-    const t = announcementTemplates.find((tpl) => tpl.id === id)
-    if (!t) return
-    setTitle(t.title)
-    setContent(t.body)
+  function reset() {
+    setName('')
+    setSubject('')
   }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!title.trim() || !content.trim()) return
-    if (editingAnnouncementId) {
-      updateAnnouncement(editingAnnouncementId, { title: title.trim(), content: content.trim(), classId, scheduledFor: scheduledFor || undefined })
+    if (!name.trim() || !subject.trim()) return
+    if (editingClassId) {
+      state.updateClass(editingClassId, { name: name.trim(), subject: subject.trim() })
       onClose()
       return
     }
-    addAnnouncement({ title: title.trim(), content: content.trim(), classId, scheduledFor: scheduledFor || undefined })
-    setTitle('')
-    setContent('')
-    setScheduledFor('')
+    state.addClass({ name: name.trim(), subject: subject.trim() })
+    reset()
     onClose()
   }
 
   return (
-    <Sheet open={open} onClose={onClose} title={editingAnnouncementId ? 'Edit Announcement' : 'New Announcement'}>
+    <Sheet open={open} onClose={onClose} title={editingClassId ? 'Edit Class' : 'Add Class'}>
       <form onSubmit={handleSubmit}>
-        {!editingAnnouncementId && announcementTemplates.length > 0 && (
-          <Field label="Start from a template (optional)">
-            <select className={inputClass} defaultValue="" onChange={(e) => e.target.value && applyTemplate(e.target.value)}>
-              <option value="">Blank announcement</option>
-              {announcementTemplates.map((t) => (
-                <option key={t.id} value={t.id}>{t.name}</option>
-              ))}
-            </select>
-          </Field>
+        <Field label="Class / Section name" hint="e.g. 12 - STEM A">
+          <input className={inputClass} value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. 12 - STEM B" required />
+        </Field>
+        <Field label="Subject">
+          <input className={inputClass} value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="e.g. Practical Research 2" required />
+        </Field>
+        {!editingClassId && (
+          <p className="text-xs text-ink-400 -mt-2 mb-4">You can add students to this class afterward from Classes → Students.</p>
         )}
-        <Field label="Title">
-          <input className={inputClass} value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Reminder: Quiz tomorrow" required />
-        </Field>
-        <Field label="Message">
-          <textarea className={inputClass} rows={4} value={content} onChange={(e) => setContent(e.target.value)} placeholder="Write your announcement..." required />
-        </Field>
-        <Field label="Send to">
-          <select className={inputClass} value={classId} onChange={(e) => setClassId(e.target.value)}>
-            <option value="all">All Classes</option>
-            {classes.map((c) => (
-              <option key={c.id} value={c.id}>{c.name}</option>
-            ))}
-          </select>
-        </Field>
-        <Field label="Schedule for later (optional)">
-          <input type="datetime-local" className={inputClass} value={scheduledFor} onChange={(e) => setScheduledFor(e.target.value)} />
-        </Field>
-        <PrimaryButton type="submit" className="mt-2">
-          {editingAnnouncementId ? 'Save Changes' : scheduledFor ? 'Schedule Announcement' : 'Publish Announcement'}
-        </PrimaryButton>
+        <PrimaryButton type="submit" className="mt-2">{editingClassId ? 'Save Changes' : 'Add Class'}</PrimaryButton>
       </form>
     </Sheet>
   )
@@ -309,6 +364,39 @@ export function UploadResourceSheet({ open, onClose, state }: { open: boolean; o
           <input className={inputClass} value={tags} onChange={(e) => setTags(e.target.value)} placeholder="e.g. ICT, Quarter 2, Activity" />
         </Field>
         <PrimaryButton type="submit" className="mt-2">Upload</PrimaryButton>
+      </form>
+    </Sheet>
+  )
+}
+
+export function AddStudentSheet({
+  open,
+  onClose,
+  state,
+  classId,
+}: {
+  open: boolean
+  onClose: () => void
+  state: AppState
+  classId: string
+}) {
+  const [name, setName] = useState('')
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!name.trim()) return
+    state.addStudent(classId, name.trim())
+    setName('')
+    onClose()
+  }
+
+  return (
+    <Sheet open={open} onClose={onClose} title="Add Student">
+      <form onSubmit={handleSubmit}>
+        <Field label="Student name" hint="Use a fictional name — no real student information.">
+          <input className={inputClass} value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Juan Dela Cruz" required />
+        </Field>
+        <PrimaryButton type="submit" className="mt-2">Add Student</PrimaryButton>
       </form>
     </Sheet>
   )

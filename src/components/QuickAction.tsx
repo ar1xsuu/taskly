@@ -1,12 +1,13 @@
 import React from 'react'
-import { Plus, ListTodo, Megaphone, CalendarPlus, FolderPlus, StickyNote } from 'lucide-react'
+import { Plus, ListTodo, CalendarPlus, FolderPlus, StickyNote } from 'lucide-react'
 import { Sheet } from './common'
 
-export type CreateKind = 'task' | 'announcement' | 'event' | 'resource' | 'note'
+// Announcement creation is SHS Head-only (see pages/AdminAnnouncements.tsx) —
+// not part of the teacher's global quick-action menu.
+export type CreateKind = 'task' | 'event' | 'resource' | 'note'
 
 const options: { key: CreateKind; label: string; icon: React.ElementType }[] = [
   { key: 'task', label: 'Task', icon: ListTodo },
-  { key: 'announcement', label: 'Announcement', icon: Megaphone },
   { key: 'event', label: 'Event', icon: CalendarPlus },
   { key: 'resource', label: 'Resource', icon: FolderPlus },
   { key: 'note', label: 'Note', icon: StickyNote },
