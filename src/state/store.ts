@@ -7,8 +7,10 @@ import {
   notes as initialNotes,
   notifications as initialNotifications,
   templates,
-  classes,
-  students,
+  classes as initialClasses,
+  students as initialStudents,
+  demoUsers,
+  initialClassSessions,
 } from '../data/mockData'
 import type {
   TaskItem,
@@ -19,6 +21,12 @@ import type {
   NotificationItem,
   SubmissionStatus,
   RecurrenceRule,
+  ClassSection,
+  Student,
+  Submission,
+  AppUser,
+  Role,
+  ClassSession,
 } from '../types'
 import { withLiveStatus } from '../utils/taskStatus'
 
@@ -35,14 +43,23 @@ function nextId(prefix: string) {
  * upgrades possible without touching UI code:
  *  1. Swapping useState for a local persisted store (offline-first)
  *  2. Swapping these mock mutations for real Supabase calls (online sync)
+ *
+ * currentUser below is a MOCK session — picking a demo account just sets this
+ * in memory. There is no real authentication, no password check, and no
+ * server session. See utils/permissions.ts for what this can and can't
+ * actually guarantee.
  */
 export function useAppState() {
+  const [currentUser, setCurrentUser] = useState<AppUser | null>(null)
   const [tasks, setTasks] = useState<TaskItem[]>(initialTasks)
+  const [classes, setClasses] = useState<ClassSection[]>(initialClasses)
+  const [students, setStudents] = useState<Student[]>(initialStudents)
   const [announcementsList, setAnnouncementsList] = useState<AnnouncementItem[]>(initialAnnouncements)
   const [eventsList, setEventsList] = useState<CalendarEvent[]>(initialEvents)
   const [resourcesList, setResourcesList] = useState<ResourceFile[]>(initialResources)
   const [notesList, setNotesList] = useState<NoteItem[]>(initialNotes)
   const [notificationsList, setNotificationsList] = useState<NotificationItem[]>(initialNotifications)
+  const [classSessions, setClassSessions] = useState<ClassSession[]>(initialClassSessions)
   const [toast, setToast] = useState<string | null>(null)
 
   function showToast(message: string) {
@@ -50,13 +67,30 @@ export function useAppState() {
     window.setTimeout(() => setToast((current) => (current === message ? null : current)), 2400)
   }
 
+  function loginAs(role: Role) {
+    const user = demoUsers.find((u) => u.role === role)
+    if (!user) return
+    setCurrentUser(user)
+  }
+
+  function logout() {
+    setCurrentUser(null)
+  }
+
   // Tasks are always exposed with their live-derived status applied, and
   // archived tasks are hidden from every normal view.
   const liveTasks = useMemo(() => tasks.map(withLiveStatus).filter((t) => !t.archived), [tasks])
   const archivedTasks = useMemo(() => tasks.map(withLiveStatus).filter((t) => t.archived), [tasks])
 
-  function addTask(input: Omit<TaskItem, 'id' | 'status' | 'createdAt' | 'quarter' | 'archived'>) {
+  function addTask(
+    input: Omit<TaskItem, 'id' | 'status' | 'createdAt' | 'quarter' | 'archived' | 'submissions' | 'totalStudents'>,
+    trackSubmissions = false,
+  ) {
     const cls = classes.find((c) => c.id === input.classId)
+    const roster = students.filter((s) => s.classId === input.classId)
+    const submissions: Submission[] | undefined = trackSubmissions
+      ? roster.map((s): Submission => ({ studentId: s.id, status: 'Pending' }))
+      : undefined
     const task: TaskItem = {
       ...input,
       id: nextId('t'),
@@ -64,6 +98,7 @@ export function useAppState() {
       createdAt: new Date().toISOString().slice(0, 10),
       quarter: 'Q2',
       totalStudents: cls?.studentCount,
+      submissions,
     }
     setTasks((prev) => [task, ...prev])
     showToast('Task created successfully.')
@@ -106,10 +141,78 @@ export function useAppState() {
     showToast('Submission status updated.')
   }
 
-  function addAnnouncement(input: Omit<AnnouncementItem, 'id' | 'postedAt' | 'quarter' | 'archived'>) {
+  function setSubmissionTracking(taskId: string, enabled: boolean) {
+    setTasks((prev) =>
+      prev.map((t) => {
+        if (t.id !== taskId) return t
+        if (enabled) {
+          if (t.submissions) return t
+          const roster = students.filter((s) => s.classId === t.classId)
+          const cls = classes.find((c) => c.id === t.classId)
+          return {
+            ...t,
+            submissions: roster.map((s): Submission => ({ studentId: s.id, status: 'Pending' })),
+            totalStudents: cls?.studentCount,
+          }
+        }
+        return { ...t, submissions: undefined }
+      }),
+    )
+    showToast(enabled ? 'Now tracking submissions for this task.' : 'Submission tracking turned off.')
+  }
+
+  function addClass(input: Omit<ClassSection, 'id' | 'studentCount'>) {
+    const cls: ClassSection = { ...input, id: nextId('c'), studentCount: 0 }
+    setClasses((prev) => [...prev, cls])
+    showToast('Class added successfully.')
+    return cls
+  }
+
+  function updateClass(id: string, patch: Partial<Omit<ClassSection, 'id' | 'studentCount'>>) {
+    setClasses((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c)))
+    showToast('Class updated.')
+  }
+
+  function deleteClass(id: string) {
+    setClasses((prev) => prev.filter((c) => c.id !== id))
+    setStudents((prev) => prev.filter((s) => s.classId !== id))
+    showToast('Class deleted.')
+  }
+
+  function addStudent(classId: string, name: string) {
+    const student: Student = { id: nextId('s'), name, classId }
+    setStudents((prev) => [...prev, student])
+    setClasses((prev) => prev.map((c) => (c.id === classId ? { ...c, studentCount: c.studentCount + 1 } : c)))
+    showToast('Student added.')
+    return student
+  }
+
+  function removeStudent(studentId: string) {
+    const student = students.find((s) => s.id === studentId)
+    if (!student) return
+    setStudents((prev) => prev.filter((s) => s.id !== studentId))
+    setClasses((prev) => prev.map((c) => (c.id === student.classId ? { ...c, studentCount: Math.max(0, c.studentCount - 1) } : c)))
+    // Clean up this student's submission records so counts everywhere stay accurate.
+    setTasks((prev) =>
+      prev.map((t) => (t.submissions ? { ...t, submissions: t.submissions.filter((sub) => sub.studentId !== studentId) } : t)),
+    )
+    showToast('Student removed.')
+  }
+
+  function updateStudentName(studentId: string, name: string) {
+    setStudents((prev) => prev.map((s) => (s.id === studentId ? { ...s, name } : s)))
+    showToast('Student updated.')
+  }
+
+  function addAnnouncement(input: Omit<AnnouncementItem, 'id' | 'postedAt' | 'quarter' | 'archived' | 'createdBy'>) {
+    if (currentUser?.role !== 'SHS_HEAD' && currentUser?.role !== 'SYSTEM_ADMIN') {
+      showToast('Only the SHS Head can post announcements.')
+      return undefined
+    }
     const item: AnnouncementItem = {
       ...input,
       id: nextId('a'),
+      createdBy: currentUser.name,
       postedAt: input.scheduledFor ? `Scheduled for ${input.scheduledFor}` : 'Just now',
       quarter: 'Q2',
     }
@@ -121,6 +224,11 @@ export function useAppState() {
   function updateAnnouncement(id: string, patch: Partial<AnnouncementItem>) {
     setAnnouncementsList((prev) => prev.map((a) => (a.id === id ? { ...a, ...patch } : a)))
     showToast('Announcement updated.')
+  }
+
+  function deleteAnnouncement(id: string) {
+    setAnnouncementsList((prev) => prev.filter((a) => a.id !== id))
+    showToast('Announcement deleted.')
   }
 
   function togglePinAnnouncement(id: string) {
@@ -167,8 +275,31 @@ export function useAppState() {
     showToast('All notifications marked as read.')
   }
 
+  // Class check-in. Only the signed-in teacher can start their own class, and
+  // starting it records a check-in time — it never *infers* anything about
+  // classes that weren't started (see CheckInStatus in types.ts).
+  function startClass(sessionId: string) {
+    if (currentUser?.role !== 'TEACHER') return
+    const now = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })
+    setClassSessions((prev) =>
+      prev.map((cs) =>
+        cs.id === sessionId && cs.teacherId === currentUser.id ? { ...cs, status: 'Started', checkInTime: now } : cs,
+      ),
+    )
+    showToast(`Class started at ${now}.`)
+  }
+
+  function resolveVerification(sessionId: string, status: 'Started' | 'Not Recorded') {
+    if (currentUser?.role !== 'SHS_HEAD' && currentUser?.role !== 'SYSTEM_ADMIN') return
+    setClassSessions((prev) => prev.map((cs) => (cs.id === sessionId ? { ...cs, status } : cs)))
+    showToast('Session status updated.')
+  }
+
   function resetDemoData() {
+    setClassSessions(initialClassSessions)
     setTasks(initialTasks)
+    setClasses(initialClasses)
+    setStudents(initialStudents)
     setAnnouncementsList(initialAnnouncements)
     setEventsList(initialEvents)
     setResourcesList(initialResources)
@@ -197,6 +328,9 @@ export function useAppState() {
   }, [eventsList, liveTasks])
 
   return {
+    currentUser,
+    loginAs,
+    logout,
     tasks: liveTasks,
     archivedTasks,
     classes,
@@ -217,8 +351,16 @@ export function useAppState() {
     archiveTask,
     deleteTask,
     setSubmissionStatus,
+    setSubmissionTracking,
+    addClass,
+    updateClass,
+    deleteClass,
+    addStudent,
+    removeStudent,
+    updateStudentName,
     addAnnouncement,
     updateAnnouncement,
+    deleteAnnouncement,
     togglePinAnnouncement,
     addEvent,
     addResource,
@@ -226,6 +368,9 @@ export function useAppState() {
     deleteNote,
     markNotificationRead,
     markAllNotificationsRead,
+    classSessions,
+    startClass,
+    resolveVerification,
     resetDemoData,
   }
 }
