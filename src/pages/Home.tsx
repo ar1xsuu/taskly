@@ -1,10 +1,17 @@
 import React from 'react'
-import { Search, ClipboardCheck, ChevronRight, ListTodo, Megaphone, CalendarPlus } from 'lucide-react'
+import { Search, ClipboardCheck, ChevronRight, ListTodo, Megaphone, CalendarPlus, Check } from 'lucide-react'
 import type { AppState } from '../state/store'
 import { Card, SectionHeading, PriorityBadge, PinnedBadge, eventTypeMeta, EmptyState } from '../components/common'
 import type { CreateKind } from '../components/QuickAction'
 import { format, relativeDueLabel } from '../utils/date'
-import { TEACHER_NAME } from '../data/mockData'
+import { classGradeLevel } from '../utils/permissions'
+import { byTime } from '../utils/monitoring'
+
+const bannerPriorityStyle: Record<string, string> = {
+  Urgent: 'bg-coral-500 text-white',
+  Important: 'bg-amber-500 text-white',
+  Normal: 'bg-primary-500 text-white',
+}
 
 export default function Home({
   state,
@@ -12,6 +19,7 @@ export default function Home({
   onOpenSearch,
   onSeeWork,
   onSeeCalendar,
+  onOpenAnnouncements,
   onQuickCreate,
 }: {
   state: AppState
@@ -19,9 +27,11 @@ export default function Home({
   onOpenSearch: () => void
   onSeeWork: () => void
   onSeeCalendar: () => void
+  onOpenAnnouncements: () => void
   onQuickCreate: (kind: CreateKind) => void
 }) {
-  const { tasks, classes, announcementsList, eventsList } = state
+  const { tasks, classes, announcementsList, eventsList, currentUser, classSessions, startClass } = state
+  const mySessions = classSessions.filter((cs) => cs.teacherId === currentUser?.id).sort(byTime)
 
   // My Day: what actually needs attention today — overdue first, then
   // urgent/high priority items due soon.
@@ -41,7 +51,21 @@ export default function Home({
     .slice(0, 3)
 
   const upcomingEvents = eventsList.filter((e) => !isPast(e.date)).slice(0, 3)
-  const recentAnnouncements = [...announcementsList].sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0)).slice(0, 2)
+
+  // Only announcements addressed to this teacher's grade levels (or "all")
+  // — a teacher only handles Grade 11 and/or Grade 12 classes, so a
+  // grade-specific notice from the SHS Head should only surface for the
+  // grades this teacher actually teaches.
+  const myGrades = new Set(classes.map((c) => classGradeLevel(c.name)).filter(Boolean))
+  const relevantAnnouncements = announcementsList.filter(
+    (a) => a.audience === 'all' || (a.audience === 'grade11' && myGrades.has('11')) || (a.audience === 'grade12' && myGrades.has('12')),
+  )
+  const recentAnnouncements = [...relevantAnnouncements].sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0)).slice(0, 2)
+  const bannerAnnouncement = [...relevantAnnouncements].sort((a, b) => {
+    const rank: Record<string, number> = { Urgent: 0, Important: 1, Normal: 2 }
+    if (rank[a.priority] !== rank[b.priority]) return rank[a.priority] - rank[b.priority]
+    return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0)
+  })[0]
 
   function classLabel(classId: string) {
     const c = classes.find((cl) => cl.id === classId)
@@ -49,11 +73,25 @@ export default function Home({
   }
 
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
+  const firstName = currentUser?.name.replace(/^(Ma'am|Sir|Dr\.)\s*/i, '') ?? 'Teacher'
 
   return (
     <div className="pb-6">
+      {bannerAnnouncement && (bannerAnnouncement.priority === 'Urgent' || bannerAnnouncement.priority === 'Important') && (
+        <button
+          onClick={onOpenAnnouncements}
+          className={`w-full flex items-center gap-2.5 px-5 py-2.5 text-left ${bannerPriorityStyle[bannerAnnouncement.priority]}`}
+        >
+          <Megaphone size={15} className="shrink-0" />
+          <span className="text-xs font-medium flex-1 min-w-0 truncate">
+            SHS ANNOUNCEMENT — {bannerAnnouncement.title}
+          </span>
+          <span className="text-xs font-semibold underline shrink-0">View</span>
+        </button>
+      )}
+
       <div className="px-5 pt-3 pb-4">
-        <h1 className="font-display text-xl font-bold text-ink-900">Good morning, {TEACHER_NAME.replace('Ma\'am ', '')}! 👋</h1>
+        <h1 className="font-display text-xl font-bold text-ink-900">Good morning, {firstName}! 👋</h1>
         <p className="text-sm text-ink-500 mt-1">{today}</p>
       </div>
 
@@ -69,7 +107,6 @@ export default function Home({
 
       <div className="px-5 mb-6 flex items-center gap-2 overflow-x-auto no-scrollbar">
         <QuickChip icon={<ListTodo size={14} />} label="Add Task" onClick={() => onQuickCreate('task')} />
-        <QuickChip icon={<Megaphone size={14} />} label="Announcement" onClick={() => onQuickCreate('announcement')} />
         <QuickChip icon={<CalendarPlus size={14} />} label="Add Event" onClick={() => onQuickCreate('event')} />
       </div>
 
@@ -106,6 +143,39 @@ export default function Home({
           </div>
         )}
       </div>
+
+      {mySessions.length > 0 && (
+        <div className="px-5 mb-7">
+          <SectionHeading title="Today's Classes" />
+          <Card className="divide-y divide-ink-100">
+            {mySessions.map((cs) => {
+              const cls = classes.find((c) => c.id === cs.classId)
+              const started = cs.status === 'Started'
+              return (
+                <div key={cs.id} className="flex items-center gap-3 px-4 py-3.5">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-ink-900 truncate">{cls?.name}</p>
+                    <p className="text-xs text-ink-400 mt-0.5">{cs.time} · {cls?.subject}</p>
+                  </div>
+                  {started ? (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-primary-50 text-primary-700 text-xs font-medium px-2.5 py-1.5 shrink-0">
+                      <Check size={13} /> Started {cs.checkInTime}
+                    </span>
+                  ) : (
+                    <button
+                      onClick={() => startClass(cs.id)}
+                      className="shrink-0 rounded-full bg-primary-500 text-white text-xs font-medium px-3.5 py-2 active:bg-primary-600"
+                    >
+                      Start Class
+                    </button>
+                  )}
+                </div>
+              )
+            })}
+          </Card>
+          <p className="text-[11px] text-ink-400 mt-2">Starting a class records a check-in your SHS Head can see.</p>
+        </div>
+      )}
 
       <div className="px-5 mb-7">
         <SectionHeading title="Pending Submissions" />
@@ -160,19 +230,19 @@ export default function Home({
       </div>
 
       <div className="px-5">
-        <SectionHeading title="Recent Activity" />
+        <SectionHeading title="Recent Activity" action={<button onClick={onOpenAnnouncements} className="text-xs font-medium text-primary-600">See all</button>} />
         {recentAnnouncements.length === 0 ? (
           <EmptyState icon={<Megaphone size={26} />} title="No recent announcements." />
         ) : (
           <div className="flex flex-col gap-2.5">
             {recentAnnouncements.map((a) => (
-              <Card key={a.id} className="p-4">
+              <Card key={a.id} className="p-4" onClick={onOpenAnnouncements}>
                 <div className="flex items-center gap-2 flex-wrap mb-1">
                   <p className="font-medium text-sm text-ink-900">{a.title}</p>
                   {a.pinned && <PinnedBadge />}
                 </div>
                 <p className="text-sm text-ink-600 leading-relaxed line-clamp-2">{a.content}</p>
-                <p className="text-xs text-ink-400 mt-2">Posted {a.postedAt}</p>
+                <p className="text-xs text-ink-400 mt-2">{a.createdBy} · {a.postedAt}</p>
               </Card>
             ))}
           </div>

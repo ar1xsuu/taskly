@@ -19,11 +19,19 @@ export default function SearchPage({
   onBack,
   onOpenTask,
   onOpenClass,
+  onOpenAnnouncements,
+  onOpenResources,
+  onOpenCalendar,
+  onOpenNotes,
 }: {
   state: AppState
   onBack: () => void
   onOpenTask: (id: string) => void
   onOpenClass: (id: string) => void
+  onOpenAnnouncements: () => void
+  onOpenResources: () => void
+  onOpenCalendar: () => void
+  onOpenNotes: () => void
 }) {
   const [query, setQuery] = useState('')
   const results = useMemo(() => searchAll(state, query), [state, query])
@@ -35,9 +43,10 @@ export default function SearchPage({
     else if (r.category === 'Students') {
       const student = state.students.find((s) => s.id === r.id)
       if (student) onOpenClass(student.classId)
-    }
-    // Announcements / Resources / Calendar / Notes are informational —
-    // surfaced by the search but opened from their home section for now.
+    } else if (r.category === 'Announcements') onOpenAnnouncements()
+    else if (r.category === 'Resources') onOpenResources()
+    else if (r.category === 'Calendar') onOpenCalendar()
+    else if (r.category === 'Notes') onOpenNotes()
   }
 
   return (

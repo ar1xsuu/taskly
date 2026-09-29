@@ -18,7 +18,7 @@ export default function TaskDetail({
   onViewSubmissions: (taskId: string) => void
   onDeleted: () => void
 }) {
-  const { tasks, classes, toggleTaskComplete, archiveTask, deleteTask } = state
+  const { tasks, classes, toggleTaskComplete, archiveTask, deleteTask, setSubmissionTracking } = state
   const [showMenu, setShowMenu] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
@@ -88,7 +88,7 @@ export default function TaskDetail({
           </div>
         )}
 
-        {task.submissions && (
+        {task.submissions ? (
           <div className="mt-5">
             <p className="text-xs font-medium text-ink-400 mb-2">Submission Progress</p>
             <Card className="p-4">
@@ -101,6 +101,19 @@ export default function TaskDetail({
             <PrimaryButton className="mt-3" onClick={() => onViewSubmissions(task.id)}>
               View Submissions
             </PrimaryButton>
+          </div>
+        ) : (
+          <div className="mt-5">
+            <p className="text-xs font-medium text-ink-400 mb-2">Submission Progress</p>
+            <Card className="p-4 flex items-center justify-between gap-3">
+              <p className="text-sm text-ink-500">Not tracking submissions for this task.</p>
+              <button
+                onClick={() => setSubmissionTracking(task.id, true)}
+                className="shrink-0 text-xs font-medium text-primary-600 bg-primary-50 rounded-full px-3 py-1.5 active:bg-primary-100"
+              >
+                Turn on
+              </button>
+            </Card>
           </div>
         )}
       </div>
