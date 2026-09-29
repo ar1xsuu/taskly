@@ -8,6 +8,10 @@ import type {
   NoteItem,
   NotificationItem,
   TemplateItem,
+  AppUser,
+  TeacherDirectoryEntry,
+  TeacherTaskSummary,
+  ClassSession,
 } from '../types'
 
 export const APP_NAME = 'TASKLY'
@@ -15,6 +19,15 @@ export const SCHOOL_NAME = 'Talugtug National High School'
 export const SCHOOL_YEAR = '2026–2027'
 export const TEACHER_NAME = 'Ma\'am Reyes'
 export const CURRENT_QUARTER = 'Q2'
+
+// Mock accounts for the demo login screen. In a real deployment these would
+// come from an authentication provider (see the Q&A about adding Supabase
+// Auth) — nothing here is a real credential or a real session.
+export const demoUsers: AppUser[] = [
+  { id: 'u1', name: TEACHER_NAME, email: 'teacher@taskly.demo', role: 'TEACHER', department: 'ICT' },
+  { id: 'u2', name: 'Dr. Villareal', email: 'head@taskly.demo', role: 'SHS_HEAD', department: 'SHS Office' },
+  { id: 'u3', name: 'IT Admin', email: 'admin@taskly.demo', role: 'SYSTEM_ADMIN' },
+]
 
 export const classes: ClassSection[] = [
   { id: 'c1', name: '12 - STEM A', subject: 'Practical Research 2', studentCount: 40 },
@@ -185,26 +198,32 @@ export const tasks: TaskItem[] = [
 export const announcements: AnnouncementItem[] = [
   {
     id: 'a1',
-    title: 'Reminder: Research Outline',
-    content: 'Please submit your revised research outline tomorrow. Late outlines will not be accepted for consultation.',
-    classId: 'c1',
+    title: 'Faculty meeting today at 3:00 PM',
+    content: 'All SHS teachers are required to attend today\'s faculty meeting in the AVR to discuss the Q2 accomplishment report and the upcoming quarterly exam schedule.',
+    audience: 'all',
+    priority: 'Important',
+    createdBy: 'Dr. Villareal',
     postedAt: '2 hours ago',
     pinned: true,
     quarter: 'Q2',
   },
   {
     id: 'a2',
-    title: 'Bring your laptops on Thursday',
-    content: 'We will have a hands-on spreadsheet activity, so make sure your laptop is charged.',
-    classId: 'c3',
+    title: 'Grade 12 quarterly plan submission moved',
+    content: 'The deadline for the Grade 12 quarterly instructional plan has been moved to September 30. Submit to the SHS office, not by email.',
+    audience: 'grade12',
+    priority: 'Normal',
+    createdBy: 'Dr. Villareal',
     postedAt: 'Yesterday',
     quarter: 'Q2',
   },
   {
     id: 'a3',
-    title: 'Quarterly plan submission moved',
-    content: 'The deadline for the quarterly instructional plan has been moved to September 30.',
-    classId: 'all',
+    title: 'Brownout advisory for Thursday morning',
+    content: 'MORE Power has scheduled a line maintenance brownout from 6:00 AM to 10:00 AM this Thursday. Plan lessons that don\'t require electricity or projectors during this window.',
+    audience: 'all',
+    priority: 'Urgent',
+    createdBy: 'Dr. Villareal',
     postedAt: '3 days ago',
     quarter: 'Q2',
   },
@@ -250,3 +269,63 @@ export const templates: TemplateItem[] = [
 ]
 
 export const priorityOrder: Record<string, number> = { Urgent: 0, High: 1, Normal: 2, Low: 3 }
+
+// --- SHS Head monitoring data (Phase 2) ---
+// The demo Teacher account (id 'u1') is one of the roster entries and is
+// "live": its classes and tasks come from the real app state, and its class
+// sessions below are the ones the Start Class button updates. The other
+// teachers are static snapshots — there's no login for them in this prototype.
+export const teacherDirectory: TeacherDirectoryEntry[] = [
+  { id: 'u1', name: TEACHER_NAME, department: 'ICT', status: 'Active', isLiveAccount: true },
+  { id: 't2', name: 'Maria Santos', department: 'ICT', status: 'Active' },
+  { id: 't3', name: 'John Reyes', department: 'Home Economics', status: 'Needs Attention' },
+  { id: 't4', name: 'Angela Cruz', department: 'ICT', status: 'Needs Attention' },
+  { id: 't5', name: 'Daniel Garcia', department: 'Research', status: 'No Status' },
+  { id: 't6', name: 'Patricia Ramos', department: 'HUMSS', status: 'Active' },
+]
+
+// Classes taught by the non-live teachers. Kept separate from `classes` above
+// so they never show up in the demo Teacher's own Classes tab.
+export const otherTeacherClasses: ClassSection[] = [
+  { id: 'oc1', name: '12 - ICT A', subject: 'Empowerment Technologies', studentCount: 39 },
+  { id: 'oc2', name: '11 - ICT B', subject: 'Empowerment Technologies', studentCount: 36 },
+  { id: 'oc3', name: '12 - HE A', subject: 'Home Economics', studentCount: 41 },
+  { id: 'oc4', name: '11 - ICT A', subject: 'Empowerment Technologies', studentCount: 37 },
+  { id: 'oc5', name: '11 - HUMSS B', subject: 'Media and Information Literacy', studentCount: 35 },
+]
+
+export const otherTeacherClassIds: Record<string, string[]> = {
+  t2: ['oc1', 'oc2'],
+  t3: ['oc3'],
+  t4: ['oc4'],
+  t5: [],
+  t6: ['oc5'],
+}
+
+export const otherTeacherTasks: Record<string, TeacherTaskSummary[]> = {
+  t2: [
+    { title: 'Lesson Preparation', status: 'Completed' },
+    { title: 'Research Activity', status: 'Completed' },
+    { title: 'Module Preparation', status: 'Ongoing' },
+    { title: 'Assessment Preparation', status: 'Due Tomorrow' },
+  ],
+  t3: [
+    { title: 'Recipe Costing Worksheet', status: 'Ongoing' },
+    { title: 'Kitchen Safety Quiz', status: 'Overdue' },
+  ],
+  t4: [{ title: 'Spreadsheet Formulas Activity', status: 'Ongoing' }],
+  t5: [],
+  t6: [
+    { title: 'Media Literacy Reflection Paper', status: 'Completed' },
+    { title: 'Fake News Case Study', status: 'Ongoing' },
+  ],
+}
+
+export const initialClassSessions: ClassSession[] = [
+  { id: 'cs1', classId: 'c1', teacherId: 'u1', time: '8:00 AM', status: 'Not Recorded' },
+  { id: 'cs2', classId: 'c3', teacherId: 'u1', time: '10:00 AM', status: 'Not Recorded' },
+  { id: 'cs3', classId: 'oc1', teacherId: 't2', time: '8:00 AM', status: 'Started', checkInTime: '7:58 AM' },
+  { id: 'cs4', classId: 'oc3', teacherId: 't3', time: '8:00 AM', status: 'Not Recorded' },
+  { id: 'cs5', classId: 'oc4', teacherId: 't4', time: '8:00 AM', status: 'Needs Verification' },
+  { id: 'cs6', classId: 'oc5', teacherId: 't6', time: '10:00 AM', status: 'Started', checkInTime: '10:01 AM' },
+]
