@@ -195,6 +195,7 @@ input[type=checkbox]{accent-color:var(--pr)}.tg{cursor:pointer}
 .fq{font-size:15px;color:var(--tx);border-top:1px solid var(--bd)}.fq:first-of-type{border-top:0}.fq summary{cursor:pointer;font-weight:600;padding:10px 0}.fq p{padding:0 0 10px;color:var(--mu)}
 @media(max-width:820px){#pop.wide{width:auto;max-height:75vh}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <div id="app"></div><div id="bk" onclick="closeAll()"></div><div id="pop"></div><dialog id="dlg"></dialog><div id="tst"></div>
@@ -238,7 +239,7 @@ const toast=m=>{const t=$('#tst');t.textContent=m;t.classList.add('show');clearT
 const closeAll=()=>{$('#pop').classList.remove('show');$('#bk').classList.remove('show')};
 const later=n=>{closeAll();toast(n+' is coming in a later stage.')};
 const go=v=>{S.v=v;S.an=1;S.cn=null;S.mv=null;closeAll();render();scrollTo(0,0)};
-const out=()=>{S.u=null;render()};
+const out=async()=>{if(sb)await sb.auth.signOut();location.reload()};
 const fill=(u,p)=>{document.querySelector('[name=u]').value=u;document.querySelector('[name=p]').value=p};
 addEventListener('keydown',x=>x.key=='Escape'&&closeAll());
 
@@ -247,18 +248,17 @@ function newTask(){$('#dlg').innerHTML=`<form onsubmit="return saveTask(this)"><
 function saveTask(f){T.push(wrap({id:Date.now(),col:f.k.checked,sm:{},t:f.t.value.trim(),c:f.c.value,d:f.d.value,p:f.p.value,desc:f.x.value.trim(),s:'Not started'}));$('#dlg').close();toast('Task added. It now appears in Work and Home.');render();return false}
 function tog(id){const t=T.find(x=>x.id==id);t.s=t.s=='Done'?'In progress':'Done';render()}
 function start(i){C[i].at=new Date().toLocaleTimeString('en',{hour:'numeric',minute:'2-digit'});toast('Check-in recorded. The SHS Head now sees Active / Class Started.');render()}
-function signIn(f){const a=USERS[f.u.value.trim().toLowerCase()];if(!a||a.p!=f.p.value){$('#err').textContent='Incorrect email or password. Check your school account details.';return false}S.u=a;S.v=NAV[a.role][0][0];S.an=1;render();return false}
 
 const login=()=>`<div class="lg"><section class="lb"><div class="logo">${LG}<span>TASKLY<small>Senior High School Department</small></span></div><h1>Tasks, classes, and records for SHS teachers.</h1><p>The official productivity and monitoring system of the Senior High School Department.</p><ul><li>Plan work and deadlines</li><li>Track class submissions</li><li>Keep SHS leadership informed</li></ul></section>
-<section class="lf"><form onsubmit="return signIn(this)"><h2>Sign in to TASKLY</h2><p class="mu">Use your school-issued account. Your role is assigned by the school.</p>
+<section class="lf"><form onsubmit="signIn(this);return false"><h2>Sign in to TASKLY</h2><p class="mu">Use your school-issued account. Your role is assigned by the school.</p>
 <label>School email or username<input name="u" autocomplete="username" required></label><label>Password<input name="p" type="password" autocomplete="current-password" required></label>
 <div class="rw"><label class="ck"><input type="checkbox"> Remember me</label><a href="#" onclick="toast('Contact the System Administrator to reset your password.');return false">Forgot password?</a></div>
 <p id="err" class="er"></p><button class="btn pr w">Sign in</button>
-<details><summary>Prototype accounts</summary><div><button type="button" class="btn sm" onclick="fill('maria.santos@shs.edu','teacher123')">Teacher</button><button type="button" class="btn sm" onclick="fill('head@shs.edu','head123')">SHS Head</button><button type="button" class="btn sm" onclick="fill('admin@shs.edu','admin123')">System Admin</button></div></details></form></section></div>`;
+<p class="mu sm">Accounts are issued by the school. Contact the System Administrator for access.</p></form></section></div>`;
 
 function home(){
 const op=T.filter(t=>t.s!='Done'),by=(a,b)=>dd(a.d)-dd(b.d),dn=op.filter(t=>dd(t.d)<=0).sort(by),up=op.filter(t=>dd(t.d)>0).sort(by).slice(0,4),h=new Date().getHours(),pend=op.reduce((s,t)=>s+t.sub[1]-t.sub[0],0);
-return `<div class="hero"><h1>Good ${h<12?'morning':h<18?'afternoon':'evening'}, Ms. Santos</h1><p>${new Date().toLocaleDateString('en',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}</p><p class="hs">${TS().length} classes today. ${dn.length} due or overdue.</p></div>
+return `<div class="hero"><h1>Good ${h<12?'morning':h<18?'afternoon':'evening'}, ${e(S.u.name.split(' ')[0])}</h1><p>${new Date().toLocaleDateString('en',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}</p><p class="hs">${TS().length} classes today. ${dn.length} due or overdue.</p></div>
 <div class="note"><b>Announcement from the SHS Head</b><br>Faculty meeting moved to Friday, 3:30 PM, Room 204. Please add it to your calendar.</div>
 <div class="g g3"><div class="card stat"><span class="mu">Due or overdue</span><b>${dn.length}</b></div><div class="card stat"><span class="mu">Pending submissions</span><b>${pend}</b></div><div class="card stat"><span class="mu">Classes today</span><b>${TS().length}</b></div></div>
 <div class="g g2"><div class="g">
@@ -389,17 +389,35 @@ function readAll(){NF().forEach(n=>S.rd[n.k]=1);closeAll();render()}
 function editTask(id){const t=T.find(x=>x.id==id);$('#dlg').innerHTML=`<form onsubmit="return saveEdit(this,${id})"><h2>Edit task</h2><label>Title<input name="t" required value="${e(t.t)}"></label><label>Description<textarea name="x" rows="3">${e(t.desc||'')}</textarea></label><label>Class<select name="c">${CL.map(c=>`<option ${c==t.c?'selected':''}>${e(c)}</option>`).join('')}</select></label><label>Deadline<input type="date" name="d" required value="${t.d}"></label><label>Priority<select name="p">${['High','Medium','Low'].map(p=>`<option ${p==t.p?'selected':''}>${p}</option>`).join('')}</select></label><label class="ck"><input type="checkbox" name="k" ${t.col?'checked':''}> Students submit this task</label><div class="act"><button type="button" class="btn" onclick="tk(${id})">Back</button><button class="btn pr">Save changes</button></div></form>`}
 function saveEdit(f,id){const t=T.find(x=>x.id==id);Object.assign(t,{t:f.t.value.trim(),desc:f.x.value.trim(),c:f.c.value,d:f.d.value,p:f.p.value,col:f.k.checked});t.sm=t.sm||{};toast('Task updated.');tk(id);render();return false}
 function setP(){const u=S.u,N=[['o','Overdue tasks'],['d','Tasks due soon'],['s','Submission reminders'],['e','Upcoming events']];
-return bkB()+`<div class="hd"><div><h1>Settings</h1><p class="mu">Your profile and notification preferences.</p></div></div><div class="card"><h2>Profile</h2><div class="row"><div class="fl"><b>${e(u.name)}</b><div class="mu">${RL[u.role]}, ${Object.keys(USERS).find(k=>USERS[k]==u)}</div></div></div><p class="mu sm">Your name and role come from your school account. Contact the System Administrator to change them.</p></div><div class="card"><h2>Notifications</h2>${N.map(n=>`<label class="row tg"><span class="fl">${n[1]}</span><input type="checkbox" ${S.np[n[0]]?'checked':''} onchange="S.np.${n[0]}=this.checked?1:0;render()"></label>`).join('')}</div>`}
+return bkB()+`<div class="hd"><div><h1>Settings</h1><p class="mu">Your profile and notification preferences.</p></div></div><div class="card"><h2>Profile</h2><div class="row"><div class="fl"><b>${e(u.name)}</b><div class="mu">${RL[u.role]}, ${e(u.email||"")}</div></div></div><p class="mu sm">Your name and role come from your school account. Contact the System Administrator to change them.</p></div><div class="card"><h2>Notifications</h2>${N.map(n=>`<label class="row tg"><span class="fl">${n[1]}</span><input type="checkbox" ${S.np[n[0]]?'checked':''} onchange="S.np.${n[0]}=this.checked?1:0;render()"></label>`).join('')}</div><div class="card"><h2>Workspace</h2><p class="mu sm">Your tasks, classes, and notes are saved to your account.</p><button class="btn" onclick="clearAll()">Clear sample data</button></div>`}
 function helpP(){const H=[['How do I add a class and its students?','Open Classes, tap + New class, then open the class and use the Students tab to add names.'],['How do I track submissions?','Create a task with Students submit this task checked. Open the task and tap each student who has submitted.'],['How do I take attendance?','Open a class, choose the Attendance tab, pick the date, and tap P, L, or A for each student.'],['What triggers a notification?','Overdue and due-soon tasks, pending submissions, and upcoming events. You can switch each type off in Settings.'],['Who can see my notes and class lists?','Only you. Notes and class lists stay private to your account.']];
 return bkB()+`<div class="hd"><div><h1>Help</h1><p class="mu">Quick answers for common questions.</p></div></div><div class="card">${H.map(h=>`<details class="fq"><summary>${h[0]}</summary><p>${h[1]}</p></details>`).join('')}</div>`}
+const SB_URL='https://hqmbboqecfmcviqsfutv.supabase.co',SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxbWJib3FlY2ZtY3ZpcXNmdXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEzMDc3MDIsImV4cCI6MjEwNjg4MzcwMn0.YdyWcherKRlFOzrXTQlj6GMYNwsTLWyUn13w56fbtoA';
+const sb=window.supabase?supabase.createClient(SB_URL,SB_KEY):null;
+let UID=null,svT,last='';
+const fill=(a,v)=>{a.length=0;a.push(...(v||[]))},fillO=(o,v)=>{Object.keys(o).forEach(k=>delete o[k]);Object.assign(o,v||{})};
+const snap=()=>JSON.stringify({T,C,CL,K,AT,EV,NO,RS,AR,rd:S.rd,np:S.np},(k,v)=>k=='sub'?undefined:v);
+function load(d){fill(T,d.T);fill(C,d.C);fill(CL,d.CL);fill(EV,d.EV);fill(NO,d.NO);fill(RS,d.RS);fill(AR,d.AR);fillO(K,d.K);fillO(AT,d.AT);S.rd=d.rd||{};S.np=d.np||{o:1,d:1,s:1,e:1};[...T,...AR].forEach(t=>{t.sm=t.sm||{};wrap(t)});last=snap()}
+function qs(){if(!UID||!sb)return;const j=snap();if(j==last)return;clearTimeout(svT);svT=setTimeout(async()=>{const{error}=await sb.from('app_state').upsert({user_id:UID,data:JSON.parse(j),updated_at:new Date().toISOString()});if(error){console.error(error);toast('Could not save your changes. Check your connection.')}else last=j},800)}
+async function enter(user){const{data:pr}=await sb.from('profiles').select('role,full_name').eq('id',user.id).maybeSingle();
+if(!pr){await sb.auth.signOut();render();$('#err').textContent='Your account has no profile yet. Contact the System Administrator.';return}
+UID=user.id;S.u={name:pr.full_name||user.email,role:pr.role,email:user.email};
+if(pr.role=='teacher'){const{data:row}=await sb.from('app_state').select('data').eq('user_id',UID).maybeSingle();if(row&&row.data&&row.data.T)load(row.data)}
+S.v=NAV[pr.role][0][0];S.an=1;render()}
+async function signIn(f){if(!sb){$('#err').textContent='Cannot reach the database. Check your connection.';return}const b=f.querySelector('.btn.pr');b.disabled=true;$('#err').textContent='';
+const{data,error}=await sb.auth.signInWithPassword({email:f.u.value.trim(),password:f.p.value});b.disabled=false;
+if(error){$('#err').textContent='Incorrect email or password. Check your school account details.';return}await enter(data.user)}
+async function boot(){$('#app').innerHTML='<div class="emp"><b>TASKLY</b><p class="mu">Loading your workspace...</p></div>';
+if(sb){const{data:{session}}=await sb.auth.getSession();if(session)return enter(session.user)}render()}
+function clearAll(){if(!confirm('Remove all sample data and start with an empty workspace? This cannot be undone.'))return;[T,C,CL,EV,NO,RS,AR].forEach(a=>a.length=0);fillO(K,{});fillO(AT,{});S.rd={};toast('Workspace cleared. Add your first class to begin.');render()}
 function render(){
 const u=S.u;if(!u){$('#app').innerHTML=login();return}
 const N=NAV[u.role],ad=u.role!='teacher',lb=(N.find(n=>n[0]==S.v)||[])[2],
 pg=(({teacher:{home,work,cal,cls,more},head:{ov:adminHome},sysadmin:{acc:sysAcc}})[u.role][S.v]||(()=>soon(lb)))();
 $('#app').innerHTML=`<div class="app ${ad?'admin':''}"><aside class="side ${S.an?'an':''}"><div class="logo">${LG}<span>TASKLY<small>${ad?'Monitoring':'Senior High School'}</small></span></div>${N.map(n=>`<button class="nv ${S.v==n[0]?'on':''}" onclick="go('${n[0]}')"><span class="ic">${n[1]}</span>${n[2]}</button>`).join('')}<div class="sp"></div><div class="uc"><span class="av">${u.name.split(' ').map(w=>w[0]).slice(0,2).join('')}</span><span>${u.name}<small>${RL[u.role]}</small></span></div><button class="nv" onclick="out()">Sign out</button></aside>
 <div class="main"><header class="top"><b class="logo mob">${LG}TASKLY</b>${ad?`<span class="mu dsk">${RL[u.role]}</span>`:`<input class="dsk" type="search" placeholder="Search tasks and classes" aria-label="Search" onkeydown="if(event.key=='Enter'){S.q=this.value;go('work')}">`}<div class="sp"></div>${ad?'<button class="btn sm dsk" onclick="out()">Sign out</button>':'<button class="btn pr dsk" onclick="qa()">+ New</button>'}${ad?'':`<button class="bell" onclick="bell()" aria-label="Notifications">${BL}${unread()?`<i>${unread()}</i>`:''}</button>`}<span class="av" title="${e(u.name)}">${u.name.split(' ').map(w=>w[0]).slice(0,2).join('')}</span></header><main class="page ${S.an?'an':''}">${pg}</main></div>
-<nav class="bnav ${S.an?'an':''}">${N.map(n=>`<button class="${S.v==n[0]?'on':''}" onclick="go('${n[0]}')"><span class="ic">${n[1]}</span>${n[2]}</button>`).join('')}</nav>${ad?'':'<button class="fab" onclick="qa()" aria-label="New">+</button>'}</div>`;if(S.an){S.an=0;cnt()}}
-render();
+<nav class="bnav ${S.an?'an':''}">${N.map(n=>`<button class="${S.v==n[0]?'on':''}" onclick="go('${n[0]}')"><span class="ic">${n[1]}</span>${n[2]}</button>`).join('')}</nav>${ad?'':'<button class="fab" onclick="qa()" aria-label="New">+</button>'}</div>`;if(S.an){S.an=0;cnt()}qs()}
+boot();
 </script>
 </body>
 </html>
