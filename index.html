@@ -194,6 +194,20 @@ textarea{width:100%;border:1px solid var(--bd);border-radius:8px;padding:9px 12p
 input[type=checkbox]{accent-color:var(--pr)}.tg{cursor:pointer}
 .fq{font-size:15px;color:var(--tx);border-top:1px solid var(--bd)}.fq:first-of-type{border-top:0}.fq summary{cursor:pointer;font-weight:600;padding:10px 0}.fq p{padding:0 0 10px;color:var(--mu)}
 @media(max-width:820px){#pop.wide{width:auto;max-height:75vh}}
+
+.tmp{margin-top:6px;padding:10px;border:1px dashed var(--wn);border-radius:8px;display:grid;gap:6px;font-size:13px;background:#fffaf0}.tmp div{display:flex;gap:6px;flex-wrap:wrap}
+.av.big{width:72px;height:72px;font-size:26px;background:#fff;color:var(--pr)}.pf{display:flex;gap:18px;align-items:center}.fm{display:grid;gap:12px}.g2e{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ntp{margin-top:6px}.ntm{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}.ntm select{width:auto}
+.ntt{width:100%;border:0!important;background:none!important;font:700 28px var(--hf)!important;padding:6px 0!important;outline:0}
+.tbr{position:sticky;top:58px;z-index:4;display:flex;gap:4px;overflow-x:auto;background:#fff;border:1px solid var(--bd);border-radius:10px;padding:6px;margin:8px 0}.tbr button{flex:none;border:0;background:none;border-radius:6px;padding:6px 10px;font-size:14px}.tbr button:hover{background:var(--pl)}.tbr .on{background:var(--pr);color:#fff}
+.tb-b{font-weight:800}.tb-i{font-style:italic}.tb-u{text-decoration:underline}.tb-s{text-decoration:line-through}.tb-h{font-family:var(--hf);font-weight:700}
+.ed{min-height:55vh;padding:6px 16px 40px;background:repeating-linear-gradient(#fff 0 27px,#e6f1e9 27px 28px);border:1px solid var(--bd);border-radius:2px 12px 12px 12px;line-height:28px;outline:0;font-size:16px}
+.ed:empty::before{content:attr(data-ph);color:var(--mu)}.ed h2{font-size:22px;line-height:34px}.ed ul,.ed ol{padding-left:26px}
+.rbar{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.rbar input[type=search]{flex:1;min-width:180px}
+.cr{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.cr button{border:0;background:none;color:var(--pr);font-weight:600;padding:2px 4px}.cr span{color:var(--mu)}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px 14px;margin:14px 0 16px}
+.fd{position:relative;display:grid;gap:2px;background:#e4f3e9;border:1px solid var(--bd);border-radius:2px 12px 12px 12px;padding:16px 12px 12px;cursor:pointer;transition:transform .2s}.fd::before{content:"";position:absolute;top:-9px;left:-1px;width:46%;height:10px;background:#e4f3e9;border:1px solid var(--bd);border-bottom:0;border-radius:8px 8px 0 0}.fd:hover{transform:translateY(-3px)}.fd .x{position:absolute;top:4px;right:2px}
+@media(max-width:820px){.g2e{grid-template-columns:minmax(0,1fr)}.pf{gap:12px}.tbr{top:calc(56px + env(safe-area-inset-top))}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -227,8 +241,8 @@ let C=[{n:'12 ICT A',sj:'Computer Programming',tm:'7:30 AM',en:'8:30 AM',rm:'Lab
 const NT=[['21 of 36 students submitted Research Activity (12 ICT A).','2 hours ago'],['SHS Head posted: Faculty meeting moved to Friday.','Yesterday'],['Class Record Update is due tomorrow.','Yesterday']];
 const AC=[['Jose Reyes checked in to 11 STEM A','7:28 AM'],['Maria Santos updated Research Activity','10 minutes ago'],['Ana Dela Cruz completed Module 4 Preparation','1 hour ago'],['Liza Garcia created Quiz Review','2 hours ago']];
 const AN=[['Faculty meeting moved to Friday, 3:30 PM','Posted yesterday'],['Midterm submission window opens Monday','Posted 3 days ago']];
-const ACT=[['New Task','newTask()'],['New Event','newEvent()'],['New Resource','resDlg()'],['New Note','noteDlg()']];
-let S={u:null,v:'',q:'',fs:'all',fc:'all',so:'d',cm:0,sd:ymd(0),cn:null,ct:'s',ao:0,mv:null,rc:'all',rq:'',rd:{},np:{o:1,d:1,s:1,e:1}};
+const ACT=[['New Task','newTask()'],['New Event','newEvent()'],['New Resource','linkDlg()'],['New Note','newNote()']];
+let S={u:null,v:'',q:'',fs:'all',fc:'all',so:'d',cm:0,sd:ymd(0),cn:null,ct:'s',ao:0,mv:null,rc:'all',rq:'',rd:{},np:{o:1,d:1,s:1,e:1},nid:null,nq:'',rf:null};
 const LG=`<svg class="lgo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#15803d"/><path d="M9 8h11a3 3 0 013 3v13H12a3 3 0 01-3-3z" fill="#fff"/><path d="M12.5 16.5l3 3 5-6" fill="none" stroke="#15803d" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
 const empty=(t,m)=>`<div class="emp"><b>${t}</b><p class="mu">${m}</p></div>`;
@@ -238,9 +252,8 @@ const dl=t=>{const n=dd(t.d),o=ov(t);return `<span class="b ${o?'er':n==0&&t.s!=
 const toast=m=>{const t=$('#tst');t.textContent=m;t.classList.add('show');clearTimeout(toast.k);toast.k=setTimeout(()=>t.classList.remove('show'),3000)};
 const closeAll=()=>{$('#pop').classList.remove('show');$('#bk').classList.remove('show')};
 const later=n=>{closeAll();toast(n+' is coming in a later stage.')};
-const go=v=>{S.v=v;S.an=1;S.cn=null;S.mv=null;closeAll();render();scrollTo(0,0)};
+const go=v=>{S.v=v;S.an=1;S.cn=null;S.mv=null;S.nid=null;closeAll();render();scrollTo(0,0)};
 const out=async()=>{if(sb)await sb.auth.signOut();location.reload()};
-const fill=(u,p)=>{document.querySelector('[name=u]').value=u;document.querySelector('[name=p]').value=p};
 addEventListener('keydown',x=>x.key=='Escape'&&closeAll());
 
 function qa(){const q=$('#pop');q.classList.remove('wide');q.innerHTML=ACT.map(a=>`<button class="nv" onclick="closeAll();${a[1]}"><b>${a[0]}</b></button>`).join('');q.classList.toggle('show');$('#bk').classList.toggle('show',q.classList.contains('show'))}
@@ -254,7 +267,7 @@ const login=()=>`<div class="lg"><section class="lb"><div class="logo">${LG}<spa
 <label>School email or username<input name="u" autocomplete="username" required></label><label>Password<input name="p" type="password" autocomplete="current-password" required></label>
 <div class="rw"><label class="ck"><input type="checkbox"> Remember me</label><a href="#" onclick="toast('Contact the System Administrator to reset your password.');return false">Forgot password?</a></div>
 <p id="err" class="er"></p><button class="btn pr w">Sign in</button>
-<p class="mu sm">Accounts are issued by the school. Contact the System Administrator for access.</p></form></section></div>`;
+<p class="mu sm">Accounts are issued by the school. Contact the System Administrator for access.</p><div class="tmp"><b>Temporary test login</b><span class="mu">Works without Supabase and saves only in this browser. Remove before launch.</span><div><button type="button" class="btn sm" onclick="tl('teacher')">Teacher</button><button type="button" class="btn sm" onclick="tl('head')">SHS Head</button><button type="button" class="btn sm" onclick="tl('sysadmin')">System Admin</button></div></div></form></section></div>`;
 
 function home(){
 const op=T.filter(t=>t.s!='Done'),by=(a,b)=>dd(a.d)-dd(b.d),dn=op.filter(t=>dd(t.d)<=0).sort(by),up=op.filter(t=>dd(t.d)>0).sort(by).slice(0,4),h=new Date().getHours(),pend=op.reduce((s,t)=>s+t.sub[1]-t.sub[0],0);
@@ -396,9 +409,9 @@ const SB_URL='https://hqmbboqecfmcviqsfutv.supabase.co',SB_KEY='eyJhbGciOiJIUzI1
 const sb=window.supabase?supabase.createClient(SB_URL,SB_KEY):null;
 let UID=null,svT,last='';
 const fill=(a,v)=>{a.length=0;a.push(...(v||[]))},fillO=(o,v)=>{Object.keys(o).forEach(k=>delete o[k]);Object.assign(o,v||{})};
-const snap=()=>JSON.stringify({T,C,CL,K,AT,EV,NO,RS,AR,rd:S.rd,np:S.np},(k,v)=>k=='sub'?undefined:v);
-function load(d){fill(T,d.T);fill(C,d.C);fill(CL,d.CL);fill(EV,d.EV);fill(NO,d.NO);fill(RS,d.RS);fill(AR,d.AR);fillO(K,d.K);fillO(AT,d.AT);S.rd=d.rd||{};S.np=d.np||{o:1,d:1,s:1,e:1};[...T,...AR].forEach(t=>{t.sm=t.sm||{};wrap(t)});last=snap()}
-function qs(){if(!UID||!sb)return;const j=snap();if(j==last)return;clearTimeout(svT);svT=setTimeout(async()=>{const{error}=await sb.from('app_state').upsert({user_id:UID,data:JSON.parse(j),updated_at:new Date().toISOString()});if(error){console.error(error);toast('Could not save your changes. Check your connection.')}else last=j},800)}
+const snap=()=>JSON.stringify({T,C,CL,K,AT,EV,NO,RS,AR,rd:S.rd,np:S.np,pf:PF},(k,v)=>k=='sub'?undefined:v);
+function load(d){fill(T,d.T);fill(C,d.C);fill(CL,d.CL);fill(EV,d.EV);fill(NO,d.NO);fill(RS,d.RS);fill(AR,d.AR);fillO(K,d.K);fillO(AT,d.AT);S.rd=d.rd||{};fillO(PF,d.pf);S.np=d.np||{o:1,d:1,s:1,e:1};[...T,...AR].forEach(t=>{t.sm=t.sm||{};wrap(t)});last=snap()}
+function qs(){if(UID=='test'){try{localStorage.setItem('taskly-test',snap())}catch(x){}return}if(!UID||!sb)return;const j=snap();if(j==last)return;clearTimeout(svT);svT=setTimeout(async()=>{const{error}=await sb.from('app_state').upsert({user_id:UID,data:JSON.parse(j),updated_at:new Date().toISOString()});if(error){console.error(error);toast('Could not save your changes. Check your connection.')}else last=j},800)}
 async function enter(user){const{data:pr}=await sb.from('profiles').select('role,full_name').eq('id',user.id).maybeSingle();
 if(!pr){await sb.auth.signOut();render();$('#err').textContent='Your account has no profile yet. Contact the System Administrator.';return}
 UID=user.id;S.u={name:pr.full_name||user.email,role:pr.role,email:user.email};
@@ -410,12 +423,59 @@ if(error){$('#err').textContent='Incorrect email or password. Check your school 
 async function boot(){$('#app').innerHTML='<div class="emp"><b>TASKLY</b><p class="mu">Loading your workspace...</p></div>';
 if(sb){const{data:{session}}=await sb.auth.getSession();if(session)return enter(session.user)}render()}
 function clearAll(){if(!confirm('Remove all sample data and start with an empty workspace? This cannot be undone.'))return;[T,C,CL,EV,NO,RS,AR].forEach(a=>a.length=0);fillO(K,{});fillO(AT,{});S.rd={};toast('Workspace cleared. Add your first class to begin.');render()}
+/* TEMP-TEST-LOGIN:START (remove before launch) */
+const TU={teacher:['Maria Santos','maria.santos@shs.edu'],head:['Elena Cruz','head@shs.edu'],sysadmin:['System Admin','admin@shs.edu']};
+function tl(r){UID='test';S.u={name:TU[r][0],role:r,email:TU[r][1]};if(r=='teacher'){try{const d=JSON.parse(localStorage.getItem('taskly-test')||'null');if(d&&d.T)load(d)}catch(x){}}S.v=NAV[r][0][0];S.an=1;render();toast('Test mode: data is saved only in this browser.')}
+/* TEMP-TEST-LOGIN:END */
+const PF={};
+function profP(){const u=S.u,ini=u.name.split(' ').map(w=>w[0]).slice(0,2).join(''),tc=u.role=='teacher',st=[['Classes',CL.length],['Students',CL.reduce((a,c)=>a+(K[c]?K[c].stu.length:0),0)],['Open tasks',T.filter(t=>t.s!='Done').length],['Notes',NO.length]];
+return `<div class="hero pf"><span class="av big">${ini}</span><div><h1>${e(u.name)}</h1><p>${RL[u.role]}, ${e(u.email||'')}</p></div></div>${tc?`<div class="g g4">${st.map(x=>`<div class="card stat"><span class="mu">${x[0]}</span><b>${x[1]}</b></div>`).join('')}</div>`:''}
+<div class="g g2e">${tc?`<div class="card"><h2>About you</h2><form class="fm" onsubmit="return savePf(this)"><label>Title<input name="t" value="${e(PF.t||'')}" placeholder="e.g. Teacher III"></label><label>Subjects you teach<input name="s" value="${e(PF.s||'')}" placeholder="e.g. Computer Programming"></label><label>Advisory class<input name="a" value="${e(PF.a||'')}" placeholder="e.g. 12 ICT A"></label><label>About<textarea name="b" rows="3">${e(PF.b||'')}</textarea></label><button class="btn pr">Save profile</button></form></div>`:''}
+<div class="card"><h2>Account</h2><p class="mu sm">Your name and role come from your school account. Contact the System Administrator to change them.</p><form class="fm" onsubmit="chPw(this);return false"><label>New password<input name="p" type="password" placeholder="At least 8 characters" autocomplete="new-password"></label><button class="btn">Change password</button></form><button class="btn" style="margin-top:12px" onclick="out()">Sign out</button></div></div>`}
+function savePf(f){Object.assign(PF,{t:f.t.value.trim(),s:f.s.value.trim(),a:f.a.value.trim(),b:f.b.value.trim()});toast('Profile saved.');render();return false}
+async function chPw(f){const p=f.p.value;if(p.length<8){toast('Use at least 8 characters.');return}if(!sb||UID=='test'){toast('Password changes need a real account.');return}const{error}=await sb.auth.updateUser({password:p});toast(error?'Could not change password.':'Password changed.');f.reset()}
+
+const txt=h=>new DOMParser().parseFromString(h||'','text/html').body.textContent.trim(),OKT=['B','I','U','S','STRIKE','STRONG','EM','DIV','P','BR','UL','OL','LI','H2','H3'],NN=()=>NO.find(x=>x.id==S.nid);
+let nsT;
+function clean(h){const d=new DOMParser().parseFromString(h||'','text/html');d.body.querySelectorAll('*').forEach(n=>{if(!OKT.includes(n.tagName))n.replaceWith(...n.childNodes);else[...n.attributes].forEach(a=>n.removeAttribute(a.name))});return d.body.innerHTML}
+const TB=[['bold','B','tb-b'],['italic','I','tb-i'],['underline','U','tb-u'],['strikeThrough','S','tb-s'],['H','Heading','tb-h'],['insertUnorderedList','Bullets',''],['insertOrderedList','Numbers',''],['removeFormat','Clear','']];
+document.addEventListener('selectionchange',()=>document.querySelectorAll('.tbr [data-c]').forEach(b=>{try{b.classList.toggle('on',b.dataset.c!='H'&&document.queryCommandState(b.dataset.c))}catch(x){}}));
+const nlist=()=>{const q=S.nq.toLowerCase();return NO.filter(n=>!q||((n.t||'')+' '+txt(n.h)).toLowerCase().includes(q)).sort((a,b)=>(b.pin||0)-(a.pin||0)||(b.u||0)-(a.u||0)).map(n=>`<div class="card pg" role="button" tabindex="0" onclick="openN(${n.id})"><h2>${e(n.t||'Untitled')}${n.pin?' ★':''}</h2><p>${e(txt(n.h)||'No text yet')}</p><span class="mu">${n.c?e(n.c)+', ':''}${lab(n.d)}</span></div>`).join('')||`<div class="card">${empty('No notes found','Tap + New note to start writing.')}</div>`};
+function notes(){NO.forEach(n=>{if(n.h==null){n.h=e(n.b||'');delete n.b}});if(S.nid&&NN())return notePg();
+return bkB()+`<div class="hd"><div><h1>Notes</h1><p class="mu">Private to you. Administrators cannot see your notes.</p></div><button class="btn pr" onclick="newNote()">+ New note</button></div><div class="tb rt"><input type="search" placeholder="Search notes" value="${e(S.nq)}" oninput="S.nq=this.value;$('#nl').innerHTML=nlist()" aria-label="Search notes"></div><div class="g g2c" id="nl">${nlist()}</div>`}
+function notePg(){const n=NN();return `<button class="bk" onclick="closeN()">‹ All notes</button><div class="ntp"><div class="ntm"><select onchange="NN().c=this.value;qs()" aria-label="Class"><option value="">No class</option>${CL.map(c=>`<option ${c==n.c?'selected':''}>${e(c)}</option>`).join('')}</select><span class="mu" id="ns">Saved</span><span class="sp"></span><button class="btn sm" onclick="pinN()">${n.pin?'Unpin':'Pin'}</button><button class="btn sm" onclick="delN()">Delete</button></div>
+<input id="nt" class="ntt" placeholder="Title" value="${e(n.t)}" oninput="noteIn()">
+<div class="tbr">${TB.map(b=>`<button data-c="${b[0]}" class="${b[2]}" onmousedown="event.preventDefault()" onclick="fx('${b[0]}')">${b[1]}</button>`).join('')}</div>
+<div id="ed" class="ed" contenteditable="true" data-ph="Start writing..." oninput="noteIn()" onpaste="event.preventDefault();document.execCommand('insertText',false,event.clipboardData.getData('text/plain'));noteIn()">${clean(n.h)}</div></div>`}
+function fx(c){const ed=$('#ed');ed.focus();if(c=='H')document.execCommand('formatBlock',false,document.queryCommandValue('formatBlock').toLowerCase()=='h2'?'div':'h2');else document.execCommand(c);noteIn()}
+function noteIn(){const n=NN();if(!n)return;n.t=$('#nt').value;n.h=$('#ed').innerHTML;n.u=Date.now();$('#ns').textContent='Saving...';clearTimeout(nsT);nsT=setTimeout(()=>{const x=$('#ns');if(x)x.textContent='Saved'},900);qs()}
+function newNote(){const n={id:Date.now(),t:'',h:'',c:'',d:ymd(0),u:Date.now()};NO.unshift(n);S.v='more';S.mv='notes';S.nid=n.id;S.an=1;closeAll();render();scrollTo(0,0);setTimeout(()=>{const x=$('#nt');if(x)x.focus()},60)}
+const openN=id=>{S.nid=id;S.an=1;render();scrollTo(0,0)},pinN=()=>{const n=NN();n.pin=n.pin?0:1;render()};
+function closeN(){const n=NN();if(n&&!n.t.trim()&&!txt(n.h))NO.splice(NO.indexOf(n),1);S.nid=null;S.an=1;render()}
+function delN(){if(!confirm('Delete this note?'))return;NO.splice(NO.indexOf(NN()),1);S.nid=null;toast('Note deleted.');render()}
+
+RS[0].p=12;RS[1].p=11;RS.push({id:11,t:'12 ICT A',k:'folder',p:null,d:ymd(-6)},{id:12,t:'Week 1 materials',k:'folder',p:11,d:ymd(-6)});
+const kids=p=>RS.filter(x=>(x.p||null)==p),isF=x=>x.k=='folder',sz=b=>b>1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB',cd=id=>{S.rf=id;S.rq='';S.an=1;render()};
+function crumbs(){const a=[];let c=S.rf;while(c){const f=RS.find(x=>x.id==c);if(!f)break;a.unshift(f);c=f.p||null}return `<nav class="cr"><button onclick="cd(null)">Resources</button>${a.map(f=>`<span>›</span><button onclick="cd(${f.id})">${e(f.t)}</button>`).join('')}</nav>`}
+function rv(){const q=S.rq.toLowerCase(),all=q?RS.filter(x=>x.t.toLowerCase().includes(q)):kids(S.rf),fo=all.filter(isF),fi=all.filter(x=>!isF(x));
+return (q?'':crumbs())+(fo.length?`<div class="fgrid">${fo.map(f=>`<div class="fd" role="button" tabindex="0" onclick="cd(${f.id})"><b>${e(f.t)}</b><span class="mu">${kids(f.id).length} items</span><button class="x" onclick="event.stopPropagation();delItem(${f.id})" aria-label="Delete folder">×</button></div>`).join('')}</div>`:'')
++`<div class="card">${fi.map(x=>`<div class="row"><span class="b ${x.k=='file'?'ok':'in'}">${x.k=='file'?(x.t.split('.').pop()||'file').slice(0,4).toUpperCase():x.k=='link'?'Link':x.k}</span><div class="fl">${x.k=='file'?`<a href="#" onclick="openF(${x.id});return false"><b>${e(x.t)}</b></a>`:`<a href="${e(x.u)}" target="_blank" rel="noopener"><b>${e(x.t)}</b></a>`}<div class="mu">${x.k=='file'?sz(x.size||0)+', ':''}${lab(x.d)}</div></div><button class="x" onclick="delItem(${x.id})" aria-label="Delete">×</button></div>`).join('')||empty(q?'Nothing found':'This folder is empty','Create a folder, upload a file, or add a link.')}</div>`}
+function resP(){return bkB()+`<div class="hd"><div><h1>Resources</h1><p class="mu">Organize your teaching materials in folders.</p></div></div><div class="rbar"><input type="search" placeholder="Search all resources" value="${e(S.rq)}" oninput="S.rq=this.value;$('#rv').innerHTML=rv()" aria-label="Search resources"><button class="btn" onclick="folderDlg()">+ Folder</button><button class="btn" onclick="$('#fu').click()">Upload file</button><button class="btn" onclick="linkDlg()">Add link</button><input id="fu" type="file" multiple hidden onchange="upl(this)"></div><div id="rv">${rv()}</div>`}
+function folderDlg(){$('#dlg').innerHTML=`<form onsubmit="return saveFolder(this)"><h2>New folder</h2><label>Folder name<input name="t" required placeholder="e.g. Week 2 lessons"></label><div class="act"><button type="button" class="btn" onclick="$('#dlg').close()">Cancel</button><button class="btn pr">Create folder</button></div></form>`;$('#dlg').showModal()}
+function saveFolder(f){RS.push({id:Date.now(),t:f.t.value.trim(),k:'folder',p:S.rf,d:ymd(0)});$('#dlg').close();toast('Folder created.');render();return false}
+function linkDlg(){$('#dlg').innerHTML=`<form onsubmit="return saveLink(this)"><h2>Add a link</h2><label>Title<input name="t" required placeholder="e.g. Week 3 slides"></label><label>Link<input name="u" type="url" required placeholder="https://"></label><div class="act"><button type="button" class="btn" onclick="$('#dlg').close()">Cancel</button><button class="btn pr">Add link</button></div></form>`;$('#dlg').showModal()}
+function saveLink(f){const u=f.u.value.trim();if(!/^https?:\/\//i.test(u)){toast('Use a link that starts with https://');return false}RS.push({id:Date.now(),t:f.t.value.trim(),u,k:'link',p:S.rf,d:ymd(0)});$('#dlg').close();toast('Link added to Resources.');render();return false}
+async function upl(inp){if(!sb||!UID||UID=='test'){toast('File uploads need a real account. Links work in test mode.');inp.value='';return}
+let n=0;for(const f of inp.files){if(f.size>10485760){toast(f.name+' is over 10 MB.');continue}const path=UID+'/'+Date.now()+'-'+f.name.replace(/[^\w.\-]+/g,'_'),{error}=await sb.storage.from('resources').upload(path,f);if(error){toast('Upload failed: '+error.message);continue}RS.push({id:Date.now()+n,t:f.name,k:'file',p:S.rf,path,size:f.size,d:ymd(0)});n++}
+inp.value='';if(n){toast(n+(n>1?' files':' file')+' uploaded.');render()}}
+async function openF(id){const x=RS.find(r=>r.id==id),w=window.open('about:blank','_blank'),{data,error}=await sb.storage.from('resources').createSignedUrl(x.path,300);if(error||!data){if(w)w.close();toast('Could not open this file.');return}if(w)w.location=data.signedUrl;else location.href=data.signedUrl}
+async function delItem(id){const it=RS.find(x=>x.id==id);if(!confirm(it.k=='folder'?'Delete this folder and everything inside it?':'Delete this item?'))return;const ids=[id];for(let i=0;i<ids.length;i++)RS.filter(x=>x.p==ids[i]).forEach(x=>ids.push(x.id));const paths=RS.filter(x=>ids.includes(x.id)&&x.path).map(x=>x.path);if(paths.length&&sb&&UID!='test')await sb.storage.from('resources').remove(paths);RS=RS.filter(x=>!ids.includes(x.id));render()}
 function render(){
 const u=S.u;if(!u){$('#app').innerHTML=login();return}
 const N=NAV[u.role],ad=u.role!='teacher',lb=(N.find(n=>n[0]==S.v)||[])[2],
-pg=(({teacher:{home,work,cal,cls,more},head:{ov:adminHome},sysadmin:{acc:sysAcc}})[u.role][S.v]||(()=>soon(lb)))();
-$('#app').innerHTML=`<div class="app ${ad?'admin':''}"><aside class="side ${S.an?'an':''}"><div class="logo">${LG}<span>TASKLY<small>${ad?'Monitoring':'Senior High School'}</small></span></div>${N.map(n=>`<button class="nv ${S.v==n[0]?'on':''}" onclick="go('${n[0]}')"><span class="ic">${n[1]}</span>${n[2]}</button>`).join('')}<div class="sp"></div><div class="uc"><span class="av">${u.name.split(' ').map(w=>w[0]).slice(0,2).join('')}</span><span>${u.name}<small>${RL[u.role]}</small></span></div><button class="nv" onclick="out()">Sign out</button></aside>
-<div class="main"><header class="top"><b class="logo mob">${LG}TASKLY</b>${ad?`<span class="mu dsk">${RL[u.role]}</span>`:`<input class="dsk" type="search" placeholder="Search tasks and classes" aria-label="Search" onkeydown="if(event.key=='Enter'){S.q=this.value;go('work')}">`}<div class="sp"></div>${ad?'<button class="btn sm dsk" onclick="out()">Sign out</button>':'<button class="btn pr dsk" onclick="qa()">+ New</button>'}${ad?'':`<button class="bell" onclick="bell()" aria-label="Notifications">${BL}${unread()?`<i>${unread()}</i>`:''}</button>`}<span class="av" title="${e(u.name)}">${u.name.split(' ').map(w=>w[0]).slice(0,2).join('')}</span></header><main class="page ${S.an?'an':''}">${pg}</main></div>
+pg=(({teacher:{home,work,cal,cls,more,prof:profP},head:{ov:adminHome,prof:profP},sysadmin:{acc:sysAcc,prof:profP}})[u.role][S.v]||(()=>soon(lb)))();
+$('#app').innerHTML=`<div class="app ${ad?'admin':''}"><aside class="side ${S.an?'an':''}"><div class="logo">${LG}<span>TASKLY<small>${ad?'Monitoring':'Senior High School'}</small></span></div>${N.map(n=>`<button class="nv ${S.v==n[0]?'on':''}" onclick="go('${n[0]}')"><span class="ic">${n[1]}</span>${n[2]}</button>`).join('')}<div class="sp"></div><div class="uc" role="button" tabindex="0" onclick="go('prof')"><span class="av">${u.name.split(' ').map(w=>w[0]).slice(0,2).join('')}</span><span>${u.name}<small>${RL[u.role]}</small></span></div><button class="nv" onclick="out()">Sign out</button></aside>
+<div class="main"><header class="top"><b class="logo mob">${LG}TASKLY</b>${ad?`<span class="mu dsk">${RL[u.role]}</span>`:`<input class="dsk" type="search" placeholder="Search tasks and classes" aria-label="Search" onkeydown="if(event.key=='Enter'){S.q=this.value;go('work')}">`}<div class="sp"></div>${ad?'<button class="btn sm dsk" onclick="out()">Sign out</button>':'<button class="btn pr dsk" onclick="qa()">+ New</button>'}${ad?'':`<button class="bell" onclick="bell()" aria-label="Notifications">${BL}${unread()?`<i>${unread()}</i>`:''}</button>`}<span class="av" role="button" tabindex="0" onclick="go('prof')" title="${e(u.name)}">${u.name.split(' ').map(w=>w[0]).slice(0,2).join('')}</span></header><main class="page ${S.an?'an':''}">${pg}</main></div>
 <nav class="bnav ${S.an?'an':''}">${N.map(n=>`<button class="${S.v==n[0]?'on':''}" onclick="go('${n[0]}')"><span class="ic">${n[1]}</span>${n[2]}</button>`).join('')}</nav>${ad?'':'<button class="fab" onclick="qa()" aria-label="New">+</button>'}</div>`;if(S.an){S.an=0;cnt()}qs()}
 boot();
 </script>
