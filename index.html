@@ -717,6 +717,46 @@ body dialog{max-height:94vh;max-height:94dvh;overflow-y:auto;padding-bottom:calc
 @media(max-width:520px){.rac{gap:8px}.rac button{justify-items:center;text-align:center;padding:12px 6px}.rac small{display:none}.rac b{font-size:14px}.rig{grid-template-columns:minmax(0,1fr)}.rfg{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(pointer:coarse){.btn.sm{min-height:40px}.x{min-width:40px;min-height:40px}input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px}.cxi{width:44px;height:44px}.cxi.ed{width:36px;height:36px;opacity:.7}}
 
+/* ===== SHS HEAD: same notebook look as the teacher side ===== */
+.app.admin{--bg:#f1f5f2;--bd:#dbe6df;--tx:#0f241b;--mu:#587064;--pr:#14633f;--g2:#1a7d4f;--pl:#e3f1e8;--ink:#0b2a1d;--tab:#dcefe3;--rl:#e1ece5}
+.hq{margin-top:16px}.hq input{border-radius:99px;padding:11px 18px}.page>.fts2{margin-top:14px}
+.hg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-top:16px}.hg>*{min-width:0}.hfl{gap:38px 16px;margin-top:38px}
+.tf{position:relative;display:grid;gap:12px;align-content:start;background:#fff;border:1.5px solid var(--bd);border-top:4px solid hsl(var(--h) 45% 34%);border-radius:2px 18px 18px 18px;padding:18px 16px 16px;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.tf::before{content:attr(data-s);position:absolute;top:-27px;left:-1.5px;padding:4px 14px 3px;background:hsl(var(--h) 45% 34%);color:#fff;border-radius:10px 10px 0 0;font:700 13px Figtree,sans-serif}
+.tf:hover{transform:translateY(-4px) rotate(-.5deg);box-shadow:0 18px 26px -20px #0b2a1d}
+.tfh{display:flex;gap:10px;align-items:center}.tfh b{display:block;font:700 17px/1.2 var(--hf)}.tfh small{color:var(--mu)}
+.hn{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:30px 20px;margin-top:34px}
+.hp{position:relative;display:grid;gap:6px;align-content:start;background:var(--c);padding:26px 18px 14px;border-radius:3px 3px 18px 3px;box-shadow:0 14px 20px -16px #0b2a1d;transform:rotate(var(--r))}
+.hp::before{content:"";position:absolute;top:-11px;left:50%;width:70px;height:22px;margin-left:-35px;background:#ffffffb8;transform:rotate(-3deg)}
+.hp h3{font:700 24px/1.05 Caveat,var(--hf)}.hp p{font-size:14px}.hp small{color:#0b2a1d99}
+.hcl{display:flex;gap:10px;align-items:flex-end;height:160px}.hcl div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;font-size:12px;color:var(--mu)}.hcl b{color:var(--tx)}
+.hcl i{flex:none;display:block;width:100%;border-radius:8px 8px 2px 2px;background:var(--g2);transform-origin:bottom;animation:hgrow .7s both}
+@keyframes hgrow{from{transform:scaleY(0)}}
+@media(prefers-reduced-motion:reduce){.hcl i{animation:none}}
+
+/* ===== SHS HEAD v3: the teacher notebook, as an admin variant (graph paper, ink header band, mint highlighter) ===== */
+.app.admin{--hl:#a8e6c3}
+body .app.admin .main{background:linear-gradient(90deg,var(--rl) 1px,transparent 1px) 0 0/28px 28px,linear-gradient(var(--rl) 1px,transparent 1px) 0 0/28px 28px,var(--bg)}
+.app.admin .page>.hd{align-items:center;background:#0b2a1d radial-gradient(#ffffff14 1.2px,transparent 1.4px) 0 0/18px 18px;border-radius:22px;padding:16px 20px;box-shadow:0 18px 34px -26px #0b2a1d}
+.app.admin .page>.hd>div:first-child::before{content:"SHS Head";display:block;font:700 20px/1 Caveat,cursive;color:var(--hl)}
+.app.admin .page>.hd h1{display:block;margin:2px 0 0;padding:0;background:none;animation:none;color:#fff;font-size:clamp(24px,6vw,30px)}.app.admin .page>.hd .mu{color:#a9cdb9}
+.app.admin .page>.hd .btn.pr{background:var(--hl);border-color:var(--hl);color:var(--ink)}
+.app.admin .bnav button{flex:1 1 0;min-width:0}
+.crumb{display:flex;gap:8px;align-items:center;color:var(--mu);font-size:14px;min-width:0}.crumb i{font-style:normal;opacity:.5}.crumb b{color:var(--tx)}
+.ng{display:block;margin:16px 0 4px 12px;color:#8fb5a0;font-size:12px;font-weight:600}
+.tfs{display:flex;gap:6px;flex-wrap:wrap}.tfm{display:flex;justify-content:space-between;gap:8px;color:var(--mu);font-size:13px}
+body .row.hs-tk{border-left:4px solid var(--bd);padding-left:12px}body .row.hs-tk.od{border-left-color:var(--er)}body .row.hs-tk.dn{border-left-color:var(--ok);opacity:.8}
+
+.hmb{position:fixed;inset:0;z-index:90;background:#04120a73;animation:fade .2s both}
+.hms{position:fixed;left:0;right:0;bottom:0;z-index:91;max-width:560px;margin:0 auto;background:#f6faf7;border-radius:26px 26px 0 0;padding:10px 18px calc(20px + env(safe-area-inset-bottom));box-shadow:0 -20px 50px -20px #04120a99;animation:hmup .3s cubic-bezier(.2,.8,.2,1) both}
+.hmg{display:block;width:44px;height:5px;border-radius:9px;background:#c9d8ce;margin:0 auto 10px}.hms h2{font:700 28px Caveat,cursive;margin:0 0 12px}
+.hmt{display:grid;gap:14px}.hmt button{position:relative;display:grid;grid-template-columns:50px 1fr;column-gap:14px;align-items:center;text-align:left;padding:12px 14px;border:1.5px solid var(--bd);border-radius:18px;background:#fff}
+.hmt button::before{content:"";position:absolute;top:-7px;right:22px;width:48px;height:14px;background:var(--c);opacity:.95;transform:rotate(3deg)}
+.hmi{grid-row:span 2;display:grid;place-items:center;width:50px;height:50px;border-radius:15px;background:var(--c);color:var(--ink)}.hmi svg{width:24px;height:24px}
+.hmt b{font:700 17px var(--hf)}.hmt small{color:var(--mu)}
+.hmr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.hmr button{padding:12px;border-radius:14px;border:1.5px solid var(--bd);background:#fff;font-weight:700}.hmr button:last-child{color:var(--er)}
+@keyframes hmup{from{transform:translateY(100%)}}@media(prefers-reduced-motion:reduce){.hms,.hmb{animation:none}}
+.hs-bn{margin-bottom:6px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -772,7 +812,7 @@ function qa(){const q=$('#pop');q.classList.remove('wide');q.innerHTML=ACT.map(a
 function newTask(){$('#dlg').innerHTML=`<form onsubmit="return saveTask(this)"><h2>New task</h2><label>Title<input name="t" required placeholder="e.g. Lesson Plan"></label><label>Description<textarea name="x" rows="3" placeholder="What should students do?"></textarea></label><label>Class<select name="c">${CL.map(c=>`<option>${c}</option>`).join('')}</select></label><label>Deadline<input type="date" name="d" required value="${ymd(0)}"></label><label>Priority<select name="p"><option>High<option selected>Medium<option>Low</select></label><label class="ck"><input type="checkbox" name="k" checked> Students submit this task</label><div class="act"><button type="button" class="btn" onclick="$('#dlg').close()">Cancel</button><button class="btn pr">Add task</button></div></form>`;$('#dlg').showModal()}
 function saveTask(f){T.push(wrap({id:Date.now(),col:f.k.checked,sm:{},t:f.t.value.trim(),c:f.c.value,d:f.d.value,p:f.p.value,desc:f.x.value.trim(),s:'Not started'}));$('#dlg').close();toast('Task added. It now appears in Work and Home.');render();return false}
 function tog(id){const t=T.find(x=>x.id==id);t.s=t.s=='Done'?'In progress':'Done';render()}
-function start(i){C[i].at=new Date().toLocaleTimeString('en',{hour:'numeric',minute:'2-digit'});toast('Check-in recorded. The SHS Head now sees Active / Class Started.');render()}
+function start(i){C[i].at=new Date().toLocaleTimeString('en',{hour:'numeric',minute:'2-digit'});C[i].atd=ymd(0);toast('Check-in recorded. The SHS Head now sees Active / Class Started.');render()}
 
 const login=()=>`<div class="lg"><section class="lb"><div class="logo">${LG}<span>TASKLY<small>Senior High School Department</small></span></div><h1>Your school day, laid out.</h1><p>Classes, deadlines, and submissions in one place for SHS teachers, with a clear view for school leaders.</p><div class="lpv" aria-hidden="true"><b>Today</b><div><span>7:30</span>12 ICT A<em>Lab 1</em></div><div class="on"><span>9:00</span>12 ICT B<em>Lab 2</em></div><div><span>1:00</span>12 ICT A<em>Lab 1</em></div></div><p class="lfoot">The official productivity and monitoring system of the Senior High School Department.</p></section>
 <section class="lf"><form onsubmit="signIn(this);return false"><h2>Sign in to TASKLY</h2><p class="mu">Use your school-issued account. Your role is assigned by the school.</p>
@@ -914,7 +954,7 @@ if(n<0&&P.o)a.push({k:'o'+t.id,t:`${t.t} is ${-n} day${n<-1?'s':''} overdue.`,s:
 else if(n>=0&&n<=1&&P.d)a.push({k:'d'+t.id+n,t:`${t.t} is due ${n?'tomorrow':'today'}.`,s:t.c,id:t.id,ty:'wn'});
 if(t.col&&p>0&&n<=3&&P.s)a.push({k:'s'+t.id+p,t:`${p} students have not submitted ${t.t}.`,s:t.c,id:t.id,ty:'in'})});
 if(P.e)EV.forEach(v=>{const n=dd(v.d);if(n>=0&&n<=2)a.push({k:'e'+v.id,t:`${v.t}: ${lab(v.d)}${v.tm?', '+v.tm:''}.`,s:'Event',ty:'in'})});
-a.push({k:'ann1',t:'SHS Head: Faculty meeting moved to Friday, 3:30 PM, Room 204.',s:'Announcement',ty:'in'});return a}
+if(UID=='test')a.push({k:'ann1',t:'SHS Head: Faculty meeting moved to Friday, 3:30 PM, Room 204.',s:'Announcement',ty:'in'});ANN.forEach(x=>a.push({k:'a'+x.id,t:(x.kind=='reminder'?'Reminder from the SHS Head: ':'SHS Head: ')+x.title+(x.body?'. '+x.body:''),s:x.kind=='reminder'?'Reminder':'Announcement',ty:'in'}));return a}
 const unread=()=>NF().filter(n=>!S.rd[n.k]).length;
 function bell(){const q=$('#pop'),a=NF().sort((x,y)=>ORD[x.ty]-ORD[y.ty]);q.classList.add('wide');
 q.innerHTML=`<div class="ph"><b>Notifications</b><button class="btn sm" onclick="readAll()">Mark all read</button></div>`+(a.map(n=>`<button class="nt ${S.rd[n.k]?'':'un'}" onclick="nopen('${n.k}',${n.id||0})"><span class="dt ${n.ty}"></span><span><b>${e(n.t)}</b><br><span class="mu">${e(n.s)}</span></span></button>`).join('')||empty('All caught up','No notifications right now.'));
@@ -932,12 +972,13 @@ const sb=window.supabase?supabase.createClient(SB_URL,SB_KEY):null;
 let UID=null,svT,last='';
 const fill=(a,v)=>{a.length=0;a.push(...(v||[]))},fillO=(o,v)=>{Object.keys(o).forEach(k=>delete o[k]);Object.assign(o,v||{})};
 const snap=()=>JSON.stringify({T,C,CL,K,AT,EV,NO,RS,AR,rd:S.rd,np:S.np,pf:PF},(k,v)=>k=='sub'?undefined:v);
-function load(d){fill(T,d.T);fill(C,d.C);fill(CL,d.CL);fill(EV,d.EV);fill(NO,d.NO);fill(RS,d.RS);fill(AR,d.AR);fillO(K,d.K);fillO(AT,d.AT);S.rd=d.rd||{};fillO(PF,d.pf);S.np=d.np||{o:1,d:1,s:1,e:1};[...T,...AR].forEach(t=>{t.sm=t.sm||{};wrap(t)});last=snap()}
+function load(d){fill(T,d.T);fill(C,d.C);fill(CL,d.CL);fill(EV,d.EV);fill(NO,d.NO);fill(RS,d.RS);fill(AR,d.AR);fillO(K,d.K);fillO(AT,d.AT);S.rd=d.rd||{};fillO(PF,d.pf);S.np=d.np||{o:1,d:1,s:1,e:1};[...T,...AR].forEach(t=>{t.sm=t.sm||{};wrap(t)});C.forEach(c=>{if(c.at&&c.atd!=ymd(0)){delete c.at;delete c.atd}});last=snap()}
 function qs(){if(UID=='test'){try{localStorage.setItem('taskly-test',snap())}catch(x){}return}if(!UID||!sb)return;const j=snap();if(j==last)return;clearTimeout(svT);svT=setTimeout(async()=>{const{error}=await sb.from('app_state').upsert({user_id:UID,data:JSON.parse(j),updated_at:new Date().toISOString()});if(error){console.error(error);toast('Could not save your changes. Check your connection.')}else last=j},800)}
 async function enter(user){const{data:pr}=await sb.from('profiles').select('role,full_name').eq('id',user.id).maybeSingle();
 if(!pr){await sb.auth.signOut();render();$('#err').textContent='Your account has no profile yet. Contact the System Administrator.';return}
 UID=user.id;S.u={name:pr.full_name||user.email,role:pr.role,email:user.email};
 if(pr.role=='teacher'){const{data:row}=await sb.from('app_state').select('data').eq('user_id',UID).maybeSingle();if(row&&row.data&&row.data.T)load(row.data)}
+if(pr.role=='head')await hLoad(false);if(pr.role=='teacher')await loadAnn();
 S.v=NAV[pr.role][0][0];S.an=1;render()}
 async function signIn(f){if(!sb){$('#err').textContent='Cannot reach the database. Check your connection.';return}const b=f.querySelector('.btn.pr');b.disabled=true;$('#err').textContent='';
 const{data,error}=await sb.auth.signInWithPassword({email:f.u.value.trim(),password:f.p.value});b.disabled=false;
@@ -1130,7 +1171,7 @@ function aiSave(){NO.unshift({id:Date.now(),t:AI.t||'AI draft',h:md(AI.out),c:''
 function render(){
 const u=S.u;if(!u){$('#app').innerHTML=login();return}
 const N=NAV[u.role],ad=u.role!='teacher',lb=(N.find(n=>n[0]==S.v)||[])[2],
-pg=(({teacher:{home,work,cal,cls,more,prof:profP},head:{ov:adminHome,prof:profP},sysadmin:{acc:sysAcc,prof:profP}})[u.role][S.v]||(()=>soon(lb)))();
+pg=(({teacher:{home,work,cal,cls,more,prof:profP},head:{ov:hOv,tch:hTch,cls:hCls,tsk:hTsk,rep:hRep,ann:hAnn,adm:hAdm,prof:profP},sysadmin:{acc:sysAcc,prof:profP}})[u.role][S.v]||(()=>soon(lb)))();
 $('#app').innerHTML=`<div class="app ${ad?'admin':''}"><aside class="side ${S.an?'an':''}"><div class="logo">${LG}<span>TASKLY<small>${ad?'Monitoring':'Senior High School'}</small></span></div>${N.map(n=>`<button class="nv ${S.v==n[0]?'on':''}" onclick="go('${n[0]}')"><span class="ic">${n[1]}</span>${n[2]}</button>`).join('')}<div class="sp"></div><div class="uc" role="button" tabindex="0" onclick="go('prof')"><span class="av">${u.name.split(' ').map(w=>w[0]).slice(0,2).join('')}</span><span>${u.name}<small>${RL[u.role]}</small></span></div><button class="nv" onclick="out()">Sign out</button></aside>
 <div class="main"><header class="top"><b class="logo mob">${LG}TASKLY</b>${ad?`<span class="mu dsk">${RL[u.role]}</span>`:`<input class="dsk" type="search" placeholder="Search tasks and classes" aria-label="Search" onkeydown="if(event.key=='Enter'){S.q=this.value;go('work')}">`}<div class="sp"></div>${ad?'<button class="btn sm dsk" onclick="out()">Sign out</button>':'<button class="btn pr dsk" onclick="qa()">+ New</button>'}${ad?'':`<button class="bell" onclick="bell()" aria-label="Notifications">${BL}${unread()?`<i>${unread()}</i>`:''}</button>`}<span class="av" role="button" tabindex="0" onclick="go('prof')" title="${e(u.name)}">${u.name.split(' ').map(w=>w[0]).slice(0,2).join('')}</span></header><main class="page ${S.an?'an':''}">${pg}</main></div>
 <nav class="bnav ${S.an?'an':''}">${N.map(n=>`<button class="${S.v==n[0]?'on':''}" onclick="go('${n[0]}')"><span class="ic">${n[1]}</span>${n[2]}</button>`).join('')}</nav>${ad?'':'<button class="fab" onclick="qa()" aria-label="New">+</button>'}</div>`;if(S.an){S.an=0;cnt()}qs()}
@@ -1285,6 +1326,124 @@ v=v.replace(/\b(?:at\s+)?(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b/i,(x,h,mi,ap)=>{m=St
 if(d==null&&m==null)return;i.value=v.replace(/\s{2,}/g,' ').replace(/\b(on|at|by|due)\s*$/i,'').trim();const b=[];if(d!=null&&f.d){f.d.value=ymd(d);b.push(lab(ymd(d)))}if(m&&f.m){f.m.value=m;b.push(t12(m))}
 f.dispatchEvent(new Event('input',{bubbles:true}));toast('Filled in '+b.join(', ')+'.')}
 {const _nt=newTask,_ne=newEvent,sm=()=>{const f=$('#dlg form'),i=f&&f.t;if(!i)return;i.addEventListener('blur',()=>uSmart(f));i.addEventListener('keydown',x=>{if(x.key=='Enter')uSmart(f)});i.insertAdjacentHTML('afterend','<p class="uhint">Tip: type “Quiz tomorrow 3pm” and the date and time fill in for you.</p>')};newTask=function(){_nt();sm()};newEvent=function(){_ne();sm()}}
+
+/* ===== SHS HEAD pages =====
+   Mock data for now. Later: Supabase tables for teachers, check-ins, tasks and announcements.
+   Maria Santos is live: her classes, tasks and check-in come from the teacher side. */
+const HV={q:'',f:'all',tf:'all',sf:'all'},HP={gp:15,sy:'2026-2027',tm:'1st Semester',fl:{}},SG=['ICT','STEM','HUMSS','ABM','GAS'],
+HT=[['Maria Santos','ICT',[],'7:30 AM',''],['Jose Reyes','STEM',['11 STEM A','11 STEM B'],'7:30 AM','act'],['Ana Dela Cruz','HUMSS',['12 HUMSS B'],'8:00 AM','nr'],['Paolo Navarro','ABM',['11 ABM A','11 ABM B'],'8:30 AM','rv'],['Liza Garcia','GAS',['12 GAS A'],'10:00 AM','up'],['Carlo Mendoza','ICT',['11 ICT A'],'1:00 PM','up'],['Rina Bautista','STEM',['12 STEM B','12 STEM C'],'9:00 AM','act'],['Dante Flores','HUMSS',['11 HUMSS A'],'10:30 AM','up']].map(([n,sg,cl,tm,s],i)=>({i,n,sg,cl,tm,s})),
+HK=[['Lab Report 2','Jose Reyes','11 STEM A',-2,'In progress'],['Unit Test Reviewer','Jose Reyes','11 STEM B',2,'Not started'],['Safety Checklist','Jose Reyes','11 STEM A',-6,'Done'],['Essay Rubric','Ana Dela Cruz','12 HUMSS B',-4,'Not started'],['Module 3 Handout','Ana Dela Cruz','12 HUMSS B',3,'In progress'],['Business Plan Draft','Paolo Navarro','11 ABM A',-1,'In progress'],['Class Record Submission','Paolo Navarro','11 ABM B',-5,'Not started'],['Ledger Activity','Paolo Navarro','11 ABM A',2,'Not started'],['Capstone Outline','Liza Garcia','12 GAS A',1,'In progress'],['Quarter Plan','Liza Garcia','12 GAS A',-2,'Done'],['Intro to Algorithms','Carlo Mendoza','11 ICT A',4,'Not started'],['Web Basics Quiz','Carlo Mendoza','11 ICT A',-3,'Done'],['Physics Lab Safety Quiz','Rina Bautista','12 STEM B',0,'Done'],['Calculus Drill Sheet','Rina Bautista','12 STEM C',3,'In progress'],['Reading Journal','Dante Flores','11 HUMSS A',5,'In progress'],['Oral Report Schedule','Dante Flores','11 HUMSS A',-1,'Not started'],['Syllabus Update','Dante Flores','11 HUMSS A',-7,'Done']].map(([t,w,c,d,s])=>({t,w,c,d:ymd(d),s})),
+HN=[{t:'Faculty meeting moved to Friday',m:'3:30 PM, Room 204. Please add it to your calendar.',a:'All teachers',w:'Posted yesterday'},{t:'Midterm submission window opens Monday',m:'Add your task deadlines in TASKLY before then so students can plan.',a:'All teachers',w:'Posted 3 days ago'}];
+const hSv=()=>{if(HR){clearTimeout(hTm);hTm=setTimeout(async()=>{const{error}=await sb.from('app_state').upsert({user_id:UID,data:{HP},updated_at:new Date().toISOString()});if(error)toast('Could not save settings.')},600)}else try{localStorage.setItem('taskly-head',JSON.stringify({HP,HN}))}catch(x){}};
+try{const d=JSON.parse(localStorage.getItem('taskly-head')||'null');if(d){Object.assign(HP,d.HP||{});if(d.HN)HN.splice(0,HN.length,...d.HN)}}catch(x){}
+const HA=()=>HR?HR.flatMap(r=>r.tasks.map(x=>({...x,w:r.n}))):[...T.map(t=>({t:t.t,w:'Maria Santos',c:t.c,d:t.d,tm:t.tm,s:t.s})),...HK],
+hDe=()=>{const A=HA();return HT.map(t=>{const me=t.n=='Maria Santos',m=A.filter(x=>x.w==t.n),d=m.filter(x=>x.s=='Done').length;return{...t,cl:me?CL:t.cl,s:me?(TS().some(([c])=>c.at)?'act':'up'):t.s,m,p:m.length?Math.round(d/m.length*100):0,o:m.length-d,l:m.filter(ov).length}})},
+hHu=s=>[150,175,130,195,110][Math.max(0,SG.indexOf(s))%5],
+hIn=n=>n.split(' ').map(w=>w[0]).slice(0,2).join(''),
+hPb=s=>`<span class="b ${PS[s][1]}${s=='act'?' live':''}">${PS[s][0]}</span>`,
+hSh={act:'Started',up:'Upcoming',nr:'Not recorded',rv:'Verify'},
+hSgO=()=>[['all','All'],...SG.map(s=>[s,s])],
+hKey=i=>`role="button" tabindex="0" onclick="hT(${i})" onkeydown="if(event.key=='Enter')hT(${i})"`,
+hCh=(k,c,o)=>`<div class="${c}" role="group">${o.map(x=>`<button class="${HV[k]==x[0]?'on':''}" onclick="HV.${k}='${x[0]}';render()">${x[1]}${x[2]!=null?` <span class="b">${x[2]}</span>`:''}</button>`).join('')}</div>`,
+hSt=a=>a.map(s=>`<div class="card stat ${s[2]}"><span class="mu">${s[0]}</span><b>${s[1]}</b></div>`).join(''),
+hBar=(l,v,c)=>`<div class="bl"><span>${l}</span><span>${v}%</span></div><div class="bar"><i style="width:${v}%;background:var(--${c})"></i></div>`,
+hCl=()=>{const m={};hTe().forEach(t=>t.cl.forEach(c=>m[c]={n:c,t,sg:t.sg}));return Object.values(m).sort((a,b)=>a.n.localeCompare(b.n))},
+hTL=()=>{const q=HV.q.toLowerCase(),L=hTe().filter(t=>(HV.f=='all'||t.sg==HV.f)&&(HV.sf=='all'||t.s==HV.sf)&&(!q||(t.n+' '+t.cl.join(' ')).toLowerCase().includes(q)));
+return L.length?`<div class="hg hfl">${L.map(t=>`<div class="tf" data-s="${t.sg}" style="--h:${hHu(t.sg)}" ${hKey(t.i)}><div class="tfh"><span class="av">${hIn(t.n)}</span><div><b>${e(t.n)}</b><small>${e(t.cl.join(', '))}</small></div></div><div class="tfs">${hPb(t.s)}${t.l?`<span class="b er">${t.l} overdue</span>`:''}</div><div class="tfm"><span>First class ${t.tm}</span><span>${t.o} open</span></div>${hBar('Tasks done',t.p,'ok')}</div>`).join('')}</div>`:`<div class="card">${empty('No teachers match','Try a different name, class, or status.')}</div>`},
+hQ=v=>{HV.q=v;$('#hl').innerHTML=hTL()};
+
+function hOv(){const X=hTe(),hr=new Date().getHours(),ac=X.filter(t=>t.s=='act').length,att=X.filter(t=>t.s=='nr'||t.s=='rv'),cn=X.reduce((a,t)=>a+(t.tc?t.tc.length:t.cl.length),0),pc=X.length?Math.round(ac/X.length*100):0,A=HA(),dn=A.filter(t=>t.s=='Done').length,od=A.filter(ov).length,ip=A.filter(t=>t.s=='In progress'&&!ov(t)).length,P=n=>A.length?Math.round(n/A.length*100):0,
+tl=t=>`<div class="tl ${t.s=='act'?'lv':''}" style="cursor:pointer" onclick="hT(${t.i})"><b>${t.tm}</b><span>${e(t.n)}<small>${e(t.cl[0]||'')}</small></span><em>${hSh[t.s]}</em></div>`,
+nx=X.filter(t=>t.s=='up').sort((a,b)=>mins(a.tm)-mins(b.tm)).slice(0,4),a0=HN[0];
+return `<section class="hx"><div class="hx-r" aria-hidden="true"></div><div class="hx-b"><div class="hx-top"><div><p class="fc-date">${new Date().toLocaleDateString('en',{weekday:'long',month:'long',day:'numeric'})}</p><h1>Good ${hr<12?'morning':hr<18?'afternoon':'evening'}, ${e(S.u.name.split(' ')[0])}</h1><p class="fc-sum">${cn} classes today across ${X.length} teachers. ${e(HP.sy)}, ${e(HP.tm)}.</p></div><div class="hx-ring" title="Teachers whose class has started"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="34" class="hr0"/><circle cx="40" cy="40" r="34" class="hr1" stroke-dasharray="214" stroke-dashoffset="${214*(1-pc/100)}"/></svg><b>${pc}%</b><small>started</small></div></div>
+${att.length?`<div class="hx-n lv"><div><b>${att.length} ${att.length==1?'teacher needs':'teachers need'} a look</b><span>Attendance is not recorded or needs verification. This is not an absence.</span></div><button class="btn pr" onclick="go('tch')">Open Teachers</button></div>`:`<div class="hx-n"><div><b>All clear</b><span>Every class that started has a recorded check-in.</span></div></div>`}
+<div class="hx-cols"><div><h3>Needs a look</h3>${att.map(tl).join('')||'<p class="hx-e">Nothing needs attention.</p>'}</div><div><h3>Up next</h3>${nx.map(tl).join('')||'<p class="hx-e">No more classes starting today.</p>'}</div></div></div></section>
+<div class="g g4">${hSt([['Teachers',X.length,''],['In class now',ac,'ok'],['Classes today',cn,''],['Need a look',att.length,att.length?'wn':'ok']])}</div>
+<div class="g g2"><div class="g"><div class="card"><h2>Class presence</h2><div class="pt h"><span>Teacher</span><span>Class</span><span>Starts</span><span>Status</span></div>${X.slice().sort((a,b)=>hMq(a)-hMq(b)).map(t=>`<div class="pt" style="cursor:pointer" onclick="hT(${t.i})"><b>${e(t.n)}</b><span>${e(t.cl[0]||'')}<i class="mi">, ${t.tm}</i></span><span class="dk">${t.tm}</span><span>${hPb(t.s)}</span></div>`).join('')}<p class="mu sm">Status reflects class check-ins only. Final attendance follows the school's approved procedure.</p></div></div>
+<div class="g"><div class="card"><h2>Task status</h2>${hBar('Completed',P(dn),'ok')}${hBar('In progress',P(ip),'in')}${hBar('Not started',P(A.length-dn-od-ip),'mu')}${hBar('Overdue',P(od),'er')}</div>
+<div class="card"><h2>By strand</h2>${SG.map(s=>{const m=X.filter(t=>t.sg==s);return hBar(s+' ('+m.length+')',m.length?Math.round(m.reduce((a,t)=>a+t.p,0)/m.length):0,'ok')}).join('')}</div>
+<div class="card"><h2>Latest announcement</h2>${a0?`<div class="row"><div class="fl"><b>${e(a0.t)}</b><div class="mu">${e(a0.m)}</div></div></div><button class="btn sm" onclick="go('ann')">Manage announcements</button>`:empty('No announcements','Post one to reach all teachers.')}</div>
+<div class="card"><h2>Recent teacher activity</h2>${hAct()}</div><p class="mu sm">Private teacher notes are never shown in this view.</p></div></div>`}
+
+function hTch(){const X=hTe(),n=k=>X.filter(t=>t.s==k).length;return `<div class="hd"><div><h1>Teachers</h1><p class="mu">${hN()} SHS teachers. Status comes from class check-ins only.</p></div></div>
+<div class="hq"><input type="search" value="${e(HV.q)}" placeholder="Search teachers or classes" aria-label="Search teachers" oninput="hQ(this.value)"></div>${hCh('sf','fts2',[['all','All',X.length],...Object.keys(PS).map(k=>[k,hSh[k],n(k)])])}${hCh('f','fts2',hSgO())}<div id="hl">${hTL()}</div>`}
+
+function hCls(){const L=hCl().filter(c=>HV.f=='all'||c.sg==HV.f);
+return `<div class="hd"><div><h1>Classes</h1><p class="mu">${L.length} classes. Open one to see its teacher and today's status.</p></div></div>${hCh('f','fts2',hSgO())}<div class="hg">${L.map(c=>{const k=K[c.n],ms=c.t.m.filter(x=>x.c==c.n),dn=ms.filter(x=>x.s=='Done').length,o=ms.length-dn,r=ms.length?Math.round(dn/ms.length*100):0,s=c.t.stu?(c.t.stu[c.n]||0):k&&k.stu?k.stu.length:30+shu(c.n)%9;
+return `<div class="cc2" style="--h:${hHu(c.sg)}" ${hKey(c.t.i)}><div class="cc2h"><b>${e(c.n)}</b><span>${e(c.t.n)}</span></div><div class="cc2s"><span><b>${s}</b>Students</span><span><b>${r}%</b>Tasks done</span><span><b>${o}</b>Open tasks</span></div><div class="cc2t">${hPb(c.t.s)}</div></div>`}).join('')}</div>`}
+
+function hTsk(){const A=HA(),F={all:()=>1,od:ov,wk:t=>t.s!='Done'&&dd(t.d)>=0&&dd(t.d)<=7,dn:t=>t.s=='Done'},L=A.filter(F[HV.tf]).sort((a,b)=>dd(a.d)-dd(b.d)),d=A.filter(F.dn).length,o=A.filter(ov).length;
+return `<div class="hd"><div><h1>Tasks</h1><p class="mu">Teacher tasks across the SHS. You see titles, deadlines, and status only.</p></div></div>
+<div class="g g4">${hSt([['All tasks',A.length,''],['Open',A.length-d,''],['Overdue',o,o?'wn':'ok'],['Completed',(A.length?Math.round(d/A.length*100):0)+'%','ok']])}</div>
+${hCh('tf','fts',[['all','All',A.length],['od','Overdue',o],['wk','Due this week',A.filter(F.wk).length],['dn','Done',d]])}
+<div class="card">${L.length?L.map(t=>`<div class="row hs-tk ${ov(t)?'od':t.s=='Done'?'dn':''}"><div class="fl"><b>${e(t.t)}</b><div class="mu">${e(t.w)}, ${e(t.c)}</div></div>${dl(t)}<span class="b ${ST[t.s]}">${t.s}</span></div>`).join(''):empty('Nothing here','No tasks match this filter.')}</div>`}
+
+function hRep(){const X=hTe(),A=HA(),by=SG.map(s=>{const m=X.filter(t=>t.sg==s);return[s,m.length?Math.round(m.reduce((a,t)=>a+t.p,0)/m.length):0]}),wk=Array.from({length:7},(_,i)=>[i?DY[new Date(Date.now()+i*864e5).getDay()]:'Today',A.filter(t=>t.s!='Done'&&dd(t.d)==i).length]);
+return `<div class="hd"><div><h1>Reports</h1><p class="mu">Summaries from teacher task lists and class check-ins. Private notes are never included.</p></div></div>
+<div class="g g2c"><div class="card"><h2>Tasks done by strand</h2>${by.map(s=>hBar(s[0],s[1],'ok')).join('')||empty('No data yet','Teachers have not added tasks.')}</div>
+<div class="card"><h2>Open tasks due this week</h2><div class="hcl">${wk.map(d=>`<div><b>${d[1]}</b><i style="height:${Math.min(120,d[1]*18+2)}px"></i>${d[0]}</div>`).join('')}</div></div></div>
+<div class="card"><h2>Export</h2><p class="mu sm" style="margin:0 0 10px">Download a summary to open in Excel or share at a meeting.</p><div class="act" style="justify-content:flex-start"><button class="btn pr" onclick="hCsv('t')">Teacher summary (CSV)</button><button class="btn" onclick="hCsv('k')">Task list (CSV)</button></div></div>`}
+function hCsv(k){const X=hTe(),r=k=='t'?[['Teacher','Strand','Classes','Status today','Tasks done %','Open tasks','Overdue'],...X.map(t=>[t.n,t.sg,t.cl.join(' / '),PS[t.s][0],t.p,t.o,t.l])]:[['Task','Teacher','Class','Due','Status'],...HA().map(t=>[t.t,t.w,t.c,t.d,t.s])],q=v=>{v=String(v);return '"'+(/^[=+\-@]/.test(v)?"'"+v:v).replace(/"/g,'""')+'"'},a=document.createElement('a');
+a.href=URL.createObjectURL(new Blob(['\ufeff'+r.map(x=>x.map(q).join(',')).join('\r\n')],{type:'text/csv'}));a.download=k=='t'?'taskly-teachers.csv':'taskly-tasks.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000);toast('Report downloaded.')}
+
+function hAnn(){return `<div class="hd"><div><h1>Announcements</h1><p class="mu">Post a notice for all teachers or one strand. ${HR?'Teachers see it in their notifications.':'Sample mode: nothing is sent to teachers.'}</p></div><button class="btn pr" onclick="hNew()">+ New announcement</button></div>
+${HN.length?`<div class="hn">${HN.map((a,i)=>`<article class="hp" style="--c:${uCol[i%6]};--r:${(i%3-1)*.9}deg"><h3>${e(a.t)}</h3><p>${e(a.m)}</p><small>${e(a.a)}, ${a.w}</small><div class="act"><button class="btn sm" onclick="hDel(${i})">Remove</button></div></article>`).join('')}</div>`:`<div class="card">${empty('No announcements yet','Post one to reach all teachers.')}</div>`}`}
+function hNew(){$('#dlg').innerHTML=`<form onsubmit="return hPost(this)"><h2>New announcement</h2><label>Title<input name="t" required maxlength="120" placeholder="e.g. Faculty meeting moved"></label><label>Message<textarea name="m" rows="3" maxlength="1000" required placeholder="What should teachers know?"></textarea></label><label>Send to<select name="a"><option>All teachers${SG.map(s=>`<option>${s} teachers`).join('')}</select></label><div class="act"><button type="button" class="btn" onclick="$('#dlg').close()">Cancel</button><button class="btn pr">Post announcement</button></div></form>`;$('#dlg').showModal()}
+function hPost(f){hPost2(f);return false}
+async function hPost2(f){const t=f.t.value.trim(),m=f.m.value.trim(),a=f.a.value,b=f.querySelector('.btn.pr');
+if(HR){b.disabled=true;const{data,error}=await sb.from('announcements').insert({title:t,body:m,audience:a}).select('id').single();if(error){b.disabled=false;toast('Could not post: '+error.message);return}HN.unshift({id:data.id,t,m,a,w:'Just now'})}else{HN.unshift({t,m,a,w:'Just now'});hSv()}
+$('#dlg').close();toast('Announcement posted.');render()}
+async function hDel(i){const a=HN[i];if(!confirm('Remove this announcement?'))return;if(HR&&a.id){const{error}=await sb.from('announcements').delete().eq('id',a.id);if(error){toast('Could not remove it.');return}}HN.splice(i,1);if(!HR)hSv();toast('Announcement removed.');render()}
+
+function hAdm(){return `<div class="hd"><div><h1>Administration</h1><p class="mu">School settings and monitoring rules for the SHS.</p></div></div>
+<div class="g g2c"><div class="card"><h2>School year</h2><label>School year<input value="${e(HP.sy)}" maxlength="12" onchange="HP.sy=this.value.trim()||HP.sy;hSv();toast('Saved.')"></label><label style="margin-top:10px">Term<select onchange="HP.tm=this.value;hSv();toast('Saved.')">${['1st Semester','2nd Semester','Summer'].map(x=>`<option ${HP.tm==x?'selected':''}>${x}`).join('')}</select></label></div>
+<div class="card"><h2>Monitoring rules</h2><label>Show "Attendance Not Recorded" after<select onchange="HP.gp=+this.value;hSv();toast('Saved.')">${[5,10,15,20,30].map(m=>`<option value="${m}" ${HP.gp==m?'selected':''}>${m} minutes`).join('')}</select></label><p class="mu sm">A class needs a check-in within this time of its start. TASKLY never marks a teacher absent automatically.</p></div></div>
+<div class="g g2c"><div class="card"><h2>Data and access</h2><div class="row"><div class="fl mu">Source</div><b>${HR?'Live database':'Sample data'}</b></div><div class="row"><div class="fl mu">Teachers</div><b>${hN()}</b></div><div class="row"><div class="fl mu">Strands</div><b>${e(SG.join(', '))}</b></div><button class="btn sm" style="margin-top:12px" onclick="hLoad().then(()=>toast('Data refreshed.'))">Refresh data</button></div>
+<div class="card"><h2>Privacy</h2><div class="row"><div class="fl">You see check-in status, task titles, deadlines, and counts.</div></div><div class="row"><div class="fl">You never see private notes, resources, or files.</div></div><div class="row"><div class="fl">Accounts and passwords belong to the System Administrator.</div></div></div></div>`}
+
+function hT(i){const t=hTe()[i];if(!t)return;const s=t.s,op=t.m.filter(x=>x.s!='Done').sort((a,b)=>dd(a.d)-dd(b.d)).slice(0,4),msg=`You have ${t.o} open task${t.o==1?'':'s'}${t.l?', '+t.l+' overdue':''}. Please review your task list.`;
+$('#dlg').innerHTML=`<form onsubmit="return false"><h2>${e(t.n)}</h2><p class="mu">${t.sg} strand. ${e(t.cl.join(', ')||'No classes yet')}</p>${[['First class today',t.tm],['Status',hPb(s)],['Tasks done',t.p+'%'],['Open tasks',t.o],['Overdue',t.l]].concat(t.upd?[['Last saved',hAgo(t.upd)]]:[]).map(r=>`<div class="row"><div class="fl mu">${r[0]}</div><b>${r[1]}</b></div>`).join('')}
+${s=='nr'||s=='rv'?`<p class="mu sm">No check-in is recorded for this class yet. That does not mean the teacher is absent. Follow the school's approved procedure to confirm.</p>`:''}
+${op.length?`<h3 class="mu sm" style="margin:12px 0 0">Next deadlines</h3>`+op.map(x=>`<div class="row"><div class="fl">${e(x.t)}<div class="mu">${e(x.c)}</div></div>${dl(x)}</div>`).join(''):''}
+<label style="margin-top:12px">Reminder message<textarea id="rmm" rows="2" maxlength="300">${e(msg)}</textarea></label><p class="mu sm">Private teacher notes are never shown here.</p>
+<div class="act"><button type="button" class="btn" onclick="$('#dlg').close()">Close</button>${HR?`<button type="button" class="btn" onclick="hFlag(${i})">${HP.fl[t.id]?'Clear flag':'Flag for verification'}</button>`:''}<button type="button" class="btn pr" onclick="hRem(${i})">Send reminder</button></div></form>`;$('#dlg').showModal()}
+async function hRem(i){const t=hTe()[i],m=($('#rmm').value||'').trim();if(!m)return;if(HR&&t.id){const{error}=await sb.from('announcements').insert({title:'Reminder',body:m,kind:'reminder',to_user:t.id,audience:t.n});if(error){toast('Could not send: '+error.message);return}}$('#dlg').close();toast(HR?'Reminder sent to '+t.n+'.':'Sample mode: reminder not sent.')}
+function hFlag(i){const t=hTe()[i];if(HP.fl[t.id])delete HP.fl[t.id];else HP.fl[t.id]=1;hSv();$('#dlg').close();toast(HP.fl[t.id]?'Flagged for verification.':'Flag cleared.');render()}
+
+/* ===== SHS HEAD: Supabase layer ===== */
+let HR=null,HERR='',HSIG='',hTm,ANN=[];
+PS.no=['No class today','mu'];hSh.no='No class';HP.fl=HP.fl||{};
+const hN=()=>(HR||HT).length,hMq=t=>t.s=='no'?1e4:mins(t.tm),
+hSg0=cl=>{const m={};cl.forEach(c=>{const s=(c.split(' ')[1]||'').toUpperCase();if(s)m[s]=(m[s]||0)+1});return Object.keys(m).sort((a,b)=>m[b]-m[a])[0]||'Other'},
+hAgo=iso=>{const m=Math.max(0,Math.round((Date.now()-new Date(iso))/6e4)),d=Math.round(m/1440);return m<1?'Just now':m<60?m+' min ago':m<1440?Math.round(m/60)+' hr ago':d+(d==1?' day ago':' days ago')};
+function hAct(){const L=hTe().filter(t=>t.upd).sort((a,b)=>new Date(b.upd)-new Date(a.upd)).slice(0,4).map(t=>[t.n+' saved changes',hAgo(t.upd)]),A=L.length?L:HR?[]:AC.slice(0,3);return A.map(n=>`<div class="row"><div class="fl">${e(n[0])}<div class="mu">${n[1]}</div></div></div>`).join('')||'<p class="mu sm">No activity yet.</p>'}
+function hTe(){return HR?hRe():hDe()}
+function hRe(){const n=_nm(),td=ymd(0),dy=NOW();return HR.map((r,i)=>{const ts=r.sched.filter(c=>c.tm&&(c.d||[]).includes(dy)).sort((a,b)=>mins(a.tm)-mins(b.tm)),lc=ts.filter(c=>mins(c.tm)<=n).pop(),m=r.tasks.map(x=>({...x,w:r.n})),d=m.filter(x=>x.s=='Done').length,
+s=HP.fl[r.id]?'rv':!ts.length?'no':!lc?'up':(lc.at&&lc.atd==td)?'act':n-mins(lc.tm)>=HP.gp?'nr':'up';
+return{i,id:r.id,n:r.n,sg:r.sg,cl:r.classes,tm:ts.length?ts[0].tm:'None today',s,m,tc:ts,stu:r.students,upd:r.upd,p:m.length?Math.round(d/m.length*100):0,o:m.length-d,l:m.filter(ov).length}})}
+async function hLoad(rd=true,quiet=false){if(!sb||!UID||UID=='test')return;
+const[a,b,c]=await Promise.all([sb.rpc('head_overview'),sb.from('announcements').select('id,title,body,audience,created_at').eq('kind','announcement').order('created_at',{ascending:false}).limit(50),sb.from('app_state').select('data').eq('user_id',UID).maybeSingle()]);
+HERR=a.error?a.error.message:b.error?b.error.message:'';if(HERR){HR=null;if(rd)render();return}
+const R=(a.data||[]).map(r=>({id:r.id,n:r.name,upd:r.updated,classes:r.classes||[],sched:r.sched||[],students:r.students||{},sg:hSg0(r.classes||[]),tasks:(r.tasks||[]).filter(x=>x.t&&x.d).map(x=>({t:x.t,c:x.c||'',d:x.d,tm:x.tm||'',s:ST[x.s]?x.s:'Not started'}))})),sg=[...new Set(R.map(r=>r.sg))].sort();
+SG.length=0;SG.push(...(sg.length?sg:['ICT','STEM','HUMSS','ABM','GAS']));if(HV.f!='all'&&!SG.includes(HV.f))HV.f='all';
+if(c.data&&c.data.data&&c.data.data.HP)Object.assign(HP,c.data.data.HP);HP.fl=HP.fl||{};
+fill(HN,(b.data||[]).map(x=>({id:x.id,t:x.title,m:x.body,a:x.audience,w:hAgo(x.created_at)})));
+const sig=JSON.stringify([a.data,b.data,c.data]),same=sig==HSIG;HSIG=sig;HR=R;
+if(!rd||(quiet&&(same||/INPUT|TEXTAREA|SELECT/.test((document.activeElement||{}).tagName||'')||$('#dlg').open)))return;render()}
+async function loadAnn(){if(!sb||!UID||UID=='test')return;const{data,error}=await sb.from('announcements').select('id,title,body,audience,kind,to_user,created_at').order('created_at',{ascending:false}).limit(20);if(error||!data)return;const st=new Set(CL.map(c=>(c.split(' ')[1]||'').toUpperCase()));ANN=data.filter(a=>a.to_user||a.audience=='All teachers'||st.has((a.audience.split(' ')[0]||'').toUpperCase()))}
+setInterval(()=>{if(S.u&&S.u.role=='head'&&HR&&!document.hidden)hLoad(true,true)},6e4);
+document.addEventListener('visibilitychange',()=>{if(document.hidden||!S.u)return;if(S.u.role=='head'&&HR)hLoad(true,true);else if(S.u.role=='teacher')loadAnn()});
+
+/* Head mobile nav: 4 tabs + More, breadcrumb, grouped sidebar */
+function hMoreX(){['hms','hmb'].forEach(k=>{const x=document.getElementById(k);if(x)x.remove()})}
+function hMore(){hMoreX();const D={rep:['#d7f0e0','Task summaries and CSV downloads'],ann:['#fff3b0',HN.length+' posted. Message your teachers'],adm:['#d6e8ff','School year and monitoring rules']};
+document.body.insertAdjacentHTML('beforeend',`<div id="hmb" class="hmb" onclick="hMoreX()"></div><div id="hms" class="hms" role="dialog" aria-label="More"><i class="hmg"></i><h2>More</h2><div class="hmt">${NAV.head.slice(4).map(n=>`<button style="--c:${D[n[0]][0]}" onclick="hMoreX();go('${n[0]}')"><span class="hmi">${n[1]}</span><b>${n[2]}</b><small>${D[n[0]][1]}</small></button>`).join('')}</div><div class="hmr"><button onclick="hMoreX();go('prof')">My profile</button><button onclick="hMoreX();out()">Sign out</button></div></div>`)}
+document.addEventListener('keydown',ev=>{if(ev.key=='Escape')hMoreX()});
+{const _g=render;render=function(){_g();hMoreX();if(S.u&&S.u.role=='head'&&HERR){const p=$('.page');if(p&&!p.querySelector('.hs-bn'))p.insertAdjacentHTML('afterbegin',`<div class="note hs-bn"><b>Showing sample data.</b> The database is not ready for the SHS Head yet. Run head-setup.sql in the Supabase SQL editor, then press Refresh data in Administration. <small>${e(HERR)}</small></div>`)}}}
+{const _h=render;render=function(){_h();if(!S.u||S.u.role!='head')return;const v=NAV.head.find(x=>x[0]==S.v),nv=$('.side').querySelectorAll('.nv'),tp=$('.top .dsk'),bn=$('.bnav');
+[[0,'Monitor'],[4,'School office']].forEach(([k,l])=>{if(nv[k])nv[k].insertAdjacentHTML('beforebegin',`<small class="ng">${l}</small>`)});
+if(tp)tp.outerHTML=`<nav class="crumb" aria-label="Breadcrumb">Monitoring<i>/</i><b>${v?v[2]:'Profile'}</b></nav>`;
+if(bn){[...bn.children].slice(4).forEach(b=>b.remove());bn.insertAdjacentHTML('beforeend',`<button class="${['rep','ann','adm'].includes(S.v)?'on':''}" onclick="hMore()"><span class="ic">${IC.more}</span>More</button>`)}}}
 
 boot();
 </script>
