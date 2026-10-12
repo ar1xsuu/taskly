@@ -570,7 +570,7 @@ body .days .ck:has(input:checked){background:var(--ink);color:#fff;border-color:
 .cxg button{text-align:left;border:1.5px solid var(--bd);background:#fff;border-radius:16px;padding:12px 14px;display:grid;gap:3px;cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s}
 .cxg button:hover{transform:translateY(-3px);border-color:var(--pr);box-shadow:0 10px 20px -12px #14633f99}.cxg span{color:var(--mu);font-size:13px}
 .cxm{display:flex;gap:12px;margin:0 0 22px;animation:cxIn .3s both}@keyframes cxIn{from{opacity:0;transform:translateY(8px)}}
-.cxm.u{justify-content:flex-end;align-items:flex-end;gap:4px}.cxm.u>div{background:var(--ink);color:#fff;border-radius:20px 20px 6px 20px;padding:10px 16px;max-width:80%;white-space:pre-wrap;line-height:1.5}.cxi.ed{width:30px;height:30px;opacity:.45}.cxm.u:hover .ed{opacity:1}
+.cxm.u{justify-content:flex-end;align-items:flex-end;gap:4px}.cxm.u>div{background:var(--ink);color:#fff;border-radius:20px 20px 6px 20px;padding:10px 16px;max-width:80%;white-space:pre-wrap;line-height:1.5}
 .cxt{min-width:0;flex:1}.cxm.a .aiout{line-height:1.65}
 .cxc2{display:inline-block;width:8px;height:1em;background:var(--pr);margin-left:2px;vertical-align:text-bottom;animation:blk 1s steps(2) infinite}@keyframes blk{50%{opacity:0}}
 .cxa{display:flex;gap:2px;margin-top:6px}.cxa button{display:grid;place-items:center;width:32px;height:32px;border:0;background:none;color:var(--mu);border-radius:10px;cursor:pointer}.cxa button:hover{background:var(--pl);color:var(--pr)}.cxa button.on{background:var(--pl);color:var(--pr)}
@@ -716,7 +716,7 @@ body:has(.cx){overflow:hidden}.cxbk{display:grid}.cxh b{flex:1;justify-content:c
 .nbh{font-size:34px;line-height:32px;margin:10px 0 4px}.nbp2{padding:12px 14px 16px 38px}.nbr{width:24px}.nbr i{margin:0 -8px 0 5px;height:11px}.nbt .x{min-width:44px;min-height:44px}.nbt2 button{font-size:13px;padding:11px 2px}
 body dialog{max-height:94vh;max-height:94dvh;overflow-y:auto;padding-bottom:calc(24px + env(safe-area-inset-bottom))}}
 @media(max-width:520px){.rac{gap:8px}.rac button{justify-items:center;text-align:center;padding:12px 6px}.rac small{display:none}.rac b{font-size:14px}.rig{grid-template-columns:minmax(0,1fr)}.rfg{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(pointer:coarse){.btn.sm{min-height:40px}.x{min-width:40px;min-height:40px}input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px}.cxi{width:44px;height:44px}.cxi.ed{width:36px;height:36px;opacity:.7}}
+@media(pointer:coarse){.btn.sm{min-height:40px}.x{min-width:40px;min-height:40px}input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px}.cxi{width:44px;height:44px}}
 
 /* ===== SHS HEAD: same notebook look as the teacher side ===== */
 .app.admin{--bg:#f1f5f2;--bd:#dbe6df;--tx:#0f241b;--mu:#587064;--pr:#14633f;--g2:#1a7d4f;--pl:#e3f1e8;--ink:#0b2a1d;--tab:#dcefe3;--rl:#e1ece5}
@@ -779,6 +779,46 @@ body .row.hs-tk{border-left:4px solid var(--bd);padding-left:12px}body .row.hs-t
 .sa-cr{display:grid;gap:10px;background:var(--pl);border-radius:14px;padding:12px 14px}.sa-cr div{display:grid}.sa-cr b{font:700 18px var(--hf);overflow-wrap:anywhere;user-select:all}
 
 .tc-st{margin-bottom:6px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+</style>
+<style id="taskly-v4">
+/* ===== Fix: chat edit button must not inherit the notes-editor .ed paper ===== */
+.cxi.cxed{width:30px;height:30px;opacity:.45;min-height:0;padding:0;background:none;border:0;border-radius:50%}.cxm.u:hover .cxed{opacity:1}.cxi.cxed:hover{background:var(--pl)}
+@media(pointer:coarse){.cxi.cxed{width:36px;height:36px;opacity:.7}}
+/* ===== AI replies: full markdown ===== */
+.aiout>:first-child{margin-top:0}.aiout>:last-child{margin-bottom:0}
+.aiout h2{font:700 20px/1.25 var(--hf);margin:16px 0 6px}.aiout h3{font:700 17px/1.3 var(--hf);color:var(--pr);margin:14px 0 4px}.aiout h4{font:700 15px/1.3 var(--hf);color:var(--tx);margin:12px 0 2px}
+.aiout p{margin:8px 0}.aiout strong{font-weight:700}.aiout del{opacity:.6}
+.aiout ul,.aiout ol{margin:8px 0;padding-left:24px}.aiout li{margin:3px 0;padding-left:2px}.aiout li::marker{color:var(--pr);font-weight:700}.aiout li>ul,.aiout li>ol{margin:3px 0}
+.aiout .mdck{color:var(--pr);font-size:1.05em}
+.aiout code{font:600 .88em ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--pl);color:var(--pr);padding:1px 6px;border-radius:6px}
+.aiout pre{margin:10px 0;padding:12px 14px;background:var(--ink);color:#e6f2ea;border-radius:12px;overflow-x:auto;line-height:1.5;-webkit-overflow-scrolling:touch}.aiout pre code{background:none;color:inherit;padding:0;font-weight:500;font-size:13px;white-space:pre}
+.aiout blockquote{margin:10px 0;padding:4px 14px;border-left:4px solid var(--hl);background:#fffbe0;border-radius:0 12px 12px 0}.aiout blockquote p{margin:6px 0}
+.aiout hr{border:0;border-top:2px dashed var(--bd);margin:16px 0}
+.aiout a{color:var(--in);text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}
+.aiout .tbw{overflow-x:auto;margin:10px 0;border:1px solid var(--bd);border-radius:12px;-webkit-overflow-scrolling:touch}
+.aiout table{border-collapse:collapse;width:max-content;min-width:100%;font-size:14px}.aiout th{background:var(--pl);text-align:left;font-weight:700}.aiout th,.aiout td{padding:8px 12px;border-bottom:1px solid var(--bd);vertical-align:top}.aiout tr:last-child td{border-bottom:0}
+/* ===== Home: planner page (replaces the dark notebook) ===== */
+.hx{display:block;position:relative;overflow:hidden;color:var(--tx);background:radial-gradient(#14633f12 1.2px,transparent 1.4px) 0 0/18px 18px,linear-gradient(180deg,#e6f4eb 0,#fff 190px);border:1px solid var(--bd);border-radius:6px 24px 24px 24px;box-shadow:0 4px 0 -1px #fff,0 5px 0 -1px var(--bd),0 18px 28px -22px #0b2a1d66}
+.hx-b{display:grid;gap:18px;padding:20px 20px 18px}.hx-top{display:flex;align-items:center;gap:16px}.hx-gr{flex:1;min-width:0}
+.hx h1{color:var(--ink);font-size:clamp(24px,6vw,32px);line-height:1.12;overflow-wrap:anywhere}
+.hx h1 mark{color:inherit;background:linear-gradient(transparent 58%,var(--hl) 58% 90%,transparent 90%);padding:0 3px;margin:0 -3px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.hx .fc-sum{color:var(--mu);font-weight:600;margin-top:6px}
+.hx-cal{position:relative;flex:none;width:68px;display:grid;justify-items:center;padding-top:21px;background:#fff;border:1.5px solid var(--bd);border-radius:14px;overflow:hidden;transform:rotate(-3deg);box-shadow:0 12px 16px -12px #0b2a1d99}
+.hx-cal small{position:absolute;top:0;left:0;right:0;height:21px;background:var(--pr);color:#fff;font:800 11px/21px Figtree,sans-serif;letter-spacing:.14em;text-transform:uppercase;text-align:center}
+.hx-cal i{position:absolute;top:6px;width:7px;height:7px;border-radius:50%;background:#e6f4eb;box-shadow:inset 0 1px 2px #0008}.hx-cal i:nth-of-type(1){left:13px}.hx-cal i:nth-of-type(2){right:13px}
+.hx-cal b{font:800 32px/1 var(--hf);color:var(--ink);margin-top:6px}.hx-cal span{font:700 12px Figtree,sans-serif;color:var(--mu);padding:1px 0 7px}
+.hx-ring b{color:var(--ink)}.hx-ring small{color:var(--mu)}.hx .hr0{stroke:#d9e8de}.hx .hr1{stroke:var(--g2)}
+.hx-n{position:relative;background:#fff3a6;border:0;border-radius:4px 16px 16px 16px;padding:16px 16px 14px;color:var(--ink);transform:rotate(-.5deg);box-shadow:0 14px 18px -14px #6b5a00cc}
+.hx-n::before{content:"";position:absolute;top:-8px;left:22px;width:58px;height:16px;background:#ffffffb3;border:1px dashed #0b2a1d33;transform:rotate(-4deg)}
+.hx-n.lv{background:#ffe97a}.hx-n b{color:var(--ink)}.hx .hx-n span{color:#5a4f10}.hx-t{color:var(--pr)}
+.hx .hx-n .btn.pr{background:var(--pr);border-color:var(--pr);color:#fff}.hx-p{background:#0b2a1d1f}.hx-p u{background:var(--pr)}
+.hx-wk .wk{border:1.5px solid var(--bd);background:#fff;color:var(--tx)}.hx-wk .wk small{color:var(--mu)}.hx-wk .wk i.has{background:var(--hl);color:var(--ink)}
+.hx-wk .wk.on{background:var(--ink);border-color:var(--ink);color:#fff}.hx-wk .wk.on small{color:#a9e7c4}
+.hx-cols>div{background:#fff;border:1px solid var(--bd);border-top:4px solid var(--g2);border-radius:6px 16px 16px 16px;padding:10px 14px 6px}.hx-cols>div:nth-child(2){border-top-color:var(--hl)}
+.hx h3{color:var(--pr)}.hx .tl{color:var(--tx);border-bottom:1px dashed var(--bd)}.hx .tl:last-child{border-bottom:0}.hx .tl>b{color:var(--pr)}.hx .tl small,.hx .tl em,.hx-e{color:var(--mu)}.hx .tl.lv em{background:var(--hl);color:var(--ink)}
+.hx-qa button{border:1.5px solid transparent;background:#dcefe3;color:var(--ink)}.hx-qa button:nth-child(2){background:#fff3a6}.hx-qa button:nth-child(3){background:#e0e8ff}.hx-qa button:nth-child(4){background:#ffe0d6}
+.hx-qa button svg{color:var(--pr)}.hx-qa button:hover{background:var(--ink);color:#fff}.hx-qa button:hover svg{color:inherit}
+@media(max-width:520px){.hx{border-radius:6px 20px 20px 20px}.hx-b{padding:16px 14px 14px;gap:14px}.hx-top{gap:12px}.hx-cal{width:56px;padding-top:18px;border-radius:12px}.hx-cal small{height:18px;line-height:18px;font-size:10px}.hx-cal i{top:5px}.hx-cal b{font-size:26px}.hx-cal span{font-size:11px;padding-bottom:5px}.hx-ring{width:58px;height:58px}.hx-ring b{font-size:15px}.hx-ring small{bottom:12px;font-size:8px}.hx-cols>div{padding:8px 12px 4px}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -1173,9 +1213,45 @@ quiz:['Quiz questions',[['Topic','t','text','e.g. SQL SELECT statements'],['Numb
 rubric:['Rubric',[['What are students making?','t','area','e.g. A group project that builds a simple website'],['Total points','p','num','100']]],
 simplify:['Simplify text',[['Text to rewrite','t','area','Paste your instructions here'],['Reading level','r','sel','Grade 8,Grade 10,Plain English']]],
 chat:['Ask anything',[]]};
-function md(t){let h=e(t).replace(/^### (.*)$/gm,'<h3>$1</h3>').replace(/^#{1,2} (.*)$/gm,'<h2>$1</h2>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/(^|[^*])\*([^*\n]+)\*/g,'$1<i>$2</i>').replace(/^\s*[-*] (.*)$/gm,'<li>$1</li>').replace(/^\s*\d+\. (.*)$/gm,'<li class="n">$1</li>');
-h=h.replace(/(?:<li>.*<\/li>\n?)+/g,m=>'<ul>'+m+'</ul>').replace(/(?:<li class="n">.*<\/li>\n?)+/g,m=>'<ol>'+m.replace(/ class="n"/g,'')+'</ol>');
-return h.split(/\n{2,}/).map(p=>/^<(h\d|ul|ol)/.test(p.trim())?p:'<p>'+p.replace(/\n/g,'<br>')+'</p>').join('')}
+function md(t){const code=[],ic=[];
+let s=e(String(t==null?'':t)).replace(/\r\n?/g,'\n');
+s=s.replace(/```[\w+-]*[^\n]*\n([\s\S]*?)(?:```|$)/g,(m,c)=>{code.push('<pre><code>'+c.replace(/\n$/,'')+'</code></pre>');return '\n\u0000C'+(code.length-1)+'\u0000\n'});
+s=s.replace(/`([^`\n]+)`/g,(m,c)=>{ic.push('<code>'+c+'</code>');return '\u0001'+(ic.length-1)+'\u0001'});
+const inl=x=>{const L=[],k=h=>{L.push(h);return '\u0002'+(L.length-1)+'\u0002'};
+x=x.replace(/\[([^\]\n]+)\]\(((?:https?:\/\/|mailto:)[^\s)]+)\)/g,(m,a,u)=>k('<a href="'+u+'" target="_blank" rel="noopener">'+a+'</a>'))
+.replace(/(^|[\s(])(https?:\/\/[^\s<]*[^\s<.,;:!?)])/g,(m,p,u)=>p+k('<a href="'+u+'" target="_blank" rel="noopener">'+u+'</a>'));
+x=x.replace(/\*\*\*(?=\S)(.+?)\*\*\*/g,'<strong><em>$1</em></strong>').replace(/\*\*(?=\S)(.+?)\*\*/g,'<strong>$1</strong>').replace(/__(?=\S)(.+?)__/g,'<strong>$1</strong>')
+.replace(/(^|[^*\w])\*(?!\s)([^*\n]+?)\*(?!\*)/g,'$1<em>$2</em>').replace(/(^|[^_\w])_(?!\s)([^_\n]+?)_(?![_\w])/g,'$1<em>$2</em>').replace(/~~(?=\S)(.+?)~~/g,'<del>$1</del>');
+return x.replace(/\u0002(\d+)\u0002/g,(m,i)=>L[i])};
+const LI=/^(\s*)([-*+]|\d+[.)])\s+(.*)$/,HR=/^\s{0,3}([-*_])(?:\s*\1){2,}\s*$/,HD=/^\s{0,3}(#{1,6})\s+(.*?)\s*#*\s*$/,BQ=/^\s{0,3}&#62;\s?(.*)$/,CB=/^\u0000C(\d+)\u0000$/,TS=/^\s*\|?\s*:?-{2,}:?\s*(?:\|\s*:?-{2,}:?\s*)*\|?\s*$/,
+cells=r=>r.trim().replace(/^\|/,'').replace(/\|$/,'').split('|').map(c=>c.trim()),
+isTb=(a,b)=>a!=null&&b!=null&&a.includes('|')&&b.includes('-')&&TS.test(b),
+isB=(l,n)=>HR.test(l)||HD.test(l)||BQ.test(l)||CB.test(l.trim())||LI.test(l)||isTb(l,n);
+const blk=ls=>{let i=0,h='',m;
+while(i<ls.length){const l=ls[i];
+if(!l.trim()){i++;continue}
+if(CB.test(l.trim())){h+=l.trim();i++;continue}
+if(HR.test(l)){h+='<hr>';i++;continue}
+if(m=l.match(HD)){const n=m[1].length<3?2:Math.min(m[1].length,4);h+='<h'+n+'>'+inl(m[2])+'</h'+n+'>';i++;continue}
+if(BQ.test(l)){const q=[];while(i<ls.length&&BQ.test(ls[i])){q.push(ls[i].match(BQ)[1]);i++}h+='<blockquote>'+blk(q)+'</blockquote>';continue}
+if(isTb(l,ls[i+1])){const hd=cells(l),al=cells(ls[i+1]).map(c=>/^:-+:$/.test(c)?'center':/-:$/.test(c)?'right':'');i+=2;let rows='';while(i<ls.length&&ls[i].trim()&&ls[i].includes('|')){const r=cells(ls[i]);rows+='<tr>'+hd.map((_,j)=>'<td'+(al[j]?' style="text-align:'+al[j]+'"':'')+'>'+inl(r[j]||'')+'</td>').join('')+'</tr>';i++}
+h+='<div class="tbw"><table><thead><tr>'+hd.map((c,j)=>'<th'+(al[j]?' style="text-align:'+al[j]+'"':'')+'>'+inl(c)+'</th>').join('')+'</tr></thead><tbody>'+rows+'</tbody></table></div>';continue}
+if(LI.test(l)){const it=[];
+while(i<ls.length){const x=ls[i],lm=x.match(LI);
+if(lm&&!HR.test(x)){it.push({d:lm[1].replace(/\t/g,'    ').length,o:/\d/.test(lm[2]),n:parseInt(lm[2])||1,t:lm[3]});i++}
+else if(it.length&&/^\s{2,}\S/.test(x)&&!CB.test(x.trim())){it[it.length-1].t+='<br>'+x.trim();i++}
+else if(!x.trim()&&it.length&&i+1<ls.length&&LI.test(ls[i+1])){i++}
+else break}
+const st=[];
+it.forEach(x=>{while(st.length&&x.d<st[st.length-1].d)h+='</li></'+(st.pop().o?'ol':'ul')+'>';
+let tp=st[st.length-1];if(tp&&x.d==tp.d&&x.o!=tp.o){h+='</li></'+(st.pop().o?'ol':'ul')+'>';tp=st[st.length-1]}
+if(!tp||x.d>tp.d){h+='<'+(x.o?'ol'+(x.n!=1?' start="'+x.n+'"':''):'ul')+'><li>';st.push({d:x.d,o:x.o})}else h+='</li><li>';
+h+=inl(x.t).replace(/^\[( |x|X)\]\s+/,(q,c)=>'<span class="mdck">'+(c==' '?'\u2610':'\u2611')+'</span> ')});
+while(st.length)h+='</li></'+(st.pop().o?'ol':'ul')+'>';continue}
+const p=[l];i++;while(i<ls.length&&ls[i].trim()&&!isB(ls[i],ls[i+1])){p.push(ls[i]);i++}
+h+='<p>'+p.map(x=>inl(x.trim())).join('<br>')+'</p>'}
+return h};
+return blk(s.split('\n')).replace(/\u0000C(\d+)\u0000/g,(m,i)=>code[i]).replace(/\u0001(\d+)\u0001/g,(m,i)=>ic[i])}
 const aiOut=()=>{if(AI.busy)return '<div class="ld"><span></span><span></span><span></span><p class="mu">Thinking...</p></div>';const er=AI.err?`<p class="er">${e(AI.err)}</p>`:'';
 if(AI.m=='chat')return er+AI.h.map(x=>`<div class="bub ${x.role}">${x.role=='model'?md(x.text):e(x.text)}</div>`).join('');
 return er+(AI.out?`<div class="aiout">${md(AI.out)}</div><div class="act l"><button class="btn sm" onclick="aiCopy()">Copy</button><button class="btn sm pr" onclick="aiSave()">Save to Notes</button></div>`:'')};
@@ -1230,7 +1306,7 @@ cxList=()=>AHC.map(c=>`<div class="cxl ${c.id==AI.id?'on':''}" onclick="cxOpen($
 cxMsgs=()=>{const er=AI.err?`<p class="er cxr">${e(AI.err)}</p>`:'',nm=e(S.u.name.split(' ')[0]);
 if(!AI.h.length&&!AI.busy)return `<div class="cxe"><span class="cxo">${uSpk}</span><h1><em>Hello, ${nm}</em><br>What are we teaching today?</h1><div class="cxg">${uSug.map((s,i)=>`<button onclick="cxPick(${i})"><b>${s[0]}</b><span>${s[1]}...</span></button>`).join('')}</div><p class="mu sm">Do not type student names or personal details.</p>${er}</div>`;
 const L=AI.h.length-1,ty=AI.typ;
-return AI.h.map((x,i)=>x.role=='user'?`<div class="cxm u"><button class="cxi ed" onclick="cxEdit(${i})" aria-label="Edit message">${uIc(UP.pn,15)}</button><div>${e(x.text)}</div></div>`:`<div class="cxm a"><span class="cxo s">${uSpk}</span><div class="cxt"><div class="aiout">${md(x.text)}${ty&&i==L?'<span class="cxc2"></span>':''}</div>${ty&&i==L?'':`<div class="cxa"><button onclick="aiCopy2(${i})" aria-label="Copy" title="Copy">${uIc(UP.cp,16)}</button><button class="${x.fb==1?'on':''}" onclick="cxFb(${i},1)" aria-label="Good response" title="Good response">${uIc(UP.tu,16)}</button><button class="${x.fb==2?'on':''}" onclick="cxFb(${i},2)" aria-label="Bad response" title="Bad response">${uIc(UP.td,16)}</button>${i==L?`<button onclick="aiRegen()" aria-label="Try again" title="Try again">${uIc(UP.rt,16)}</button>`:''}<button onclick="aiSave2(${i})" aria-label="Save to Notes" title="Save to Notes">${uIc(UP.nt,16)}</button></div>`}</div></div>`).join('')
+return AI.h.map((x,i)=>x.role=='user'?`<div class="cxm u"><button class="cxi cxed" onclick="cxEdit(${i})" aria-label="Edit message">${uIc(UP.pn,15)}</button><div>${e(x.text)}</div></div>`:`<div class="cxm a"><span class="cxo s">${uSpk}</span><div class="cxt"><div class="aiout">${md(x.text)}${ty&&i==L?'<span class="cxc2"></span>':''}</div>${ty&&i==L?'':`<div class="cxa"><button onclick="aiCopy2(${i})" aria-label="Copy" title="Copy">${uIc(UP.cp,16)}</button><button class="${x.fb==1?'on':''}" onclick="cxFb(${i},1)" aria-label="Good response" title="Good response">${uIc(UP.tu,16)}</button><button class="${x.fb==2?'on':''}" onclick="cxFb(${i},2)" aria-label="Bad response" title="Bad response">${uIc(UP.td,16)}</button>${i==L?`<button onclick="aiRegen()" aria-label="Try again" title="Try again">${uIc(UP.rt,16)}</button>`:''}<button onclick="aiSave2(${i})" aria-label="Save to Notes" title="Save to Notes">${uIc(UP.nt,16)}</button></div>`}</div></div>`).join('')
 +(!ty&&!AI.busy&&AI.h[L].role=='model'?`<div class="cxf">${cxFu.map(f=>`<button onclick="aiSend(null,'${f}')">${f}</button>`).join('')}</div>`:'')+(AI.busy?`<div class="cxm a"><span class="cxo s">${uSpk}</span><div class="ld"><span></span><span></span><span></span></div></div>`:'')+er};
 function aiP(){return bkB()+`<div class="cx"><div class="cxh"><button class="cxi cxbk" onclick="S.mv=null;render()" aria-label="Back to More">${uIc('<path d="M15 6l-6 6 6 6"/>',22)}</button><button class="cxi" onclick="cxDr()" aria-label="Chat history">${uIc(UP.menu,22)}</button><b>${uSpk} Assistant</b><button class="cxi" onclick="aiNew()" aria-label="New chat">${uIc(UP.nc,21)}</button></div><div class="cxs" id="cxs" onscroll="cxSc()">${cxMsgs()}</div><button class="cxdn" id="cxdn" onclick="cxBot()" aria-label="Scroll to latest">${uIc(UP.dn,18)}</button><div class="cxp" id="cxp">${uSug.map((s,i)=>`<button onclick="cxPick(${i});cxPlus()">${s[0]}</button>`).join('')}</div><form class="cxc" onsubmit="aiSend(this);return false"><button type="button" class="cxi" onclick="cxPlus()" aria-label="Tools">${uIc(UP.plus,22)}</button><textarea name="q" rows="1" placeholder="Ask anything about your class" aria-label="Message" oninput="cxGrow(this)" onkeydown="if(event.key=='Enter'&&!event.shiftKey&&matchMedia('(pointer:fine)').matches){event.preventDefault();this.form.requestSubmit()}"></textarea>${cxSR?`<button type="button" class="cxi" id="cxmic" onclick="cxMic()" aria-label="Speak">${uIc(UP.mic,20)}</button>`:''}<button class="cxb" id="aib" aria-label="Send">${uIc(UP.up,20)}</button></form><p class="cxn">AI can make mistakes, so check the results.</p><div class="cxd" id="cxd" onclick="if(event.target==this)cxDr()"><div class="cxdp"><div class="cxdh"><b>Chats</b><button class="cxi" onclick="cxDr()" aria-label="Close">×</button></div><button class="btn pr" onclick="aiNew();cxDr()">New chat</button><div id="cxl">${cxList()}</div></div></div></div>`}
 function cxUp(){const s=$('#cxs');if(!s)return;s.innerHTML=cxMsgs();s.scrollTop=s.scrollHeight;const b=$('#aib'),w=AI.busy||AI.typ;if(b){b.innerHTML=uIc(w?UP.stop:UP.up,w?18:20);b.classList.toggle('stop',!!w);b.setAttribute('aria-label',w?'Stop':'Send')}}
@@ -1309,7 +1385,8 @@ function cpAbs(){const n=S.cn,m=AT[n+'|'+ymd(S.ao)]||{},g=v=>K[n].stu.filter(s=>
 function editClass(){const n=S.cn,k=K[n];dlgOpen(`<form class="cf" onsubmit="return saveEc(this)"><header class="cf-h"><span class="cf-ic ev">${IC.cls}</span><div><h2>Edit class</h2><p>${e(n)}</p></div>${dlgX}</header><div class="cf-b"><label>Subject<input name="s" value="${e(k.sj)}" required></label><label>Room<input name="r" value="${e(k.rm)}"></label></div>${cfFoot('Save changes')}</form>`)}
 function saveEc(f){const k=K[S.cn];k.sj=f.s.value.trim();k.rm=f.r.value.trim();C.forEach(c=>{if(c.n==S.cn){c.sj=k.sj;c.rm=k.rm}});$('#dlg').close();toast('Class updated.');render();return false}
 
-/* Home notebook */
+/* Home planner page */
+function hxCal(){const d=new Date(),f=o=>d.toLocaleDateString('en',o);return `<div class="hx-cal" role="img" aria-label="${f({weekday:'long',month:'long',day:'numeric'})}"><small>${f({month:'short'})}</small><i></i><i></i><b>${d.getDate()}</b><span>${f({weekday:'short'})}</span></div>`}
 function dayFocus(h,due){const n=_nm(),td=ymd(0),R=TS().map(([c,i])=>({c,i,a:mins(c.tm),z:mins(c.en)})).sort((x,y)=>x.a-y.a),cur=R.find(x=>n>=x.a&&n<x.z),nx=cur||R.find(x=>x.a>n),tt=T.filter(t=>t.d==td),ev=EV.filter(v=>v.d==td),
 dn=R.filter(x=>n>=x.z).length+tt.filter(t=>t.s=='Done').length,tot=R.length+tt.length,pc=tot?Math.round(dn/tot*100):100,ci=x=>Math.max(0,CL.indexOf(x.c.n)),
 op=T.filter(t=>t.s!='Done'&&dd(t.d)<=0).sort((a,b)=>dd(a.d)-dd(b.d)).slice(0,4);let nh;
@@ -1319,7 +1396,7 @@ else{const c=nx.c,el=cur?Math.min(100,Math.round((n-nx.a)/(nx.z-nx.a)*100)):0;nh
 const sch=[...R.map(x=>({m:x.a,h:`<div class="tl ${n>=x.z?'dn':x==cur?'lv':''}"><b>${x.c.tm}</b><span>${e(x.c.n)}<small>${e(x.c.rm)}</small></span><em>${n>=x.z?'Done':x==cur?'Now':'in '+_in(x.a-n)}</em></div>`})),...ev.map(v=>({m:v.tm?mins(v.tm):-1,h:`<div class="tl"><b>${v.tm||'All day'}</b><span>${e(v.t)}<small>${v.n?e(v.n):'Event'}</small></span><em>Event</em></div>`}))].sort((a,b)=>a.m-b.m),
 wk=Array.from({length:7},(_,i)=>{const q=ymd(i-NOW()),c=T.filter(t=>t.d==q&&t.s!='Done').length+EV.filter(v=>v.d==q).length;return `<button class="wk ${q==td?'on':''}" onclick="go('cal');pickDay('${q}')" aria-label="${DY[i]}, ${c} items"><small>${DY[i]}</small><b>${+q.slice(8)}</b><i class="${c?'has':''}">${c||''}</i></button>`}).join(''),
 ai=nx?ci(nx):Math.max(0,CL.indexOf(R[0]?R[0].c.n:CL[0]));
-return `<section class="hx"><div class="hx-r" aria-hidden="true"></div><div class="hx-b"><div class="hx-top"><div><p class="fc-date">${new Date().toLocaleDateString('en',{weekday:'long',month:'long',day:'numeric'})}</p><h1>Good ${h<12?'morning':h<18?'afternoon':'evening'}, ${e(S.u.name.split(' ')[0])}</h1><p class="fc-sum">${R.length} ${R.length==1?'class':'classes'} today. ${due} due or overdue.</p></div><div class="hx-ring" title="Today's progress"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="34" class="hr0"/><circle cx="40" cy="40" r="34" class="hr1" stroke-dasharray="214" stroke-dashoffset="${214*(1-pc/100)}"/></svg><b>${pc}%</b><small>today</small></div></div>${nh}<div class="hx-wk">${wk}</div><div class="hx-cols"><div><h3>Today's schedule</h3>${sch.map(x=>x.h).join('')||'<p class="hx-e">Nothing scheduled today.</p>'}</div><div><h3>To finish</h3>${op.map(t=>`<div class="tl tk" onclick="tk(${t.id})"><button class="ck2" aria-label="Mark ${e(t.t)} done" onclick="event.stopPropagation();tog(${t.id})"></button><span>${e(t.t)}<small>${e(t.c)}</small></span>${dl(t)}</div>`).join('')||'<p class="hx-e">Nothing due. Enjoy the quiet.</p>'}</div></div><div class="hx-qa"><button onclick="go('cls');cOpen(${ai},'a')">${uIc(UP.ck,16)} Attendance</button><button onclick="newTask()">${uIc(UP.plus,16)} New task</button><button onclick="go('more');mv('ai')">${uSpk} Ask AI</button><button onclick="go('more');mv('notes')">${uIc(UP.pn,16)} Notes</button></div></div></section>`}
+return `<section class="hx"><div class="hx-b"><div class="hx-top">${hxCal()}<div class="hx-gr"><h1>Good ${h<12?'morning':h<18?'afternoon':'evening'}, <mark>${e(S.u.name.split(' ')[0])}</mark></h1><p class="fc-sum">${R.length} ${R.length==1?'class':'classes'} today. ${due} due or overdue.</p></div><div class="hx-ring" title="Today's progress"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="34" class="hr0"/><circle cx="40" cy="40" r="34" class="hr1" stroke-dasharray="214" stroke-dashoffset="${214*(1-pc/100)}"/></svg><b>${pc}%</b><small>today</small></div></div>${nh}<div class="hx-wk">${wk}</div><div class="hx-cols"><div><h3>Today's schedule</h3>${sch.map(x=>x.h).join('')||'<p class="hx-e">Nothing scheduled today.</p>'}</div><div><h3>To finish</h3>${op.map(t=>`<div class="tl tk" onclick="tk(${t.id})"><button class="ck2" aria-label="Mark ${e(t.t)} done" onclick="event.stopPropagation();tog(${t.id})"></button><span>${e(t.t)}<small>${e(t.c)}</small></span>${dl(t)}</div>`).join('')||'<p class="hx-e">Nothing due. Enjoy the quiet.</p>'}</div></div><div class="hx-qa"><button onclick="go('cls');cOpen(${ai},'a')">${uIc(UP.ck,16)} Attendance</button><button onclick="newTask()">${uIc(UP.plus,16)} New task</button><button onclick="go('more');mv('ai')">${uSpk} Ask AI</button><button onclick="go('more');mv('notes')">${uIc(UP.pn,16)} Notes</button></div></div></section>`}
 /* Resources */
 const rTy=x=>x.k=='file'?'file':['Slides','Document','Video'].includes(x.k)?x.k:'link',rHu={pdf:2,doc:215,docx:215,ppt:25,pptx:25,xls:140,xlsx:140,png:280,jpg:280,jpeg:280,mp4:350,Slides:25,Document:215,Video:350,link:165},
 rGl=x=>x.k=='file'?(x.t.split('.').pop()||'file').slice(0,4).toUpperCase():x.k=='Document'?'DOC':x.k=='Slides'?'PPT':x.k=='Video'?'VID':'URL',
@@ -1382,7 +1459,7 @@ hQ=v=>{HV.q=v;$('#hl').innerHTML=hTL()};
 function hOv(){const X=hTe(),hr=new Date().getHours(),ac=X.filter(t=>t.s=='act').length,att=X.filter(t=>t.s=='nr'||t.s=='rv'),cn=X.reduce((a,t)=>a+(t.tc?t.tc.length:t.cl.length),0),pc=X.length?Math.round(ac/X.length*100):0,A=HA(),dn=A.filter(t=>t.s=='Done').length,od=A.filter(ov).length,ip=A.filter(t=>t.s=='In progress'&&!ov(t)).length,P=n=>A.length?Math.round(n/A.length*100):0,
 tl=t=>`<div class="tl ${t.s=='act'?'lv':''}" style="cursor:pointer" onclick="hT(${t.i})"><b>${t.tm}</b><span>${e(t.n)}<small>${e(t.cl[0]||'')}</small></span><em>${hSh[t.s]}</em></div>`,
 nx=X.filter(t=>t.s=='up').sort((a,b)=>mins(a.tm)-mins(b.tm)).slice(0,4),a0=HN[0];
-return `<section class="hx"><div class="hx-r" aria-hidden="true"></div><div class="hx-b"><div class="hx-top"><div><p class="fc-date">${new Date().toLocaleDateString('en',{weekday:'long',month:'long',day:'numeric'})}</p><h1>Good ${hr<12?'morning':hr<18?'afternoon':'evening'}, ${e(S.u.name.split(' ')[0])}</h1><p class="fc-sum">${cn} classes today across ${X.length} teachers. ${e(SY.year)}, ${e(SY.term)}.</p></div><div class="hx-ring" title="Teachers whose class has started"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="34" class="hr0"/><circle cx="40" cy="40" r="34" class="hr1" stroke-dasharray="214" stroke-dashoffset="${214*(1-pc/100)}"/></svg><b>${pc}%</b><small>started</small></div></div>
+return `<section class="hx"><div class="hx-b"><div class="hx-top">${hxCal()}<div class="hx-gr"><h1>Good ${hr<12?'morning':hr<18?'afternoon':'evening'}, <mark>${e(S.u.name.split(' ')[0])}</mark></h1><p class="fc-sum">${cn} classes today across ${X.length} teachers. ${e(SY.year)}, ${e(SY.term)}.</p></div><div class="hx-ring" title="Teachers whose class has started"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="34" class="hr0"/><circle cx="40" cy="40" r="34" class="hr1" stroke-dasharray="214" stroke-dashoffset="${214*(1-pc/100)}"/></svg><b>${pc}%</b><small>started</small></div></div>
 ${att.length?`<div class="hx-n lv"><div><b>${att.length} ${att.length==1?'teacher needs':'teachers need'} a look</b><span>Attendance is not recorded or needs verification. This is not an absence.</span></div><button class="btn pr" onclick="go('tch')">Open Teachers</button></div>`:`<div class="hx-n"><div><b>All clear</b><span>Every class that started has a recorded check-in.</span></div></div>`}
 <div class="hx-cols"><div><h3>Needs a look</h3>${att.map(tl).join('')||'<p class="hx-e">Nothing needs attention.</p>'}</div><div><h3>Up next</h3>${nx.map(tl).join('')||'<p class="hx-e">No more classes starting today.</p>'}</div></div></div></section>
 <div class="g g4">${hSt([['Teachers',X.length,''],['In class now',ac,'ok'],['Classes today',cn,''],['Need a look',att.length,att.length?'wn':'ok']])}</div>
