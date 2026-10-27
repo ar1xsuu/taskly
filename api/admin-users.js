@@ -19,7 +19,22 @@ async function sb(path, method, body, extra) {
   return j;
 }
 
+// Packaged apps (Android/iOS/desktop) call this from another origin. List their origins in the
+// ALLOWED_ORIGINS env var, comma separated, e.g. capacitor://localhost,http://localhost,https://localhost
+const ALLOWED = (process.env.ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
+function cors(req, res) {
+  const o = req.headers.origin;
+  if (o && (ALLOWED.includes(o) || ALLOWED.includes('*'))) {
+    res.setHeader('Access-Control-Allow-Origin', o);
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Headers', 'authorization,content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
+  }
+}
+
 module.exports = async (req, res) => {
+  cors(req, res);
+  if (req.method === 'OPTIONS') return res.status(204).end();
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') return res.status(405).json({ error: 'Use POST.' });
   if (!KEY) return res.status(500).json({ error: 'SUPABASE_SERVICE_ROLE_KEY is not set in Vercel.' });
@@ -69,7 +84,7 @@ module.exports = async (req, res) => {
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) throw new Error('Enter a valid email.');
       if (!ROLES.includes(b.role)) throw new Error('Choose a role.');
       if (password.length < 8) throw new Error('The password needs at least 8 characters.');
-      const u = await sb('/auth/v1/admin/users', 'POST', { email, password, email_confirm: true, user_metadata: { full_name: name } });
+      const u = await sb('/auth/v1/admin/users', 'POST', { email, password, email_confirm: true, user_metadata: { full_name: name, must_change: true } });
       try {
         await sb('/rest/v1/profiles', 'POST', { id: u.id, role: b.role, full_name: name }, { Prefer: 'resolution=merge-duplicates,return=minimal' });
       } catch (e) {
@@ -104,7 +119,7 @@ module.exports = async (req, res) => {
     if (b.action === 'reset') {
       needId();
       if (String(b.password || '').length < 8) throw new Error('The password needs at least 8 characters.');
-      await sb('/auth/v1/admin/users/' + b.id, 'PUT', { password: b.password });
+      await sb('/auth/v1/admin/users/' + b.id, 'PUT', { password: b.password, user_metadata: { must_change: true } });
       await log('Reset password', b.email);
       return res.json({ ok: true });
     }
