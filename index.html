@@ -114,6 +114,7 @@ dialog form{display:grid;gap:12px}.act{display:flex;gap:8px;justify-content:flex
 dialog{margin:auto auto 0;width:100%;border-radius:16px 16px 0 0;max-width:100%}
 .lg{grid-template-columns:1fr}.lb{padding:28px 24px}.lb ul{display:none}.lb h1{font-size:24px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
 
 :root{--pr:#166534;--pl:#e3f2e8;--bg:#f3f8f4;--bd:#d6e5da;--tx:#13251a;--mu:#587063;--g2:#15803d}
 html[data-theme="dark"]{--pl:#1a281f;--bg:#171f19;--bd:#232d26;--tx:#d6e5dc;--mu:#b0bcb6}
@@ -415,7 +416,7 @@ body{font-family:Figtree,"Source Sans 3",system-ui,sans-serif;-webkit-font-smoot
 body h1{font-size:30px;font-weight:800;letter-spacing:-.025em;line-height:1.1}body h1::after{content:none}
 body h2{font-weight:700;letter-spacing:-.01em}
 body .main{background:var(--bg)}
-body .page{padding:28px 32px 56px;max-width:1200px}
+body .page{padding:28px 32px 56px;max-width:1200px;margin:0 auto}
 body .side{background:var(--ink);color:#bcd6c8;padding:22px 14px;gap:3px}
 body .side .logo{background:none;color:#fff;padding:2px 10px 20px;margin:0;border-radius:0}
 body .side .logo small{color:#86b19a}
@@ -459,6 +460,7 @@ body .g3{gap:0;background:#fff;border:1px solid var(--bd);border-radius:18px;ove
 body .g3>.stat{border:0;border-radius:0;padding:16px 22px}
 body .g3>.stat+.stat{border-left:1px solid var(--bd)}
 body .note{background:var(--hl);border:0;border-radius:16px;color:var(--ink);padding:13px 18px}
+:where(html[data-theme="dark"]) body .note{color:var(--tx)}
 body .hero{background:linear-gradient(135deg,var(--ink),var(--pr));border-radius:22px;padding:24px 28px}
 body .hero::after,body .hero h1::after{content:none}
 body .row{padding:13px 0}
@@ -551,7 +553,7 @@ body .lf form{background:#fff;border-radius:26px;padding:34px;border:1px solid v
 
 body .lf h2{font-size:27px}
 @media(max-width:820px){
-body .page{padding:18px 16px 130px}
+body .page{padding:18px 16px calc(140px + env(safe-area-inset-bottom))}
 body .top{padding:calc(10px + env(safe-area-inset-top)) 16px 10px}
 body .g3>.stat{padding:12px 14px}
 body .cd{min-height:54px}
@@ -934,7 +936,7 @@ body .days .ck:has(input:checked){background:var(--ink);color:#fff;border-color:
 :where(html[data-theme="dark"]) .cxdp{background:#25200b}
 .cxd.on .cxdp{transform:none}
 .cxdh{display:flex;justify-content:space-between;align-items:center}.cxl{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:4px 4px 4px 10px;border-radius:12px;cursor:pointer}.cxl:hover,.cxl.on{background:var(--pl)}.cxl span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-body:has(.cx) .fab{display:none}@media(max-width:820px){.cx{height:calc(100dvh - 215px)}}
+body:has(.cx) .fab{display:none}@media(max-width:820px){.cx{height:calc(100dvh - 215px)}body:has(.cx) .bnav{display:none}}
 /* games */
 .ghd{margin:4px 0 14px}.gtg{display:inline-flex;gap:8px;align-items:center;font-weight:600;font-size:14px}
 .ggr{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:20px;padding:0 4px 10px}
@@ -1654,7 +1656,7 @@ html[data-theme="dark"] body .bell,html[data-theme="dark"] body .mmx{background:
 html body .mmx.on,html body .mmx[aria-expanded=true]{background:var(--ink);color:#fff}
 .mmx:active{transform:scale(.9)}
 .mmn{position:fixed;inset:0;z-index:8}.mmb{position:absolute;inset:0}
-.mmp{position:absolute;top:var(--t);right:var(--r);width:232px;padding:8px;border-radius:24px;background:rgba(255,255,255,.74);-webkit-backdrop-filter:blur(28px) saturate(190%);backdrop-filter:blur(28px) saturate(190%);border:1px solid rgba(255,255,255,.85);box-shadow:0 1px 0 #fff inset,0 24px 50px -16px rgba(11,42,29,.5);transform-origin:calc(100% - 20px) 0;animation:mm-in .5s var(--sp) both}
+.mmp{position:absolute;top:var(--t);right:var(--r);width:232px;max-height:min(70vh,520px);overflow-y:auto;overscroll-behavior:contain;padding:8px;border-radius:24px;background:rgba(255,255,255,.74);-webkit-backdrop-filter:blur(28px) saturate(190%);backdrop-filter:blur(28px) saturate(190%);border:1px solid rgba(255,255,255,.85);box-shadow:0 1px 0 #fff inset,0 24px 50px -16px rgba(11,42,29,.5);transform-origin:calc(100% - 20px) 0;animation:mm-in .5s var(--sp) both}
 :where(html[data-theme="dark"]) .mmp{background:rgba(18,26,22,0.74);border:1px solid rgba(255,255,255,0.1);box-shadow:0 1px 0 rgba(255,255,255,0.18) inset,0 24px 50px -16px rgba(0,0,0,0.7)}
 
 .mmn.out .mmp{animation:mm-out .22s var(--ease) both}
@@ -2002,7 +2004,6 @@ kbd{font:600 12.5px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;backgro
 @media print{.side,.bnav,.top,#tst,.th-btn,.sync{display:none!important}body .page{max-width:none;padding:0}}
 </style>
 <script src="vendor/supabase.js"></script>
-<script>window.supabase||document.write('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"><\/script>')</script>
 </head>
 <body>
 <div id="app"></div><div id="bk" onclick="closeAll()"></div><div id="pop"></div><dialog id="dlg"></dialog><div id="tst"></div>
@@ -2125,7 +2126,7 @@ function readAll(){NF().forEach(n=>S.rd[n.k]=1);closeAll();render()}
 function editTask(id){const t=T.find(x=>x.id==id);$('#dlg').innerHTML=`<form onsubmit="return saveEdit(this,${id})"><h2>Edit task</h2><label>Title<input name="t" required value="${e(t.t)}"></label><label>Description<textarea name="x" rows="3">${e(t.desc||'')}</textarea></label><label>Class<select name="c">${CL.map(c=>`<option ${c==t.c?'selected':''}>${e(c)}</option>`).join('')}</select></label><label>Deadline<input type="date" name="d" required value="${t.d}"></label><label>Time (optional)<input type="time" name="m" value="${t.tm||''}"></label><label>Priority<select name="p">${['High','Medium','Low'].map(p=>`<option ${p==t.p?'selected':''}>${p}</option>`).join('')}</select></label><label class="ck"><input type="checkbox" name="k" ${t.col?'checked':''}> Students submit this task</label><div class="act"><button type="button" class="btn" onclick="tk(${id})">Back</button><button class="btn pr">Save changes</button></div></form>`}
 function saveEdit(f,id){const t=T.find(x=>x.id==id);Object.assign(t,{t:f.t.value.trim(),desc:f.x.value.trim(),c:f.c.value,d:f.d.value,tm:f.m.value,p:f.p.value,col:f.k.checked});t.sm=t.sm||{};toast('Task updated.');tk(id);render();return false}
 function setP(){const u=S.u,N=[['o','Overdue tasks'],['d','Tasks due soon'],['s','Submission reminders'],['e','Upcoming events']];
-return bkB()+`<div class="hd"><div><h1>Settings</h1><p class="mu">Your profile and notification preferences.</p></div></div><div class="card"><h2>Profile</h2><div class="row"><div class="fl"><b>${e(u.name)}</b><div class="mu">${RL[u.role]}, ${e(u.email||"")}</div></div></div><p class="mu sm">Your name and role come from your school account. Contact the System Administrator to change them.</p></div><div class="card"><h2>Notifications</h2>${N.map(n=>`<label class="row tg"><span class="fl">${n[1]}</span><input type="checkbox" ${S.np[n[0]]?'checked':''} onchange="S.np.${n[0]}=this.checked?1:0;render()"></label>`).join('')}</div>${themeCard()}${soundCard()}${pwCard()}${freshCard()}`}
+return bkB()+`<div class="hd"><div><h1>Settings</h1><p class="mu">Your profile and notification preferences.</p></div></div><div class="card"><h2>Profile</h2><div class="row"><div class="fl"><b>${e(u.name)}</b><div class="mu">${RL[u.role]}, ${e(u.email||"")}</div></div></div><p class="mu sm">Your name and role come from your school account. Contact the System Administrator to change them.</p></div><div class="card"><h2>Notifications</h2>${N.map(n=>`<label class="row tg"><span class="fl">${n[1]}</span><input type="checkbox" ${S.np[n[0]]?'checked':''} onchange="S.np.${n[0]}=this.checked?1:0;render()"></label>`).join('')}</div>${themeCard()}${soundCard()}${installCard()}${pwCard()}${freshCard()}`}
 const SB_URL='https://hqmbboqecfmcviqsfutv.supabase.co',SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxbWJib3FlY2ZtY3ZpcXNmdXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEzMDc3MDIsImV4cCI6MjEwNjg4MzcwMn0.YdyWcherKRlFOzrXTQlj6GMYNwsTLWyUn13w56fbtoA';
 const sb=window.supabase?supabase.createClient(SB_URL,SB_KEY):null;
 let UID=null,svT,last='';
@@ -2604,7 +2605,7 @@ function hAdm(){return `<div class="hd"><div><h1>Administration</h1><p class="mu
 <div class="g g2c"><div class="card"><h2>School year</h2><div class="row"><div class="fl mu">School</div><b>${e(SY.name)}</b></div><div class="row"><div class="fl mu">School year</div><b>${e(SY.year)}</b></div><div class="row"><div class="fl mu">Term</div><b>${e(SY.term)}</b></div><p class="mu sm">Set by the System Administrator.</p></div>
 <div class="card"><h2>Monitoring rules</h2><label>Show "Attendance Not Recorded" after<select onchange="HP.gp=+this.value;hSv();toast('Saved.')">${[5,10,15,20,30].map(m=>`<option value="${m}" ${HP.gp==m?'selected':''}>${m} minutes`).join('')}</select></label><p class="mu sm">A class needs a check-in within this time of its start. TASKLY never marks a teacher absent automatically.</p></div></div>
 <div class="g g2c"><div class="card"><h2>Data and access</h2><div class="row"><div class="fl mu">Source</div><b>${HR?'Connected':'Not connected'}</b></div><div class="row"><div class="fl mu">Teachers</div><b>${hN()}</b></div><div class="row"><div class="fl mu">Strands</div><b>${e(SG.join(', '))}</b></div><button class="btn sm" style="margin-top:12px" onclick="hLoad().then(()=>toast('Data refreshed.'))">Refresh data</button></div>
-${themeCard()}${soundCard()}${pwCard()}<div class="card"><h2>Privacy</h2><div class="row"><div class="fl">You see check-in status, task titles, deadlines, and counts.</div></div><div class="row"><div class="fl">You never see private notes, resources, or files.</div></div><div class="row"><div class="fl">Accounts and passwords belong to the System Administrator.</div></div></div></div>`}
+${themeCard()}${soundCard()}${installCard()}${pwCard()}<div class="card"><h2>Privacy</h2><div class="row"><div class="fl">You see check-in status, task titles, deadlines, and counts.</div></div><div class="row"><div class="fl">You never see private notes, resources, or files.</div></div><div class="row"><div class="fl">Accounts and passwords belong to the System Administrator.</div></div></div></div>`}
 
 function hT(i){const t=hTe()[i];if(!t)return;const s=t.s,op=t.m.filter(x=>x.s!='Done').sort((a,b)=>dd(a.d)-dd(b.d)).slice(0,4),msg=`You have ${t.o} open task${t.o==1?'':'s'}${t.l?', '+t.l+' overdue':''}. Please review your task list.`;
 $('#dlg').innerHTML=`<form onsubmit="return false"><h2>${e(t.n)}</h2><p class="mu">${t.sg} strand. ${e(t.cl.join(', ')||'No classes yet')}</p>${[['First class today',t.tm],['Status',hPb(s)],['Tasks done',t.p+'%'],['Open tasks',t.o],['Overdue',t.l]].concat(t.upd?[['Last saved',hAgo(t.upd)]]:[]).map(r=>`<div class="row"><div class="fl mu">${r[0]}</div><b>${r[1]}</b></div>`).join('')}
@@ -2695,7 +2696,7 @@ function saSet(){const st=SST||{},c=r=>SA.filter(u=>u.role==r).length,ro=[['Teac
 return `<div class="hd"><div><h1>Settings</h1><p class="mu">School-wide settings, system status, and your own security.</p></div></div>
 <div class="g g2c"><div class="card"><h2>School</h2><form class="fm" onsubmit="return saSchool(this)"><label>School name<input name="n" value="${e(SY.name)}" maxlength="80" required></label><label>School year<input name="y" value="${e(SY.year)}" maxlength="12" required></label><label>Term<select name="t">${['1st Semester','2nd Semester','Summer'].map(x=>`<option ${SY.term==x?'selected':''}>${x}`).join('')}</select></label><button class="btn pr">Save school settings</button></form></div>
 <div class="card"><h2>System status</h2>${ro.map(r=>`<div class="row"><div class="fl mu">${r[0]}</div><b>${r[1]}</b></div>`).join('')}<button class="btn sm" style="margin-top:12px" onclick="saLoad().then(()=>toast('Status refreshed.'))">Refresh</button></div></div>
-<div class="g g2c">${themeCard()}${soundCard()}${pwCard()}<div class="card"><h2>Recent admin activity</h2>${SAU.slice(0,8).map(a=>`<div class="row"><div class="fl"><b>${e(a.action)}</b> ${e(a.target||'')}<div class="mu">${e(a.actor_name||'')}, ${hAgo(a.created_at)}</div></div></div>`).join('')||'<p class="mu sm">Nothing yet.</p>'}</div></div>`}
+<div class="g g2c">${themeCard()}${soundCard()}${installCard()}${pwCard()}<div class="card"><h2>Recent admin activity</h2>${SAU.slice(0,8).map(a=>`<div class="row"><div class="fl"><b>${e(a.action)}</b> ${e(a.target||'')}<div class="mu">${e(a.actor_name||'')}, ${hAgo(a.created_at)}</div></div></div>`).join('')||'<p class="mu sm">Nothing yet.</p>'}</div></div>`}
 function saSchool(f){saSchool2(f);return false}
 async function saSchool2(f){const v={name:f.n.value.trim(),year:f.y.value.trim(),term:f.t.value};if(saLive()){const{error}=await sb.from('system_settings').upsert({key:'school',value:v,updated_at:new Date().toISOString()});if(error){toast('Could not save: '+error.message);return}}Object.assign(SY,v);toast('School settings saved.');render()}
 
@@ -2870,11 +2871,15 @@ tasks:(Array.isArray(r.tasks)?r.tasks:[]).map(x=>x&&{t:hTx(x.t,120),c:hTx(x.c,40
 const themeMode=()=>{try{return localStorage.getItem('tk-theme')||'auto'}catch(x){return 'auto'}},
 isDark=()=>document.documentElement.getAttribute('data-theme')=='dark',
 applyTheme=()=>{const m=themeMode(),d=m=='dark'||(m=='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.setAttribute('data-theme',d?'dark':'light');const t=document.querySelector('meta[name=theme-color]');if(t)t.setAttribute('content',d?'#0c1410':'#0b2a1d')},
-setTheme=m=>{try{localStorage.setItem('tk-theme',m)}catch(x){}applyTheme();render()},
-cycleTheme=()=>setTheme(isDark()?'light':'dark'),
-themeCard=()=>`<div class="card"><h2>Appearance</h2><p class="mu sm">Choose how TASKLY looks on this device.</p><div class="fts2" role="group" aria-label="Theme">${[['auto','System'],['light','Light'],['dark','Dark']].map(x=>`<button class="${themeMode()==x[0]?'on':''}" onclick="setTheme('${x[0]}')">${x[1]}</button>`).join('')}</div></div>`,
-themeBtn=()=>`<button class="th-btn" onclick="cycleTheme()" aria-label="${isDark()?'Switch to light theme':'Switch to dark theme'}" title="${isDark()?'Light theme':'Dark theme'}">${isDark()?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>'}</button>`;
+setTheme=(m,ev)=>{try{localStorage.setItem('tk-theme',m)}catch(x){}const go=()=>{applyTheme();render()};if(!document.startViewTransition||matchMedia('(prefers-reduced-motion: reduce)').matches){go();return}const x=ev&&ev.clientX!=null?ev.clientX:innerWidth/2,y=ev&&ev.clientY!=null?ev.clientY:innerHeight/2,r=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y)),vt=document.startViewTransition(go);vt.ready.then(()=>{document.documentElement.animate({clipPath:[`circle(0px at ${x}px ${y}px)`,`circle(${r}px at ${x}px ${y}px)`]},{duration:500,easing:'cubic-bezier(.3,.9,.4,1)',pseudoElement:'::view-transition-new(root)'})}).catch(()=>{})},
+cycleTheme=ev=>setTheme(isDark()?'light':'dark',ev),
+themeCard=()=>`<div class="card"><h2>Appearance</h2><p class="mu sm">Choose how TASKLY looks on this device.</p><div class="fts2" role="group" aria-label="Theme">${[['auto','System'],['light','Light'],['dark','Dark']].map(x=>`<button class="${themeMode()==x[0]?'on':''}" onclick="setTheme('${x[0]}',event)">${x[1]}</button>`).join('')}</div></div>`,
+themeBtn=()=>`<button class="th-btn" onclick="cycleTheme(event)" aria-label="${isDark()?'Switch to light theme':'Switch to dark theme'}" title="${isDark()?'Light theme':'Dark theme'}">${isDark()?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>'}</button>`;
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(themeMode()=='auto'){applyTheme();if(S.u)render()}})}catch(x){}
+let deferredInstall=null;
+addEventListener('beforeinstallprompt',ev=>{ev.preventDefault();deferredInstall=ev;if(S.u)render()});
+addEventListener('appinstalled',()=>{deferredInstall=null;if(S.u)render()});
+async function doInstall(){if(!deferredInstall)return;deferredInstall.prompt();try{await deferredInstall.userChoice}catch(x){}deferredInstall=null;render()}
 {const _th=render;render=function(){_th();const av=$('.top .av');if(av&&!$('.top .th-btn'))av.insertAdjacentHTML('beforebegin',themeBtn())}}
 
 /* ===== API base (packaged apps set window.TASKLY_API before this script) ===== */
@@ -2895,6 +2900,7 @@ if(window.HTMLDialogElement){const P=HTMLDialogElement.prototype,_s=P.showModal,
 {const _a=loadAnn;loadAnn=async function(){const n=ANN.length;await _a();if(annReady&&ANN.length>n)SFX.play('notify');annReady=true}}
 {const _f=render;render=function(){_f();if(S.u&&S.u.role=='teacher'){const dn=T.filter(t=>t.s=='Done').length,ci=C.filter(c=>c.at).length;if(prevDone!==null&&dn>prevDone)SFX.play('done');if(prevCi!==null&&ci>prevCi)SFX.play('checkin');prevDone=dn;prevCi=ci}}}
 const soundCard=()=>`<div class="card"><h2>Sound</h2><label class="sw2"><span>Sound effects</span><input type="checkbox" ${SFX.on?'checked':''} onchange="SFX.on=this.checked;if(this.checked)SFX.play('on')"></label><label>Volume<input type="range" min="0" max="100" value="${Math.round(SFX.vol*100)}" oninput="SFX.vol=this.value/100" onchange="SFX.play('ok')" aria-label="Sound volume"></label><p class="mu sm">Short tones for taps, saved changes, finished tasks, check-ins and notifications. Press ? any time for keyboard shortcuts.</p></div>`;
+const installCard=()=>deferredInstall?`<div class="card"><h2>Install TASKLY</h2><p class="mu sm">Add TASKLY to your home screen or apps for quicker access, offline-ready and without the browser bar.</p><button class="btn pr" onclick="doInstall()">Install app</button></div>`:'';
 
 /* ===== desktop: window titles, keyboard shortcuts, drag and drop, Ctrl+S ===== */
 {const _d=render;render=function(){_d();const n=S.u&&NAV[S.u.role]&&NAV[S.u.role].find(x=>x[0]==S.v);document.title=S.u?'TASKLY'+(n?' | '+n[2]:''):'TASKLY | Sign in'}}
