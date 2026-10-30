@@ -1988,6 +1988,65 @@ html[data-theme="dark"] .stky .b.mu{background:#eceff4;color:#46536a}
 body:has(.cx) .page.pgi{animation:none}
 html body .cx{top:var(--tbh,calc(61px + env(safe-area-inset-top,0px)));bottom:0;height:auto;padding-top:6px}
 }
+
+/* ===== task notebook, dark mode: deep green paper, readable chips, visible buttons ===== */
+html[data-theme="dark"] .nb{background:#16221b;box-shadow:0 0 0 1px rgba(255,255,255,.07),0 30px 60px -20px rgba(0,0,0,.85)}
+html[data-theme="dark"] .nbr{background:linear-gradient(90deg,#14633f,#0e4a2f)}
+html[data-theme="dark"] .nbr i{background:linear-gradient(#eef2ef,#8a9c91);box-shadow:0 2px 3px rgba(0,0,0,.6)}
+html[data-theme="dark"] .nbp2{background:linear-gradient(90deg,transparent 32px,rgba(255,138,128,.34) 32px 33px,transparent 33px),repeating-linear-gradient(#16221b 0 31px,#26382d 31px 32px)}
+html[data-theme="dark"] .tape{background:#f4d964;color:#2b2406;box-shadow:0 2px 6px rgba(0,0,0,.45)}
+html[data-theme="dark"] .nbh{color:#f1f6f1}
+html[data-theme="dark"] .mk{color:#fff1c4;background:linear-gradient(transparent 38%,rgba(255,206,66,.34) 38%)}
+html[data-theme="dark"] .mk.er{color:#ffe1dc;background:linear-gradient(transparent 38%,rgba(255,112,96,.38) 38%)}
+html[data-theme="dark"] .mk.in{color:#dbe8ff;background:linear-gradient(transparent 38%,rgba(110,164,255,.36) 38%)}
+html[data-theme="dark"] .nbs{color:#b3c7f5}
+html[data-theme="dark"] body .nbp2 .nbs{background:transparent;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+html[data-theme="dark"] .nbt2 button{background:transparent;border-color:rgba(95,210,154,.4);color:var(--tx)}
+html[data-theme="dark"] .nbt2 .on{background:var(--prt);border-color:var(--prt);color:#06140c}
+html[data-theme="dark"] .nbp2 .ck input{accent-color:var(--prt)}
+html[data-theme="dark"] .nbp2 .act .btn{background:#21332a;border-color:rgba(255,255,255,.12)}
+
+/* ===== SHS Head announcements: home note, notification bell, detail card, live top banner ===== */
+.pn-a{cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .45s var(--sp,ease)}
+.pn-a:active{transform:rotate(0deg) scale(.98)}
+.pn-a:focus-visible{outline:3px solid var(--pr);outline-offset:3px}
+.pn-a p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.pn-a .pn-t{font-weight:700;color:#1d2b22}
+.pn-a b em{margin-left:10px;padding:2px 9px;border-radius:99px;background:#d63a2f;color:#fff;font:800 11px/1.3 Figtree,system-ui,sans-serif;vertical-align:middle}
+.pn-a small{display:block;margin-top:8px;font:600 12.5px Figtree,system-ui,sans-serif;color:rgba(29,43,34,.6)}
+@keyframes annRing{0%,100%{transform:rotate(0)}15%{transform:rotate(16deg)}30%{transform:rotate(-14deg)}45%{transform:rotate(10deg)}60%{transform:rotate(-8deg)}75%{transform:rotate(4deg)}}
+.bell.ring svg{transform-origin:50% 8%;animation:annRing .9s ease-in-out}
+html body dialog#anndlg{margin:auto;width:min(440px,calc(100vw - 28px));max-width:none;max-height:none;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible;-webkit-backdrop-filter:none;backdrop-filter:none;outline:0}
+dialog#anndlg::backdrop{background:#0b2a1dcc;backdrop-filter:blur(3px)}
+.annd{position:relative;padding:32px 22px 20px;border-radius:4px 4px 24px 4px;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 42%),#fff0a6;color:#1d2b22;box-shadow:0 1px 0 rgba(255,255,255,.85) inset,0 30px 50px -24px rgba(0,0,0,.7);transform:rotate(-.6deg);animation:annPop .5s cubic-bezier(.2,1.2,.4,1) both}
+.annd.rem{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 42%),#ffd9c9}
+.annd-pin{position:absolute;top:-8px;left:24px;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff9a90,#d63a2f 60%,#9d2118);box-shadow:0 6px 8px -3px rgba(0,0,0,.45)}
+.annd-k{display:block;font:700 24px/1.1 Caveat,cursive;color:#1d2b22}
+html body .annd .annd-t{margin:8px 0 0;font:800 22px/1.2 var(--hf);color:#1d2b22}
+.annd-b{margin:10px 0 0;max-height:46dvh;overflow-y:auto;white-space:pre-wrap;font:500 16px/1.55 Figtree,system-ui,sans-serif;color:rgba(29,43,34,.9)}
+.annd-m{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:14px;font:600 13px Figtree,system-ui,sans-serif;color:rgba(29,43,34,.62)}
+.annd .act{margin-top:16px}
+@keyframes annPop{from{opacity:0;transform:translateY(24px) rotate(-3deg) scale(.94)}}
+.annbar{position:fixed;z-index:80;left:50%;top:calc(env(safe-area-inset-top,0px) + 10px);width:min(560px,calc(100vw - 20px));display:flex;align-items:stretch;overflow:hidden;border-radius:4px 4px 18px 4px;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 42%),#fff0a6;color:#1d2b22;box-shadow:0 1px 0 rgba(255,255,255,.85) inset,0 20px 32px -14px rgba(11,42,29,.65),0 2px 6px rgba(11,42,29,.2);transform:translateX(-50%);animation:annIn .65s cubic-bezier(.2,1,.3,1) both}
+.annbar.rem{background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 42%),#ffd9c9}
+.annbar.out{animation:annOut .35s cubic-bezier(.5,0,.8,.4) both}
+html[data-theme="dark"] .annbar{box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 20px 36px -12px rgba(0,0,0,.85),0 2px 6px rgba(0,0,0,.4)}
+.annbar-m{flex:1;min-width:0;display:flex;align-items:center;gap:12px;padding:12px 4px 14px 14px;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.annbar-i{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#0b2a1d;color:#ffe45e}
+.annbar-t{display:grid;gap:1px;min-width:0}
+.annbar-t small{font:700 12px Figtree,system-ui,sans-serif;color:rgba(29,43,34,.7)}
+.annbar-t b{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font:700 23px/1.1 Caveat,cursive;color:#1d2b22}
+.annbar-t span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font:500 14px/1.35 Figtree,system-ui,sans-serif;color:rgba(29,43,34,.82)}
+.annbar-x{flex:none;align-self:flex-start;width:44px;height:44px;border:0;background:none;color:rgba(29,43,34,.6);font:400 26px/1 Figtree,system-ui,sans-serif;cursor:pointer}
+.annbar-m:focus-visible,.annbar-x:focus-visible{outline:3px solid var(--pr);outline-offset:-3px}
+.annbar-p{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(29,43,34,.35);transform-origin:left;animation:annPg 8s linear forwards}
+.annbar:hover .annbar-p,.annbar:active .annbar-p{animation-play-state:paused}
+@keyframes annIn{0%{opacity:0;transform:translate(-50%,-140%) rotate(-2deg)}55%{opacity:1;transform:translate(-50%,9%) rotate(.6deg)}78%{transform:translate(-50%,-3%) rotate(-.2deg)}100%{opacity:1;transform:translate(-50%,0) rotate(0)}}
+@keyframes annOut{to{opacity:0;transform:translate(-50%,-140%) rotate(1.5deg)}}
+@keyframes annPg{to{transform:scaleX(0)}}
+@keyframes annFade{from{opacity:0}}
+@keyframes annFadeOut{to{opacity:0}}
+@media(prefers-reduced-motion:reduce){.annbar{animation:annFade .25s both}.annbar.out{animation:annFadeOut .2s both}.annd{animation:none}.bell.ring svg{animation:none}}
 </style>
 <script src="vendor/supabase.js"></script>
 </head>
@@ -2102,12 +2161,12 @@ if(n<0&&P.o)a.push({k:'o'+t.id,t:`${t.t} is ${-n} day${n<-1?'s':''} overdue.`,s:
 else if(n>=0&&n<=1&&P.d)a.push({k:'d'+t.id+n,t:`${t.t} is due ${n?'tomorrow':'today'}.`,s:t.c,id:t.id,ty:'wn'});
 if(t.col&&p>0&&n<=3&&P.s)a.push({k:'s'+t.id+p,t:`${p} students have not submitted ${t.t}.`,s:t.c,id:t.id,ty:'in'})});
 if(P.e)EV.forEach(v=>{const n=dd(v.d);if(n>=0&&n<=2)a.push({k:'e'+v.id,t:`${v.t}: ${lab(v.d)}${v.tm?', '+v.tm:''}.`,s:'Event',ty:'in'})});
-ANN.forEach(x=>a.push({k:'a'+x.id,t:(x.kind=='reminder'?'Reminder from the SHS Head: ':'SHS Head: ')+x.title+(x.body?'. '+x.body:''),s:x.kind=='reminder'?'Reminder':'Announcement',ty:'in'}));return a}
+ANN.forEach(x=>a.push({k:'a'+x.id,t:(x.kind=='reminder'?'Reminder from the SHS Head: ':'SHS Head: ')+x.title,s:(x.kind=='reminder'?'Reminder':'Announcement')+', tap to read',ty:'in'}));return a}
 const unread=()=>NF().filter(n=>!S.rd[n.k]).length;
 function bell(){const q=$('#pop'),a=NF().sort((x,y)=>ORD[x.ty]-ORD[y.ty]);q.classList.add('wide');
 q.innerHTML=`<div class="ph"><b>Notifications</b><button class="btn sm" onclick="readAll()">Mark all read</button></div>`+(a.map(n=>`<button class="nt ${S.rd[n.k]?'':'un'}" onclick="nopen('${n.k}',${n.id||0})"><span class="dt ${n.ty}"></span><span><b>${e(n.t)}</b><br><span class="mu">${e(n.s)}</span></span></button>`).join('')||empty('All caught up','No notifications right now.'));
 q.classList.toggle('show');$('#bk').classList.toggle('show',q.classList.contains('show'))}
-function nopen(k,id){S.rd[k]=1;closeAll();if(id)tk(id);render()}
+function nopen(k,id){if(k[0]=='a'&&annOpen(k.slice(1)))return;S.rd[k]=1;closeAll();if(id)tk(id);render()}
 function readAll(){NF().forEach(n=>S.rd[n.k]=1);closeAll();render()}
 function editTask(id){const t=T.find(x=>x.id==id);$('#dlg').innerHTML=`<form onsubmit="return saveEdit(this,${id})"><h2>Edit task</h2><label>Title<input name="t" required value="${e(t.t)}"></label><label>Description<textarea name="x" rows="3">${e(t.desc||'')}</textarea></label><label>Class<select name="c">${CL.map(c=>`<option ${c==t.c?'selected':''}>${e(c)}</option>`).join('')}</select></label><label>Deadline<input type="date" name="d" required value="${t.d}"></label><label>Time (optional)<input type="time" name="m" value="${t.tm||''}"></label><label>Priority<select name="p">${['High','Medium','Low'].map(p=>`<option ${p==t.p?'selected':''}>${p}</option>`).join('')}</select></label><label class="ck"><input type="checkbox" name="k" ${t.col?'checked':''}> Students submit this task</label><div class="act"><button type="button" class="btn" onclick="tk(${id})">Back</button><button class="btn pr">Save changes</button></div></form>`}
 function saveEdit(f,id){const t=T.find(x=>x.id==id);Object.assign(t,{t:f.t.value.trim(),desc:f.x.value.trim(),c:f.c.value,d:f.d.value,tm:f.m.value,p:f.p.value,col:f.k.checked});t.sm=t.sm||{};toast('Task updated.');tk(id);render();return false}
@@ -2776,7 +2835,7 @@ ns=[...dn,...up].slice(0,8),
 fd=(n,i)=>{const k=K[n]||{},s=cStat(n),c=C.find(x=>x.n==n);return `<div class="dkf" style="--h:${cHue(n)}" role="button" tabindex="0" onclick="go('cls');cOpen(${i})" onkeydown="if(event.key=='Enter'){go('cls');cOpen(${i})}"><b class="dkf-n">${e(n)}</b><small>${e(k.sj||'')}${k.rm?', '+e(k.rm):''}</small><div class="dkf-m"><span><b>${s.n}</b> students</span><span><b>${s.tk}</b> tasks</span></div>${c?`<span class="dkf-t">${DN(c.d)} ${c.tm}</span>`:''}</div>`},
 evs=EV.filter(v=>dd(v.d)>=0&&dd(v.d)<=14).sort((x,y)=>dd(x.d)-dd(y.d)).slice(0,3);
 return hdr+`<section class="hm-g td">${nh}
-<aside class="pn"><b>Announcement from the SHS Head</b><p>Faculty meeting moved to Friday, 3:30 PM, Room 204. Please add it to your calendar.</p></aside>
+${annPn()}
 <div class="dk-h"><h2>On your desk</h2><a href="#" onclick="go('work');return false">Open Work</a></div>
 <div class="dk-s">${ns.map(sk).join('')||`<div class="stky" style="--sn:${cols[3]}"><b>All clear</b><small>No open deadlines.</small></div>`}<button class="stky add" onclick="newTask()" aria-label="New task">+</button></div>
 <div class="dk-h"><h2>Class folders</h2><a href="#" onclick="go('cls');return false">All classes</a></div>
@@ -2940,6 +2999,45 @@ addEventListener('offline',()=>{if(!S.u)return;if(S.u.role=='teacher'){setSync('
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&S.u&&S.u.role=='teacher'){clearTimeout(svT);pushSync()}});
 {const _y=render;render=function(){_y();if(!S.u)return;if(S.u.role=='teacher'){if(!$('.top .sync')){const a=$('.top .th-btn')||$('.top .av');if(a)a.insertAdjacentHTML('beforebegin',syncChip())}}else if(navigator.onLine===false){const p=$('.page');if(p&&!p.querySelector('.off-bn'))p.insertAdjacentHTML('afterbegin','<div class="note off-bn"><b>You are offline.</b> The data you see may be out of date until you reconnect.</div>')}}}
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{reg.addEventListener('updatefound',()=>{const w=reg.installing;if(w)w.addEventListener('statechange',()=>{if(w.state=='installed'&&navigator.serviceWorker.controller)toast('A new version is ready. Reload to update.')})})}).catch(()=>{})})}
+/* ===== SHS Head announcements: open from notifications and the home note, live top banner ===== */
+(()=>{
+const aid=v=>String(v).replace(/[^\w-]/g,''),
+find=id=>ANN.find(x=>aid(x.id)==aid(id)),
+who=x=>x.kind=='reminder'?'Reminder from the SHS Head':'Announcement from the SHS Head',
+when=iso=>{const d=new Date(iso);if(isNaN(d))return'';const n=new Date(),y=new Date(n.getFullYear(),n.getMonth(),n.getDate()-1),s=a=>a.toDateString(),t=d.toLocaleTimeString('en',{hour:'numeric',minute:'2-digit'});return(s(d)==s(n)?'Today':s(d)==s(y)?'Yesterday':d.toLocaleDateString('en',{weekday:'short',month:'short',day:'numeric'}))+', '+t},
+ids=a=>a.map(x=>String(x.id)).join(),
+ICON='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11v2a1 1 0 001 1h2l5 4V6L6 10H4a1 1 0 00-1 1z"/><path d="M15.5 8.5a5 5 0 010 7M18.5 5.5a9 9 0 010 13"/></svg>';
+let bar=null,seeded=false,ch=null,kt=0;
+function drop(now){const b=bar;if(!b)return;bar=null;if(now){b.remove();return}b.classList.add('out');b.addEventListener('animationend',ev=>{if(ev.target===b)b.remove()});setTimeout(()=>b.remove(),700)}
+function show(x,more){drop(true);
+const b=document.createElement('div'),id=x.id;b.className='annbar'+(x.kind=='reminder'?' rem':'');b.setAttribute('role','status');
+b.innerHTML=`<button type="button" class="annbar-m"><i class="annbar-i">${ICON}</i><span class="annbar-t"><small>${who(x)}${more?' (+'+more+' more)':''}</small><b>${e(x.title)}</b>${x.body?`<span>${e(x.body)}</span>`:''}</span></button><button type="button" class="annbar-x" aria-label="Dismiss">×</button><i class="annbar-p"></i>`;
+b.querySelector('.annbar-m').onclick=()=>{drop(true);annOpen(id)};
+b.querySelector('.annbar-x').onclick=()=>drop();
+b.querySelector('.annbar-p').addEventListener('animationend',()=>{if(bar===b)drop()});
+let y0=null;b.addEventListener('touchstart',ev=>{y0=ev.touches[0].clientY},{passive:true});b.addEventListener('touchend',ev=>{if(y0!==null&&y0-ev.changedTouches[0].clientY>28)drop();y0=null},{passive:true});
+([...document.querySelectorAll('dialog[open]')].pop()||document.body).appendChild(b);bar=b}
+function ring(){const b=$('.top .bell');if(!b)return;let i=b.querySelector('i');const n=unread();if(n){if(!i){i=document.createElement('i');b.appendChild(i)}i.textContent=n}else if(i)i.remove();b.classList.remove('ring');void b.offsetWidth;b.classList.add('ring')}
+window.annOpen=id=>{const x=find(id);if(!x)return false;S.rd['a'+x.id]=1;closeAll();
+let d=document.getElementById('anndlg');if(!d){d=document.createElement('dialog');d.id='anndlg';d.addEventListener('click',ev=>{if(ev.target===d)d.close()});document.body.appendChild(d)}
+d.innerHTML=`<div class="annd${x.kind=='reminder'?' rem':''}"><i class="annd-pin"></i><b class="annd-k">${who(x)}</b><h2 class="annd-t">${e(x.title)}</h2>${x.body?`<p class="annd-b">${e(x.body)}</p>`:''}<div class="annd-m"><span>${e(when(x.created_at))}</span><span>${x.to_user?'Sent to you':e(x.audience||'All teachers')}</span></div><div class="act"><button type="button" class="btn pr" onclick="this.closest('dialog').close()">Got it</button></div></div>`;
+if(!d.open)d.showModal();render();return true};
+window.annPn=()=>{const x=ANN[0];if(!x)return'';const i=aid(x.id),nw=!S.rd['a'+x.id];
+return`<aside class="pn pn-a" role="button" tabindex="0" onclick="annOpen('${i}')" onkeydown="if(event.key=='Enter'||event.key==' '){event.preventDefault();annOpen('${i}')}"><b>${who(x)}${nw?'<em>New</em>':''}</b><p><span class="pn-t">${e(x.title)}</span>${x.body?' '+e(x.body):''}</p><small>${e(when(x.created_at))}. Tap to read.</small></aside>`};
+const _la=loadAnn;
+window.loadAnn=async function(){const prev=ANN;await _la.apply(this,arguments);if(ANN===prev)return;
+const first=!seeded;seeded=true;if(first||ids(ANN)==ids(prev))return;
+if(!S.u||S.u.role!='teacher')return;
+const had=new Set(prev.map(x=>String(x.id))),nw=ANN.filter(x=>!had.has(String(x.id))&&!S.rd['a'+x.id]),
+idle=S.v=='home'&&!document.querySelector('dialog[open]')&&!/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement||{}).tagName||'');
+if(idle)render();if(nw.length){ring();show(nw[0],nw.length-1)}};
+function live(){const on=S.u&&S.u.role=='teacher'&&UID&&sb;
+if(!on){if(ch){try{sb.removeChannel(ch)}catch(x){}ch=null}seeded=false;return}
+if(ch||!sb.channel)return;
+try{ch=sb.channel('tk-announcements').on('postgres_changes',{event:'*',schema:'public',table:'announcements'},()=>{clearTimeout(kt);kt=setTimeout(()=>loadAnn(),350)}).subscribe()}catch(x){ch=null}}
+{const _r=render;render=function(){const r=_r.apply(this,arguments);live();return r}}
+setInterval(()=>{if(S.u&&S.u.role=='teacher'&&UID&&!document.hidden&&navigator.onLine!==false)loadAnn()},3e4);
+})();
 </script>
 </body>
 </html>
