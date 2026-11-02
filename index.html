@@ -2057,6 +2057,8 @@ html[data-theme="dark"] .nbp .tbr button:not(.on){color:var(--ink)}
 html[data-theme="dark"] .nbp .btn:not(.pr){background:#fff;border-color:rgba(11,42,29,.16);color:var(--ink)}
 html[data-theme="dark"] .nbp select{background:rgba(255,255,255,.85);border-color:rgba(11,42,29,.16);color:var(--ink)}
 html[data-theme="dark"] .gct small{color:#587064}
+/* desktop: the global margin reset was pinning every dialog to the top-left corner; centre them again */
+@media(min-width:821px){html body dialog{margin:auto}}
 </style>
 <script src="vendor/supabase.js"></script>
 </head>
