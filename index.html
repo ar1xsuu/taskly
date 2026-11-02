@@ -2059,6 +2059,37 @@ html[data-theme="dark"] .nbp select{background:rgba(255,255,255,.85);border-colo
 html[data-theme="dark"] .gct small{color:#587064}
 /* desktop: the global margin reset was pinning every dialog to the top-left corner; centre them again */
 @media(min-width:821px){html body dialog{margin:auto}}
+/* ===== batch 5: reduce motion and the guided tour ===== */
+html.rm *,html.rm *::before,html.rm *::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
+html.rm .annbar .annbar-p{animation-duration:8s!important}
+#tour{position:fixed;inset:0;z-index:95;font-family:Figtree,system-ui,sans-serif;animation:trFade .3s both}
+#tour.out{animation:trOut .25s both}
+@keyframes trFade{from{opacity:0}}
+@keyframes trOut{to{opacity:0}}
+.tr-hole{position:fixed;left:50%;top:50%;width:0;height:0;border-radius:16px;box-shadow:0 0 0 100vmax rgba(6,16,11,.8);pointer-events:none;transition:left .45s cubic-bezier(.3,.9,.3,1),top .45s cubic-bezier(.3,.9,.3,1),width .45s cubic-bezier(.3,.9,.3,1),height .45s cubic-bezier(.3,.9,.3,1)}
+.tr-hole.has::after{content:"";position:absolute;inset:-4px;border-radius:inherit;border:3px solid #ffe45e;animation:trPulse 1.6s ease-in-out infinite}
+@keyframes trPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(1.05)}}
+.tr-arr{position:fixed;left:0;top:0;width:36px;height:48px;pointer-events:none;opacity:0;transition:left .45s cubic-bezier(.3,.9,.3,1),top .45s cubic-bezier(.3,.9,.3,1),opacity .25s}
+.tr-arr.on{opacity:1}
+.tr-arr.up{transform:rotate(180deg)}
+.tr-arr svg{display:block;filter:drop-shadow(0 3px 4px rgba(0,0,0,.5));animation:trBob .9s ease-in-out infinite}
+@keyframes trBob{0%,100%{transform:translateY(0)}50%{transform:translateY(9px)}}
+.tr-card{position:fixed;left:0;top:0;width:340px;max-width:calc(100vw - 24px);padding:22px 20px 14px;border-radius:6px 6px 24px 6px;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 42%),#fff0a6;color:#1d2b22;box-shadow:0 1px 0 rgba(255,255,255,.85) inset,0 28px 50px -16px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.3);transition:left .45s cubic-bezier(.3,.9,.3,1),top .45s cubic-bezier(.3,.9,.3,1),opacity .2s;outline:0}
+.tr-card.sw{opacity:0}
+.tr-card::before{content:"";position:absolute;top:-8px;left:22px;width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff9a90,#d63a2f 60%,#9d2118);box-shadow:0 6px 8px -3px rgba(0,0,0,.5)}
+.tr-k{font:700 12px Figtree,system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:rgba(29,43,34,.6)}
+html body .tr-card h3{margin:3px 0 6px;font:700 28px/1.08 Caveat,cursive;color:#1d2b22}
+html body .tr-card p{margin:0;font:500 15.5px/1.5 Figtree,system-ui,sans-serif;color:rgba(29,43,34,.92)}
+.tr-pg{height:4px;margin:14px 0 8px;border-radius:4px;background:rgba(29,43,34,.15);overflow:hidden}
+.tr-pg i{display:block;height:100%;width:0;border-radius:4px;background:#14633f;transition:width .4s}
+.tr-act{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:8px}
+.tr-skip{margin-right:auto;padding:10px 4px;border:0;background:none;color:rgba(29,43,34,.65);font:600 14px Figtree,system-ui,sans-serif;text-decoration:underline;cursor:pointer}
+.tr-skip[hidden],.tr-card .btn[hidden]{display:none}
+html body .tr-card .btn:not(.pr){background:#fff;border:1px solid rgba(11,42,29,.18);color:#0b2a1d}
+.tr-card :focus-visible{outline:3px solid #14633f;outline-offset:2px}
+html body .fts2.qseg{flex-wrap:wrap;overflow:visible;padding:2px 0 8px}
+html body .sw2.qsw{padding:12px 0;border-top:1px solid var(--bd);font-weight:700}
+html body .qseg+.qsw{margin-top:8px}
 </style>
 <script src="vendor/supabase.js"></script>
 </head>
@@ -2183,18 +2214,9 @@ function readAll(){NF().forEach(n=>S.rd[n.k]=1);closeAll();render()}
 function editTask(id){const t=T.find(x=>x.id==id);$('#dlg').innerHTML=`<form onsubmit="return saveEdit(this,${id})"><h2>Edit task</h2><label>Title<input name="t" required value="${e(t.t)}"></label><label>Description<textarea name="x" rows="3">${e(t.desc||'')}</textarea></label><label>Class<select name="c">${CL.map(c=>`<option ${c==t.c?'selected':''}>${e(c)}</option>`).join('')}</select></label><label>Deadline<input type="date" name="d" required value="${t.d}"></label><label>Time (optional)<input type="time" name="m" value="${t.tm||''}"></label><label>Priority<select name="p">${['High','Medium','Low'].map(p=>`<option ${p==t.p?'selected':''}>${p}</option>`).join('')}</select></label><label class="ck"><input type="checkbox" name="k" ${t.col?'checked':''}> Students submit this task</label><div class="act"><button type="button" class="btn" onclick="tk(${id})">Back</button><button class="btn pr">Save changes</button></div></form>`}
 function saveEdit(f,id){const t=T.find(x=>x.id==id);Object.assign(t,{t:f.t.value.trim(),desc:f.x.value.trim(),c:f.c.value,d:f.d.value,tm:f.m.value,p:f.p.value,col:f.k.checked});t.sm=t.sm||{};toast('Task updated.');tk(id);render();return false}
 function setP(){const u=S.u,N=[['o','Overdue tasks'],['d','Tasks due soon'],['s','Submission reminders'],['e','Upcoming events']];
-return bkB()+`<div class="hd"><div><h1>Settings</h1><p class="mu">Your profile and notification preferences.</p></div></div><div class="card"><h2>Profile</h2><div class="row"><div class="fl"><b>${e(u.name)}</b><div class="mu">${RL[u.role]}, ${e(u.email||"")}</div></div></div><p class="mu sm">Your name and role come from your school account. Contact the System Administrator to change them.</p></div><div class="card"><h2>Notifications</h2>${N.map(n=>`<label class="row tg"><span class="fl">${n[1]}</span><input type="checkbox" ${S.np[n[0]]?'checked':''} onchange="S.np.${n[0]}=this.checked?1:0;render()"></label>`).join('')}</div>${themeCard()}${soundCard()}${installCard()}${pwCard()}${freshCard()}`}
+return bkB()+`<div class="hd"><div><h1>Settings</h1><p class="mu">Your profile and notification preferences.</p></div></div><div class="card"><h2>Profile</h2><div class="row"><div class="fl"><b>${e(u.name)}</b><div class="mu">${RL[u.role]}, ${e(u.email||"")}</div></div></div><p class="mu sm">Your name and role come from your school account. Contact the System Administrator to change them.</p></div><div class="card"><h2>Notifications</h2>${N.map(n=>`<label class="row tg"><span class="fl">${n[1]}</span><input type="checkbox" ${S.np[n[0]]?'checked':''} onchange="S.np.${n[0]}=this.checked?1:0;render()"></label>`).join('')}</div>${themeCard()}${qolCard()}${soundCard()}${installCard()}${pwCard()}${freshCard()}`}
 const SB_URL='https://hqmbboqecfmcviqsfutv.supabase.co',SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxbWJib3FlY2ZtY3ZpcXNmdXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEzMDc3MDIsImV4cCI6MjEwNjg4MzcwMn0.YdyWcherKRlFOzrXTQlj6GMYNwsTLWyUn13w56fbtoA';
-const sb = window.supabase
-  ? window.supabase.createClient(SB_URL, SB_KEY, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true,
-        storage: window.localStorage
-      }
-    })
-  : null;
+const sb=window.supabase?supabase.createClient(SB_URL,SB_KEY):null;
 let UID=null,svT,last='';
 const fill=(a,v)=>{a.length=0;a.push(...(v||[]))},fillO=(o,v)=>{Object.keys(o).forEach(k=>delete o[k]);Object.assign(o,v||{})};
 const snap=()=>JSON.stringify({T,C,CL,K,AT,EV,NO,RS,AR,rd:S.rd,np:S.np,pf:PF},(k,v)=>k=='sub'?undefined:v);
@@ -2205,7 +2227,7 @@ if(user.user_metadata&&user.user_metadata.must_change){S.gate=user;S.u=null;UID=
 UID=user.id;S.u={name:pr.full_name||user.email,role:pr.role,email:user.email};
 if(pr.role=='teacher'&&!(await loadTeacher()))return;
 if(pr.role=='head')await hLoad(false);if(pr.role=='teacher')await loadAnn();if(pr.role=='sysadmin')await saLoad(false);
-try{localStorage.setItem('tk-last',JSON.stringify({id:UID,email:user.email,name:S.u.name,role:pr.role}))}catch(x){}S.v=NAV[pr.role][0][0];S.an=1;render();if(pr.role=='teacher'&&!CL.length)setTimeout(tcWelcome,500)}
+try{localStorage.setItem('tk-last',JSON.stringify({id:UID,email:user.email,name:S.u.name,role:pr.role}))}catch(x){}S.v=qStart(pr.role);S.an=1;render();if(pr.role=='teacher'&&!CL.length)setTimeout(()=>{if(!tourWill())tcWelcome()},500)}
 async function signIn(f){if(!sb){$('#err').textContent='Cannot reach the database. Check your connection.';return}const b=f.querySelector('.btn.pr');b.disabled=true;$('#err').textContent='';
 const{data,error}=await sb.auth.signInWithPassword({email:f.u.value.trim(),password:f.p.value});b.disabled=false;
 if(error){$('#err').textContent='Incorrect email or password. Check your school account details.';return}await enter(data.user)}
@@ -2279,8 +2301,8 @@ function newTask(){DR={att:[]};const cl=CL.includes(LAST.c)?LAST.c:CL[0];
 dlgOpen(`<form class="cf" onsubmit="return saveTask(this)" oninput="cfUp(this)" onchange="cfUp(this)"><header class="cf-h"><span class="cf-ic">${IC.work}</span><div><h2>New task</h2><p>Something your students finish by a date.</p></div>${dlgX}</header><div class="cf-b">
 <section><h3><i>1</i>What is the task?</h3><input name="t" class="cf-t" required maxlength="80" placeholder="e.g. Chapter 3 quiz" autocomplete="off"><div class="cf-ch">${['Quiz','Homework','Project','Lab report','Reading'].map(x=>`<button type="button" class="cfc" onclick="cfT(this,'${x}')">${x}</button>`).join('')}</div><details class="cf-more"><summary>Add instructions (optional)</summary><textarea name="x" rows="3" placeholder="What should students do?"></textarea></details></section>
 <section><h3><i>2</i>Which class?</h3><div class="cf-ch">${CL.map(c=>`<label class="cfc"><input type="radio" name="c" value="${e(c)}" ${c==cl?'checked':''}><span>${e(c)}</span></label>`).join('')}</div></section>
-<section><h3><i>3</i>When is it due?</h3><div class="cf-ch">${_qd.map(q=>`<button type="button" class="cfc" data-d="${ymd(q[1])}" onclick="cfD(this)">${q[0]}</button>`).join('')}</div><div class="cf-r"><label>Date<input type="date" name="d" required value="${ymd(1)}"></label><label>Time <small>(optional)</small><input type="time" name="m"></label></div><p class="cf-hint" id="cfd"></p></section>
-<section><h3><i>4</i>How important is it?</h3><div class="cf-pr">${[['High','Do first','er'],['Medium','Normal','wn'],['Low','When free','in']].map(q=>`<label class="cfp ${q[2]}"><input type="radio" name="p" value="${q[0]}" ${q[0]==LAST.p?'checked':''}><b>${q[0]}</b><small>${q[1]}</small></label>`).join('')}</div></section>
+<section><h3><i>3</i>When is it due?</h3><div class="cf-ch">${_qd.map(q=>`<button type="button" class="cfc" data-d="${ymd(q[1])}" onclick="cfD(this)">${q[0]}</button>`).join('')}</div><div class="cf-r"><label>Date<input type="date" name="d" required value="${ymd(qDue())}"></label><label>Time <small>(optional)</small><input type="time" name="m"></label></div><p class="cf-hint" id="cfd"></p></section>
+<section><h3><i>4</i>How important is it?</h3><div class="cf-pr">${[['High','Do first','er'],['Medium','Normal','wn'],['Low','When free','in']].map(q=>`<label class="cfp ${q[2]}"><input type="radio" name="p" value="${q[0]}" ${q[0]==(qPri()||LAST.p)?'checked':''}><b>${q[0]}</b><small>${q[1]}</small></label>`).join('')}</div></section>
 <label class="cfs"><input type="checkbox" name="k" checked><i></i><span><b>Students hand this in</b><small id="cfk"></small></span></label>
 <details class="cf-more"><summary>Checklist and attachments (optional)</summary><label>Checklist, one step per line<textarea name="s" rows="2" placeholder="Draft objectives&#10;Prepare materials"></textarea></label><div class="at"><b>Attachments</b><div id="atl">${atl()}</div><div class="act l"><button type="button" class="btn sm" onclick="$('#tf').click()">Upload file</button><input id="tf" type="file" multiple hidden onchange="tUp(this)"></div><details><summary>Choose from Resources</summary><div id="rp">${rpick()}</div></details></div></details>
 <div class="cfv" id="cfv"></div></div>${cfFoot('Add task')}</form>`);cfUp($('#dlg form'))}
@@ -2303,7 +2325,7 @@ const n=[f.ty.value,en&&'until '+en,al&&'all day',f.n.value.trim()].filter(Boole
 EV.push({id:Date.now(),t:f.t.value.trim(),d:f.d.value,tm:m?t12(m):'',n,ty:f.ty.value});
 const a=new Date(f.d.value+'T00:00'),b=new Date();S.sd=f.d.value;S.cm=(a.getFullYear()-b.getFullYear())*12+a.getMonth()-b.getMonth();$('#dlg').close();toast('Event added to your Calendar.');conf();render();return false}
 function helpP(){const H=[['How do I add a class and its students?','Open Classes, tap + New class, then open the class and use the Students tab to add names.'],['Task or event, which one do I use?','Use a task when students must finish something by a date. Use an event for something you attend at a time, like a meeting or exam.'],['How do I track submissions?','Create a task with "Students hand this in" turned on. Open the task and tap each student who has submitted.'],['How do I take attendance?','Open a class, choose the Attendance tab, pick the date, and tap P, L, or A for each student.'],['How do I attach a file or link to a task?','When creating a task, open "Checklist and attachments". Upload a file or pick something from Resources.'],['What triggers a notification?','Overdue and due-soon tasks, pending submissions, and upcoming events. You can switch each type off in Settings.'],['How do I archive a task?','Open the task and tap Archive. Find it again in More, then Archive.'],['Who can see my notes and class lists?','Only you. Notes and class lists stay private to your account.']];
-return bkB()+`<div class="hd"><div><h1>Help</h1><p class="mu">Quick answers. Type a word to search.</p></div></div><div class="rbar"><input type="search" placeholder="Search help, e.g. attendance" oninput="hq(this.value)" aria-label="Search help"></div><div class="card" id="hl">${H.map(h=>`<details class="fq"><summary>${h[0]}</summary><p>${h[1]}</p></details>`).join('')}</div>`}
+return bkB()+`<div class="hd"><div><h1>Help</h1><p class="mu">Quick answers. Type a word to search.</p></div></div><div class="card"><h2>New to TASKLY?</h2><p class="mu sm">Take a one-minute guided tour of the app.</p><button class="btn pr" onclick="tourStart(true)">Start the tour</button></div><div class="rbar"><input type="search" placeholder="Search help, e.g. attendance" oninput="hq(this.value)" aria-label="Search help"></div><div class="card" id="hl">${H.map(h=>`<details class="fq"><summary>${h[0]}</summary><p>${h[1]}</p></details>`).join('')}</div>`}
 const hq=v=>{v=v.toLowerCase();document.querySelectorAll('#hl .fq').forEach(d=>d.hidden=!d.textContent.toLowerCase().includes(v))};
 function STP(t){const a=t.steps||[];if(!a.length)return '';const d=a.filter(x=>x.dn).length;return `<h3>Checklist</h3><div class="bl"><span>${d} of ${a.length} done</span></div><div class="bar"><i style="width:${Math.round(d/a.length*100)}%;background:var(--pr)"></i></div>${a.map((x,i)=>`<label class="ck st"><input type="checkbox" ${x.dn?'checked':''} onchange="stog(${t.id},${i})"> ${e(x.t)}</label>`).join('')}`}
 const ATT=t=>(t.att||[]).length?`<h3>Attachments</h3>${t.att.map((a,i)=>`<a class="chip" href="#" onclick="openA(${t.id},${i});return false">${e(a.n)}</a>`).join('')}`:'';
@@ -2671,7 +2693,7 @@ function hAdm(){return `<div class="hd"><div><h1>Administration</h1><p class="mu
 <div class="g g2c"><div class="card"><h2>School year</h2><div class="row"><div class="fl mu">School</div><b>${e(SY.name)}</b></div><div class="row"><div class="fl mu">School year</div><b>${e(SY.year)}</b></div><div class="row"><div class="fl mu">Term</div><b>${e(SY.term)}</b></div><p class="mu sm">Set by the System Administrator.</p></div>
 <div class="card"><h2>Monitoring rules</h2><label>Show "Attendance Not Recorded" after<select onchange="HP.gp=+this.value;hSv();toast('Saved.')">${[5,10,15,20,30].map(m=>`<option value="${m}" ${HP.gp==m?'selected':''}>${m} minutes`).join('')}</select></label><p class="mu sm">A class needs a check-in within this time of its start. TASKLY never marks a teacher absent automatically.</p></div></div>
 <div class="g g2c"><div class="card"><h2>Data and access</h2><div class="row"><div class="fl mu">Source</div><b>${HR?'Connected':'Not connected'}</b></div><div class="row"><div class="fl mu">Teachers</div><b>${hN()}</b></div><div class="row"><div class="fl mu">Strands</div><b>${e(SG.join(', '))}</b></div><button class="btn sm" style="margin-top:12px" onclick="hLoad().then(()=>toast('Data refreshed.'))">Refresh data</button></div>
-${themeCard()}${soundCard()}${installCard()}${pwCard()}<div class="card"><h2>Privacy</h2><div class="row"><div class="fl">You see check-in status, task titles, deadlines, and counts.</div></div><div class="row"><div class="fl">You never see private notes, resources, or files.</div></div><div class="row"><div class="fl">Accounts and passwords belong to the System Administrator.</div></div></div></div>`}
+${themeCard()}${qolCard()}${soundCard()}${installCard()}${pwCard()}<div class="card"><h2>Privacy</h2><div class="row"><div class="fl">You see check-in status, task titles, deadlines, and counts.</div></div><div class="row"><div class="fl">You never see private notes, resources, or files.</div></div><div class="row"><div class="fl">Accounts and passwords belong to the System Administrator.</div></div></div></div>`}
 
 function hT(i){const t=hTe()[i];if(!t)return;const s=t.s,op=t.m.filter(x=>x.s!='Done').sort((a,b)=>dd(a.d)-dd(b.d)).slice(0,4),msg=`You have ${t.o} open task${t.o==1?'':'s'}${t.l?', '+t.l+' overdue':''}. Please review your task list.`;
 $('#dlg').innerHTML=`<form onsubmit="return false"><h2>${e(t.n)}</h2><p class="mu">${t.sg} strand. ${e(t.cl.join(', ')||'No classes yet')}</p>${[['First class today',t.tm],['Status',hPb(s)],['Tasks done',t.p+'%'],['Open tasks',t.o],['Overdue',t.l]].concat(t.upd?[['Last saved',hAgo(t.upd)]]:[]).map(r=>`<div class="row"><div class="fl mu">${r[0]}</div><b>${r[1]}</b></div>`).join('')}
@@ -2762,7 +2784,7 @@ function saSet(){const st=SST||{},c=r=>SA.filter(u=>u.role==r).length,ro=[['Teac
 return `<div class="hd"><div><h1>Settings</h1><p class="mu">School-wide settings, system status, and your own security.</p></div></div>
 <div class="g g2c"><div class="card"><h2>School</h2><form class="fm" onsubmit="return saSchool(this)"><label>School name<input name="n" value="${e(SY.name)}" maxlength="80" required></label><label>School year<input name="y" value="${e(SY.year)}" maxlength="12" required></label><label>Term<select name="t">${['1st Semester','2nd Semester','Summer'].map(x=>`<option ${SY.term==x?'selected':''}>${x}`).join('')}</select></label><button class="btn pr">Save school settings</button></form></div>
 <div class="card"><h2>System status</h2>${ro.map(r=>`<div class="row"><div class="fl mu">${r[0]}</div><b>${r[1]}</b></div>`).join('')}<button class="btn sm" style="margin-top:12px" onclick="saLoad().then(()=>toast('Status refreshed.'))">Refresh</button></div></div>
-<div class="g g2c">${themeCard()}${soundCard()}${installCard()}${pwCard()}<div class="card"><h2>Recent admin activity</h2>${SAU.slice(0,8).map(a=>`<div class="row"><div class="fl"><b>${e(a.action)}</b> ${e(a.target||'')}<div class="mu">${e(a.actor_name||'')}, ${hAgo(a.created_at)}</div></div></div>`).join('')||'<p class="mu sm">Nothing yet.</p>'}</div></div>`}
+<div class="g g2c">${themeCard()}${qolCard()}${soundCard()}${installCard()}${pwCard()}<div class="card"><h2>Recent admin activity</h2>${SAU.slice(0,8).map(a=>`<div class="row"><div class="fl"><b>${e(a.action)}</b> ${e(a.target||'')}<div class="mu">${e(a.actor_name||'')}, ${hAgo(a.created_at)}</div></div></div>`).join('')||'<p class="mu sm">Nothing yet.</p>'}</div></div>`}
 function saSchool(f){saSchool2(f);return false}
 async function saSchool2(f){const v={name:f.n.value.trim(),year:f.y.value.trim(),term:f.t.value};if(saLive()){const{error}=await sb.from('system_settings').upsert({key:'school',value:v,updated_at:new Date().toISOString()});if(error){toast('Could not save: '+error.message);return}}Object.assign(SY,v);toast('School settings saved.');render()}
 
@@ -3051,7 +3073,7 @@ const first=!seeded;seeded=true;if(first||ids(ANN)==ids(prev))return;
 if(!S.u||S.u.role!='teacher')return;
 const had=new Set(prev.map(x=>String(x.id))),nw=ANN.filter(x=>!had.has(String(x.id))&&!S.rd['a'+x.id]),
 idle=S.v=='home'&&!document.querySelector('dialog[open]')&&!/^(INPUT|TEXTAREA|SELECT)$/.test((document.activeElement||{}).tagName||'');
-if(idle)render();if(nw.length){ring();show(nw[0],nw.length-1)}};
+if(idle)render();if(nw.length){ring();if(qAb()){show(nw[0],nw.length-1);try{SFX.play('notify')}catch(x){}}}};
 function live(){const on=S.u&&S.u.role=='teacher'&&UID&&sb;
 if(!on){if(ch){try{sb.removeChannel(ch)}catch(x){}ch=null}seeded=false;return}
 if(ch||!sb.channel)return;
@@ -3076,6 +3098,111 @@ if(!d.open)d.showModal();const i=d.querySelector('input[name=n]');if(i){i.focus(
 window.rRenSave=(f,id)=>{const x=RS.find(r=>r.id==id);if(!x)return false;let n=f.n.value.trim().replace(/\s+/g,' ');if(!n){toast('Type a name.');return false}
 if(x.k=='file'){const ext=(x.t.match(/\.[^.\s]{1,6}$/)||[''])[0];if(ext&&!/\.[^.\s]{1,6}$/.test(n))n+=ext}
 x.t=n;$('#dlg').close();toast('Renamed.');render();return false};
+})();
+/* ===== Preferences (quality of life) and the guided tour ===== */
+(()=>{
+const QK='tk-q',TF='tk-tour-1-';let Q={};try{Q=JSON.parse(localStorage.getItem(QK)||'{}')||{}}catch(x){}
+const osRm=()=>matchMedia('(prefers-reduced-motion:reduce)').matches,rmEff=()=>Q.rm===undefined?osRm():!!Q.rm,rmApply=()=>document.documentElement.classList.toggle('rm',rmEff());
+rmApply();
+window.qSet=(k,v)=>{Q[k]=v;try{localStorage.setItem(QK,JSON.stringify(Q))}catch(x){}if(k=='rm')rmApply();render()};
+window.qStart=r=>r=='teacher'&&['home','work','cal','cls'].indexOf(Q.start)>-1?Q.start:NAV[r][0][0];
+window.qDue=()=>[0,1,3,7].indexOf(+Q.due)>-1?+Q.due:1;
+window.qPri=()=>['High','Medium','Low'].indexOf(Q.pri)>-1?Q.pri:'';
+window.qAb=()=>Q.ab!==0;
+const dl=(name,mime,text)=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:mime}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},600)},
+cell=v=>{v=String(v==null?'':v);if(/^[=+\-@]/.test(v))v="'"+v;return /[",\r\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+window.qCsv=()=>{const rows=[['Title','Class','Due date','Due time','Priority','Status','Archived']].concat(T.map(t=>[t.t,t.c,t.d,t.tm||'',t.p,t.s,'No']),AR.map(t=>[t.t,t.c,t.d,t.tm||'',t.p,t.s,'Yes']));dl('taskly-tasks-'+ymd(0)+'.csv','text/csv;charset=utf-8','\ufeff'+rows.map(r=>r.map(cell).join(',')).join('\r\n'));toast('Tasks downloaded.')};
+window.qBackup=()=>{dl('taskly-backup-'+ymd(0)+'.json','application/json',snap());toast('Backup downloaded.')};
+window.qolCard=()=>{const tc=S.u&&S.u.role=='teacher',
+seg=(k,o,cur)=>`<div class="fts2 qseg" role="group">${o.map(x=>`<button class="${String(cur)==String(x[0])?'on':''}" onclick="qSet('${k}',${typeof x[0]=='number'?x[0]:"'"+x[0]+"'"})">${x[1]}</button>`).join('')}</div>`,
+sw=(k,l,on)=>`<label class="sw2 qsw"><span>${l}</span><input type="checkbox" ${on?'checked':''} onchange="qSet('${k}',this.checked?1:0)"></label>`;
+return`<div class="card"><h2>Preferences</h2>${tc?`<p class="mu sm">Open TASKLY on</p>${seg('start',[['home','Home'],['work','Work'],['cal','Calendar'],['cls','Classes']],Q.start||'home')}<p class="mu sm">New tasks are due</p>${seg('due',[[0,'Today'],[1,'Tomorrow'],[3,'In 3 days'],[7,'Next week']],qDue())}<p class="mu sm">New tasks start as</p>${seg('pri',[['','Last used'],['High','High'],['Medium','Medium'],['Low','Low']],qPri())}${sw('ab','Banner for new announcements',qAb())}`:''}${sw('rm','Reduce motion',rmEff())}</div><div class="card"><h2>Help and backup</h2><p class="mu sm">New to TASKLY? Take the guided tour again any time.</p><button class="btn pr" onclick="tourStart(true)">Replay the tutorial</button>${tc?`<p class="mu sm" style="margin-top:16px">Keep a copy of your work on this device.</p><div class="act l"><button class="btn sm" onclick="qCsv()">Download tasks (CSV)</button><button class="btn sm" onclick="qBackup()">Download full backup</button></div>`:''}</div>`};
+
+/* ---------- guided tour ---------- */
+const sleep=ms=>new Promise(r=>setTimeout(r,ms)),vis=el=>!!el&&el.getClientRects().length>0&&getComputedStyle(el).visibility!='hidden',
+first=(...ss)=>{for(const s of ss)for(const el of document.querySelectorAll(s))if(vis(el))return el;return null},
+nm=()=>((S.u&&S.u.name)||'').split(' ')[0]||'there';
+const STEPS=r=>{const n=nm();return({
+teacher:[
+{v:'home',t:'Welcome to TASKLY, '+n+'!',x:"Let's take a one-minute tour so you know where everything is. Tap Next to move on, or Skip any time. You can replay it from Settings."},
+{v:'home',s:()=>first('.hs-hero'),t:'Your day at a glance',x:"Home shows your next class, what's due, and messages from your SHS Head. Check it first thing each morning."},
+{v:'home',s:()=>first('.dk-s'),cap:230,t:'Sticky notes on your desk',x:"Tasks due soon show up as sticky notes. Tap a note to open it, or tap its circle to mark it done."},
+{v:'home',s:()=>first('.dkf'),req:1,t:'Your class folders',x:"Each class you add gets a folder. Tap one to see its students, schedule and tasks."},
+{v:'home',s:()=>first('.bplus','.fab','.btn.dsk'),g:1,t:'Add anything with +',x:"Tap + to add a task, event, class, note or link. Try Task first: give it a title, pick the class and set a due date."},
+{v:'work',s:()=>first('.fts','.wst','.page .hd'),t:'Work: all your tasks',x:"Every task is listed here. Use the filters to see what's to do, in progress or done. Tap a task to open its notebook, change its status and write private notes."},
+{v:'cal',s:()=>first('.calw','.cg'),cap:280,t:'Calendar',x:"See deadlines and events by day. Tap a day to see what's on it. Use + Event to add a meeting or an exam."},
+{v:'cls',s:()=>first('.page .hd .btn'),t:'Classes: set up each class',x:"Add every class you teach with its days and time. Then open a class to add students, take attendance and track who has submitted."},
+{v:'more',s:()=>first('.page .card'),cap:220,t:'More: your extras',x:"AI Assistant helps with lesson plans, quizzes and rubrics. Notes and Resources keep your private writing, files and links. Archive, Mini-Games, Settings and Help are here too."},
+{v:'more',s:()=>first('.top .bell'),g:1,t:'Notifications',x:"Deadlines and announcements from your SHS Head land here. New announcements also slide in at the top of your screen. Tap one to read it."},
+{v:'more',s:()=>first('.mmx'),g:1,t:'The ... menu',x:"On your phone, the ... button opens AI Assistant, Notes, Resources, Settings and Help from any page."},
+{v:'more',s:()=>first('.th-btn'),g:1,t:'Light or dark',x:"Switch between light and dark mode any time. More choices are in Settings."},
+{v:'home',t:"You're ready!",x:"Start with three steps: 1. Add your class. 2. Add your students. 3. Create your first task. If you get stuck, open Help in More."}],
+head:[
+{v:'ov',t:'Welcome, '+n+'!',x:"This short tour shows how to keep track of teachers, classes and tasks across the school. Tap Next, or Skip any time."},
+{v:'ov',s:()=>first('.hs-hero'),t:'Overview',x:"Today's picture for the whole school: who has checked in, what's coming up and what needs your attention."},
+{v:'tch',s:()=>first('.fts2','.hq'),t:'Teachers',x:"See who is teaching now, who hasn't checked in and who needs verification. Use the filters to focus, then tap a teacher to see their classes."},
+{v:'cls',s:()=>first('.fts2'),t:'Classes',x:"Browse every class by strand: ICT, STEM, HUMSS, ABM and GAS."},
+{v:'tsk',s:()=>first('.fts'),t:'Tasks',x:"All teacher tasks in one place. Check Overdue and Due this week to know who to follow up with."},
+{v:'tsk',s:()=>first('.mmx'),g:1,t:'The ... menu',x:"On your phone, Reports, Announcements and Administration are in this menu."},
+{v:'rep',s:()=>first('.page .act .btn','.page .btn'),t:'Reports',x:"Download a teacher summary or the full task list as a CSV file for meetings and records."},
+{v:'ann',s:()=>first('.page .hd .btn','.page .btn'),t:'Announcements',x:"Post a message to all teachers or to one strand. Teachers see it right away as a banner on their screen and in their notifications."},
+{v:'adm',s:()=>first('.page .g .card','.page .card'),cap:220,t:'Administration',x:"Check the school year and choose how many minutes after a class starts it shows Attendance Not Recorded. You can also change your password here."},
+{v:'ov',t:"You're all set",x:"Replay this tour any time from Administration. Thank you for keeping an eye on the school!"}],
+sysadmin:[
+{v:'acc',t:'Welcome, '+n+'!',x:"You manage who can use TASKLY. This short tour shows you how. Tap Next, or Skip any time."},
+{v:'acc',s:()=>first('.page .hd .btn','.page .btn'),t:'Create accounts',x:"Tap + New account, enter the person's name and school email, choose their role and share the temporary password. They pick their own password when they first sign in."},
+{v:'acc',s:()=>first('.fts2'),t:'Find and manage accounts',x:"Filter by role, then open an account to reset its password, disable it or delete it."},
+{v:'rol',s:()=>first('.sa-rg','.page .card'),cap:240,t:'Roles',x:"A quick guide to what Teachers, SHS Heads and Administrators can do, with a shortcut to see who holds each role."},
+{v:'set',s:()=>first('.fm','.page .card'),cap:240,t:'School settings',x:"Set the school name, school year and term that everyone sees. Don't forget to tap Save."},
+{v:'acc',t:"You're all set",x:"Replay this tour any time from Settings."}]}[r])||[]};
+let TR=null,auto=false,rt=0;
+window.tourWill=()=>{const r=S.u&&S.u.role;if(!r||!UID||TR||!STEPS(r).length)return false;try{if(localStorage.getItem(TF+UID))return false}catch(x){}return !(r=='teacher'&&PF.tour)};
+function cap(r,c){return c&&r.height>c?{left:r.left,top:r.top,width:r.width,height:c,right:r.right,bottom:r.top+c}:r}
+function place(r){const o=TR.o,h=o.querySelector('.tr-hole'),a=o.querySelector('.tr-arr'),c=o.querySelector('.tr-card'),vw=innerWidth,vh=innerHeight,m=12,cw=Math.min(340,vw-2*m);
+c.style.width=cw+'px';const ch=c.offsetHeight;
+if(!r){h.classList.remove('has');h.style.cssText='left:'+vw/2+'px;top:'+vh/2+'px;width:0;height:0';a.classList.remove('on');c.style.left=(vw-cw)/2+'px';c.style.top=Math.max(m,(vh-ch)/2)+'px';return}
+const p=8,ht=r.top-p,hh=r.height+2*p;h.classList.add('has');h.style.cssText='left:'+(r.left-p)+'px;top:'+ht+'px;width:'+(r.width+2*p)+'px;height:'+hh+'px';
+const ah=48,g=6,need=ch+ah+2*g,below=vh-(ht+hh)-m,above=ht-m,up=below>=need||(above<need&&below>=above),cx=r.left+r.width/2;let ct;
+if(up){a.style.top=(ht+hh+g)+'px';ct=ht+hh+g+ah+g}else{a.style.top=(ht-g-ah)+'px';ct=ht-g-ah-g-ch}
+a.classList.toggle('up',up);a.style.left=Math.min(vw-44,Math.max(8,cx-18))+'px';a.classList.add('on');
+c.style.left=Math.min(vw-cw-m,Math.max(m,cx-cw/2))+'px';c.style.top=Math.min(vh-ch-m,Math.max(m,ct))+'px'}
+function paint(st,i,r){const o=TR.o,n=TR.steps.length,last=i==n-1;
+o.querySelector('.tr-k').textContent='Step '+(i+1)+' of '+n;o.querySelector('h3').textContent=st.t;o.querySelector('p').textContent=st.x;o.querySelector('.tr-pg i').style.width=((i+1)/n*100)+'%';
+o.querySelector('.tr-back').hidden=i==0;o.querySelector('.tr-skip').hidden=last;o.querySelector('.tr-next').textContent=last?'Finish':'Next';
+o.querySelector('.tr-add').hidden=!(last&&S.u&&S.u.role=='teacher'&&!CL.length);
+place(r?cap(r,st.cap):null);o.querySelector('.tr-card').classList.remove('sw');o.querySelector('.tr-next').focus({preventScroll:true})}
+function pinned(el){for(let e=el;e&&e!==document.body;e=e.parentElement){const p=getComputedStyle(e).position;if(p=='fixed'||p=='sticky')return true}return false}
+async function settle(el){let p='';for(let k=0;k<22;k++){const r=el.getBoundingClientRect(),s=[r.left,r.top,r.width,r.height].map(Math.round).join();if(s===p)return r;p=s;await sleep(70)}return el.getBoundingClientRect()}
+async function show(i,d){const t=TR,tk=++t.tok,st=t.steps[i];if(!st)return end(true);t.i=i;
+t.o.querySelector('.tr-card').classList.add('sw');
+if(st.v&&(S.v!==st.v||S.mv)){S.v=st.v;S.an=0;S.cn=null;S.mv=null;S.nid=null;S.gm=null;closeAll();render();scrollTo(0,0);await sleep(180)}else await sleep(40);
+let el=null;if(st.s){for(let k=0;k<14&&!el;k++){el=st.s();if(!el)await sleep(70);if(TR!==t||t.tok!==tk)return}}
+if(TR!==t||t.tok!==tk)return;
+if(st.s&&!el&&st.req){t.steps.splice(i,1);return show(d>0?i:Math.max(0,i-1),d)}
+let r=null;if(el){const b=el.getBoundingClientRect(),vh=innerHeight,h=Math.min(b.height,st.cap||b.height);if(!pinned(el)&&(b.top<84||b.top+h>vh-24))scrollBy(0,b.top-(h>vh*.5?96:Math.max(84,(vh-h)/2)));r=await settle(el);if(TR!==t||t.tok!==tk)return}
+paint(st,i,r)}
+function go(d){if(!TR)return;const n=TR.i+d;if(n>=TR.steps.length)return end(true);if(n<0)return;show(n,d)}
+function repSoon(){clearTimeout(rt);rt=setTimeout(()=>{if(!TR)return;const st=TR.steps[TR.i];if(!st)return;const el=st.s?st.s():null;place(el?cap(el.getBoundingClientRect(),st.cap):null)},140)}
+function key(e){if(!TR)return;const k=e.key;
+if(k=='Escape'){e.preventDefault();e.stopPropagation();end(false)}
+else if(k=='ArrowRight'){e.preventDefault();e.stopPropagation();go(1)}
+else if(k=='ArrowLeft'){e.preventDefault();e.stopPropagation();go(-1)}
+else if(k=='Tab'){const b=[...TR.o.querySelectorAll('button:not([hidden])')];if(!b.length)return;e.preventDefault();e.stopPropagation();b[(b.indexOf(document.activeElement)+(e.shiftKey?-1:1)+b.length)%b.length].focus()}
+else e.stopPropagation()}
+function end(fin){if(!TR)return;const t=TR;TR=null;clearTimeout(rt);document.removeEventListener('keydown',key,true);removeEventListener('resize',repSoon);
+t.o.classList.add('out');setTimeout(()=>t.o.remove(),300);
+try{localStorage.setItem(TF+UID,'1')}catch(x){}if(S.u&&S.u.role=='teacher')PF.tour=1;
+S.v=t.from.v;S.mv=t.from.mv;S.an=0;S.cn=null;S.nid=null;S.gm=null;closeAll();render();scrollTo(0,0);
+if(t.auto&&!fin&&S.u&&S.u.role=='teacher'&&!CL.length)setTimeout(tcWelcome,500)}
+window.tourStart=(force,isAuto)=>{if(TR||!S.u||!UID)return;const all=STEPS(S.u.role);if(!all.length)return;
+const steps=all.filter(s=>!s.g||vis(s.s()));
+const o=document.createElement('div');o.id='tour';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');o.setAttribute('aria-label','Guided tour');
+o.innerHTML='<div class="tr-hole"></div><div class="tr-arr"><svg width="36" height="48" viewBox="0 0 36 48" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 3v36M6 27l12 15 12-15" stroke="#0b2a1d" stroke-width="10"/><path d="M18 3v36M6 27l12 15 12-15" stroke="#ffe45e" stroke-width="5.5"/></svg></div><div class="tr-card sw" tabindex="-1" aria-live="polite"><div class="tr-k"></div><h3></h3><p></p><div class="tr-pg"><i></i></div><div class="tr-act"><button type="button" class="tr-skip">Skip tour</button><button type="button" class="btn tr-back">Back</button><button type="button" class="btn tr-add" hidden>Add my first class</button><button type="button" class="btn pr tr-next">Next</button></div></div>';
+TR={i:0,steps,from:{v:S.v,mv:S.mv},tok:0,auto:!!isAuto,o};document.body.appendChild(o);
+o.querySelector('.tr-skip').onclick=()=>end(false);o.querySelector('.tr-back').onclick=()=>go(-1);o.querySelector('.tr-next').onclick=()=>go(1);o.querySelector('.tr-add').onclick=()=>{end(true);newClass()};
+document.addEventListener('keydown',key,true);addEventListener('resize',repSoon);show(0,1)};
+function tryAuto(n){if(TR||!tourWill())return;if(document.querySelector('dialog[open]')||S.gate||!S.u){if(n<14)setTimeout(()=>tryAuto(n+1),800);return}tourStart(false,true)}
+{const _r=render;render=function(){const x=_r.apply(this,arguments);if(!S.u||!UID)auto=false;else if(!auto&&tourWill()){auto=true;setTimeout(()=>tryAuto(0),1200)}if(TR)repSoon();return x}}
 })();
 </script>
 </body>

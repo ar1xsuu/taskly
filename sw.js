@@ -1,9 +1,10 @@
 // TASKLY service worker: keeps the app shell available offline.
-// Bump VERSION when you change files that must be re-downloaded (fonts, vendor, icons).
-const VERSION = 'taskly-v1';
+// Bump VERSION (and the ?v= number on the icons in manifest.webmanifest) when you replace the icons, fonts or vendor files.
+const VERSION = 'taskly-v2';
 const CORE = [
   "./",
   "index.html",
+  "config.js",
   "manifest.webmanifest",
   "vendor/supabase.js",
   "logo.png",
@@ -34,5 +35,9 @@ self.addEventListener('fetch', e => {
       .catch(() => caches.match('index.html').then(m => m || caches.match('./'))));
     return;
   }
-  e.respondWith(caches.match(r).then(hit => hit || fetch(r).then(res => { if (res.ok) { const cp = res.clone(); caches.open(VERSION).then(c => c.put(r, cp)); } return res; })));
+  // Files load from the cache instantly and are refreshed in the background, so changed icons or fonts show up on the next visit.
+  e.respondWith(caches.open(VERSION).then(c => c.match(r).then(hit => {
+    const net = fetch(r).then(res => { if (res.ok) c.put(r, res.clone()); return res; }).catch(() => hit || Response.error());
+    return hit || net;
+  })));
 });
