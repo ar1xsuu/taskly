@@ -113,7 +113,6 @@ dialog form{display:grid;gap:12px}.act{display:flex;gap:8px;justify-content:flex
 #pop{left:0;right:0;top:auto;bottom:0;width:auto;border-radius:16px 16px 0 0;padding:12px 12px calc(16px + env(safe-area-inset-bottom))}
 dialog{margin:auto auto 0;width:100%;border-radius:16px 16px 0 0;max-width:100%}
 .lg{grid-template-columns:1fr}.lb{padding:28px 24px}.lb ul{display:none}.lb h1{font-size:24px}}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 ::view-transition-old(root),::view-transition-new(root){animation-duration:.35s;animation-timing-function:ease-in-out}
 
 :root{--pr:#166534;--pl:#e3f2e8;--bg:#f3f8f4;--bd:#d6e5da;--tx:#13251a;--mu:#587063;--g2:#15803d}
@@ -233,7 +232,6 @@ h3{font:600 13px "Source Sans 3",system-ui,sans-serif;color:var(--mu);margin:14p
 :where(html[data-theme="dark"]) .emp::before{color:var(--prt)}
 
 @media(max-width:820px){.g2c{grid-template-columns:minmax(0,1fr)}#pop.show{animation:up .25s ease-out}.hero{padding:18px}.hero h1{font-size:24px}}
-@media(prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition:none!important}}
 
 .side{z-index:3}
 .side .nv:nth-of-type(1){--c:#d3f0dc}.side .nv:nth-of-type(2){--c:#dcf2c9}.side .nv:nth-of-type(3){--c:#c6ebe0}.side .nv:nth-of-type(4){--c:#e3f4cf}.side .nv:nth-of-type(5){--c:#cdeed4}.side .nv:nth-of-type(6){--c:#d0ecea}.side .nv:nth-of-type(7){--c:#e0f1d8}
@@ -1470,7 +1468,6 @@ html body dialog::backdrop{background:rgba(11,42,29,.34)!important;-webkit-backd
 @keyframes lg-in{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
 html body .an :is(.card,.note,.hd,.hm-ix,.hm-wk,.hm-qa,.wst button,.fts){animation:lg-in .6s var(--ease) both}
 html body .an .wst button:nth-child(2){animation-delay:.05s}html body .an .wst button:nth-child(3){animation-delay:.1s}html body .an .wst button:nth-child(4){animation-delay:.15s}
-@media(prefers-reduced-motion:reduce){html body *{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}}
 html body .main{background:none}
 html body h1,html body h2,html body h3{font-family:var(--hf);letter-spacing:-.025em}
 html body h1{background:none;padding:0;box-shadow:none}
@@ -2059,9 +2056,7 @@ html[data-theme="dark"] .nbp select{background:rgba(255,255,255,.85);border-colo
 html[data-theme="dark"] .gct small{color:#587064}
 /* desktop: the global margin reset was pinning every dialog to the top-left corner; centre them again */
 @media(min-width:821px){html body dialog{margin:auto}}
-/* ===== batch 5: reduce motion and the guided tour ===== */
-html.rm *,html.rm *::before,html.rm *::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
-html.rm .annbar .annbar-p{animation-duration:8s!important}
+/* ===== batch 5: the guided tour ===== */
 #tour{position:fixed;inset:0;z-index:95;font-family:Figtree,system-ui,sans-serif;animation:trFade .3s both}
 #tour.out{animation:trOut .25s both}
 @keyframes trFade{from{opacity:0}}
@@ -2090,6 +2085,87 @@ html body .tr-card .btn:not(.pr){background:#fff;border:1px solid rgba(11,42,29,
 html body .fts2.qseg{flex-wrap:wrap;overflow:visible;padding:2px 0 8px}
 html body .sw2.qsw{padding:12px 0;border-top:1px solid var(--bd);font-weight:700}
 html body .qseg+.qsw{margin-top:8px}
+
+/* ===== v10: attendance history, Excel export, meetings, notes tools, performance ===== */
+/* tappable student names and attendance counts */
+.sn-b{border:0;background:none;padding:2px 0;font:inherit;font-weight:600;color:inherit;text-align:left;cursor:pointer;border-radius:6px;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.sn-b:hover{text-decoration:underline;text-underline-offset:3px}
+.sn-b::after{content:"\203A";margin-left:7px;color:var(--mu);font-weight:700;opacity:.8}
+.sat button{font:700 12px Figtree,sans-serif;min-width:24px;text-align:center;border:0;border-radius:6px;padding:1px 5px;cursor:pointer;line-height:1.5}
+.sat button.P{background:var(--okb);color:var(--ok)}.sat button.L{background:var(--wnb);color:var(--wn)}.sat button.A{background:var(--erb);color:var(--er)}
+:where(html[data-theme="dark"]) .sat button.P{color:var(--okt)}:where(html[data-theme="dark"]) .sat button.L{color:var(--wnt)}:where(html[data-theme="dark"]) .sat button.A{color:var(--ert)}
+.sat button:hover{filter:brightness(.96)}
+@media(max-width:520px){.sat button{min-width:20px;padding:1px 4px}}
+@media(pointer:coarse){.sat button{min-width:32px;min-height:30px}}
+/* history dialog (students and teachers) */
+.ah-sum{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ah-t{display:grid;gap:3px;justify-items:center;align-content:center;padding:10px 4px;border:1.5px solid var(--bd);border-radius:12px;background:var(--sf);font:inherit;color:var(--tx);cursor:pointer}
+.ah-t b{font:700 22px/1 Figtree,system-ui,sans-serif}
+.ah-t span{font-size:12.5px;color:var(--mu);font-weight:600}
+.ah-t.P b{color:var(--ok)}.ah-t.L b{color:var(--wn)}.ah-t.A b{color:var(--er)}.ah-t.N b{color:var(--mu)}
+:where(html[data-theme="dark"]) .ah-t.P b{color:var(--okt)}:where(html[data-theme="dark"]) .ah-t.L b{color:var(--wnt)}:where(html[data-theme="dark"]) .ah-t.A b{color:var(--ert)}
+.ah-t.on{border-color:var(--pr);background:var(--pl)}
+.ah-t.R{cursor:default}
+.ah-note{margin:0;font-size:13.5px;color:var(--mu);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ah-m{margin:16px 0 2px;font-size:13px;color:var(--mu);font-weight:700}
+.ah-r{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--bd)}
+.ah-m+.ah-r{border-top:0}
+.ah-d{flex:1;min-width:0;display:grid;gap:1px}.ah-d small{color:var(--mu);font-size:12.5px}
+.hx-rec{display:grid;gap:10px;padding:12px 14px;border:1.5px dashed var(--bd);border-radius:14px}
+.hx-rec h3{margin:0;font-size:14px}
+.hx-rec .row2{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.hx-rec .row2 label{flex:1;min-width:150px}
+.hx-last{margin:0;font-size:12.5px;color:var(--mu)}
+/* meetings */
+.mt-f{display:grid;gap:12px}.mt-f[hidden]{display:none}
+.mtc{display:flex;gap:14px;align-items:center;margin:14px 0 4px;padding:12px 14px;border:1.5px solid var(--bd);border-radius:14px;background:var(--sf);color:var(--tx)}
+.mtc-d{flex:none;width:54px;text-align:center;border-radius:10px;background:var(--pl);color:var(--pr);padding:6px 0}
+.mtc-d small{display:block;font-size:12px;font-weight:700;text-transform:none}
+.mtc-d b{display:block;font:700 22px/1.1 Figtree,system-ui,sans-serif}
+:where(html[data-theme="dark"]) .mtc-d{color:var(--prt)}
+.mtc-t{display:grid;gap:1px;min-width:0}.mtc-t span{color:var(--mu);font-size:14px}
+.mt-a{flex-wrap:wrap;justify-content:flex-start;margin-top:10px}
+.mt-l{margin:0;font-size:13.5px;color:var(--pr);font-weight:600}
+:where(html[data-theme="dark"]) .mt-l{color:var(--prt)}
+.hp .mt-l{color:#0b2a1d}
+.pn-mt{margin:4px 0 0;font-size:13.5px;font-weight:700}
+.sw2 small.mu{display:block;font-weight:400}
+.mt-f label small{display:inline;font-weight:400;color:var(--mu)}
+/* notes: formatting bar, checklists, highlights, dividers */
+.nx-wrap{position:sticky;top:58px;z-index:4;margin:8px 0}
+.nx-wrap>.tbr{position:static;margin:0}
+@media(max-width:820px){.nx-wrap{top:calc(56px + env(safe-area-inset-top))}}
+.nx-tb .nx-b{display:inline-flex;align-items:center;justify-content:center;min-width:36px}
+@media(min-width:821px){.nx-tb{flex-wrap:wrap;overflow:visible}}
+.nx-tb .nx-b svg{width:19px;height:19px}
+.nx-s{flex:none;width:1px;align-self:stretch;margin:4px 3px;background:var(--bd)}
+.nx-p{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:8px 10px;margin-top:6px;border:1px solid var(--bd);border-radius:10px;background:var(--sf)}
+.nx-p[hidden]{display:none}
+.nx-sw{width:30px;height:30px;border-radius:50%;border:2px solid var(--bd);cursor:pointer;padding:0}
+.nx-dv{display:grid;gap:2px;justify-items:center;min-width:88px;padding:6px 10px;border:1px solid var(--bd);border-radius:8px;background:none;color:var(--mu);font-size:12.5px;cursor:pointer}
+.nx-dv hr{width:100%;margin:6px 0!important}
+.nx-dv:hover{background:var(--pl)}
+.ed ul.tdl{list-style:none;padding-left:0}
+.ed ul.tdl ul.tdl{margin-left:6px}
+.ed ul.tdl>li{position:relative;padding-left:34px;min-height:28px}
+.ed ul.tdl>li::before{content:"";position:absolute;left:6px;top:5px;width:18px;height:18px;box-sizing:border-box;border:2px solid #7d8c84;border-radius:5px;background:#fff;cursor:pointer}
+.ed ul.tdl>li[data-c="1"]::before{border-color:#1f8a57;background:#1f8a57 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/13px no-repeat}
+.ed ul.tdl>li[data-c="1"]:not(:has(ul)){color:#7d8c84;text-decoration:line-through;text-decoration-thickness:1.5px}
+.ed mark,.ed span[style*="background-color: rgb"]{color:inherit;border-radius:4px;padding:1px 2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+mark.hl-y,.nx-sw.hl-y{background:#fff3a3}mark.hl-g,.nx-sw.hl-g{background:#c6efd3}mark.hl-b,.nx-sw.hl-b{background:#cde2ff}mark.hl-p,.nx-sw.hl-p{background:#ffd1df}mark.hl-o,.nx-sw.hl-o{background:#ffd9b3}
+.ed hr.dv-s,.nx-dv hr.dv-s{border:0;border-top:2px solid #7d8c84;opacity:.55}
+.ed hr.dv-d,.nx-dv hr.dv-d{border:0;border-top:2px dashed #7d8c84}
+.ed hr.dv-t,.nx-dv hr.dv-t{border:0;border-top:4px dotted #7d8c84}
+.ed hr{margin:14px 0}
+.nx-pg{display:inline-block;margin-left:8px;padding:1px 8px;border-radius:99px;background:#d9f2e4;color:#17734b;font-size:12px;font-weight:700}
+/* lite mode: lighter visuals for older phones */
+html.lite *,html.lite *::before,html.lite *::after{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important;text-shadow:none!important}
+html.lite dialog,html.lite #pop,html.lite .fab,html.lite .annbar{border:1px solid var(--bd)}
+.pf-st{margin:10px 0 6px}
+/* announcement sticky note stays light in every theme */
+.annd .btn:not(.pr){background:#ffffffcc;color:#14281f;border-color:#0b2a1d22}
+.annd .mtc{background:#ffffffb8;color:#14281f;border-color:#0b2a1d26}
+.annd .mtc-t span{color:#4b5d54}
+.annd .mtc-d{background:#e1f4ea;color:#17734b}
 </style>
 <script src="vendor/supabase.js"></script>
 </head>
@@ -2159,11 +2235,11 @@ const upd=()=>$('#tl').innerHTML=list();
 
 function pickDay(q){S.sd=q;render();if(matchMedia('(max-width:820px)').matches){const a=$('#agd');if(a)a.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'})}}
 const cmv=n=>{S.cdir=n>0?'r':n<0?'l':'t';S.cm=n?S.cm+n:0;render();S.cdir=''};
-function cnt(){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;document.querySelectorAll('.stat b,.mini b').forEach(el=>{const v=+el.textContent;if(!v)return;const t0=performance.now();(function f(t){const p=Math.min((t-t0)/800,1);el.textContent=Math.round(v*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(t0)})}
-const FN='Aira Bea Carlo Dino Ella Franz Gwen Hugo Iris Jun Kyla Leo'.split(' '),LN='Aquino Bautista Castro Dizon Estrada Flores Galang Herrera Ignacio Javier Lim Navarro'.split(' '),mk=(n,o)=>Array.from({length:n},(_,i)=>FN[i%12]+' '+LN[(i*5+(i/12|0)+o)%12]).sort(),K={},AT={},t12=s=>{const[h,m]=s.split(':');return ((h%12)||12)+':'+m+' '+(h<12?'AM':'PM')},mins=t=>{const m=String(t).match(/(\d+):(\d+) ?(AM|PM)/i);return m?(m[1]%12+(m[3].toUpperCase()=='PM'?12:0))*60+ +m[2]:0};
+function cnt(){if(matchMedia('(prefers-reduced-motion:reduce)').matches||(window.qLite&&qLite()))return;document.querySelectorAll('.stat b,.mini b').forEach(el=>{const v=+el.textContent;if(!v)return;const t0=performance.now();(function f(t){const p=Math.min((t-t0)/800,1);el.textContent=Math.round(v*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)})(t0)})}
+const FN='Aira Bea Carlo Dino Ella Franz Gwen Hugo Iris Jun Kyla Leo'.split(' '),LN='Aquino Bautista Castro Dizon Estrada Flores Galang Herrera Ignacio Javier Lim Navarro'.split(' '),mk=(n,o)=>Array.from({length:n},(_,i)=>FN[i%12]+' '+LN[(i*5+(i/12|0)+o)%12]).sort(),K={},AT={},AM={},t12=s=>{const[h,m]=s.split(':');return ((h%12)||12)+':'+m+' '+(h<12?'AM':'PM')},mins=t=>{const m=String(t).match(/(\d+):(\d+) ?(AM|PM)/i);return m?(m[1]%12+(m[3].toUpperCase()=='PM'?12:0))*60+ +m[2]:0};
 const oc=i=>{S.cn=CL[i];S.ct='s';S.an=1;render();scrollTo(0,0)},adt=n=>{S.ao=n?S.ao+n:0;render()},rmS=i=>{K[S.cn].stu.splice(i,1);toast('Student removed.');render()},setSt=(id,v)=>{const t=T.find(x=>x.id==id);if(!t||t.s==v)return;t.s=v;tk(id);if(!matchMedia('(prefers-reduced-motion:reduce)').matches)document.querySelectorAll('#dlg .stmp,#dlg .nbt2 .on').forEach(x=>x.style.animation='upop .35s');render()};
-function mk2(i,v){const key=S.cn+'|'+ymd(S.ao),s=K[S.cn].stu[i],m=AT[key]=AT[key]||{};m[s]==v?delete m[s]:m[s]=v;render()}
-function allP(){const key=S.cn+'|'+ymd(S.ao),m=AT[key]=AT[key]||{};K[S.cn].stu.forEach(s=>m[s]='P');render()}
+function mk2(i,v){const key=S.cn+'|'+ymd(S.ao),s=K[S.cn].stu[i],m=AT[key]=AT[key]||{};m[s]==v?delete m[s]:m[s]=v;AM[key]=Date.now();render()}
+function allP(){const key=S.cn+'|'+ymd(S.ao),m=AT[key]=AT[key]||{};K[S.cn].stu.forEach(s=>m[s]='P');AM[key]=Date.now();render()}
 function addS(f){K[S.cn].stu.push(f.s.value.trim());K[S.cn].stu.sort();toast('Student added.');render();$('[name=s]').focus();return false}
 function newClass(){$('#dlg').innerHTML=`<form onsubmit="return saveClass(this)"><h2>New class</h2><label>Class name<input name="n" required placeholder="e.g. 11 STEM B"></label><label>Subject<input name="s" required placeholder="e.g. General Mathematics"></label><label>Room<input name="r" placeholder="e.g. Room 204"></label><div class="tb2"><label>Starts<input type="time" name="a" required value="08:00"></label><label>Ends<input type="time" name="b" required value="09:00"></label></div><h3>Class days</h3><div class="days">${[1,2,3,4,5,6].map(d=>`<label class="ck"><input type="checkbox" name="d${d}" ${d%2&&d<6?'checked':''}> ${DY[d]}</label>`).join('')}</div><div class="act"><button type="button" class="btn" onclick="$('#dlg').close()">Cancel</button><button class="btn pr">Create class</button></div></form>`;$('#dlg').showModal()}
 function saveClass(f){const n=f.n.value.trim();if(CL.some(c=>c.toLowerCase()==n.toLowerCase())){toast('That class already exists.');return false}
@@ -2204,7 +2280,7 @@ if(n<0&&P.o)a.push({k:'o'+t.id,t:`${t.t} is ${-n} day${n<-1?'s':''} overdue.`,s:
 else if(n>=0&&n<=1&&P.d)a.push({k:'d'+t.id+n,t:`${t.t} is due ${n?'tomorrow':'today'}.`,s:t.c,id:t.id,ty:'wn'});
 if(t.col&&p>0&&n<=3&&P.s)a.push({k:'s'+t.id+p,t:`${p} students have not submitted ${t.t}.`,s:t.c,id:t.id,ty:'in'})});
 if(P.e)EV.forEach(v=>{const n=dd(v.d);if(n>=0&&n<=2)a.push({k:'e'+v.id,t:`${v.t}: ${lab(v.d)}${v.tm?', '+v.tm:''}.`,s:'Event',ty:'in'})});
-ANN.forEach(x=>a.push({k:'a'+x.id,t:(x.kind=='reminder'?'Reminder from the SHS Head: ':'SHS Head: ')+x.title,s:(x.kind=='reminder'?'Reminder':'Announcement')+', tap to read',ty:'in'}));return a}
+ANN.forEach(x=>a.push({k:'a'+x.id,t:(x.kind=='reminder'?'Reminder from the SHS Head: ':'SHS Head: ')+x.title,s:(x.kind=='reminder'?'Reminder':x.mt?'Meeting on '+mtShort(x.mt):'Announcement')+', tap to read',ty:'in'}));return a}
 const unread=()=>NF().filter(n=>!S.rd[n.k]).length;
 function bell(){const q=$('#pop'),a=NF().sort((x,y)=>ORD[x.ty]-ORD[y.ty]);q.classList.add('wide');
 q.innerHTML=`<div class="ph"><b>Notifications</b><button class="btn sm" onclick="readAll()">Mark all read</button></div>`+(a.map(n=>`<button class="nt ${S.rd[n.k]?'':'un'}" onclick="nopen('${n.k}',${n.id||0})"><span class="dt ${n.ty}"></span><span><b>${e(n.t)}</b><br><span class="mu">${e(n.s)}</span></span></button>`).join('')||empty('All caught up','No notifications right now.'));
@@ -2219,8 +2295,8 @@ const SB_URL='https://hqmbboqecfmcviqsfutv.supabase.co',SB_KEY='eyJhbGciOiJIUzI1
 const sb=window.supabase?supabase.createClient(SB_URL,SB_KEY):null;
 let UID=null,svT,last='';
 const fill=(a,v)=>{a.length=0;a.push(...(v||[]))},fillO=(o,v)=>{Object.keys(o).forEach(k=>delete o[k]);Object.assign(o,v||{})};
-const snap=()=>JSON.stringify({T,C,CL,K,AT,EV,NO,RS,AR,rd:S.rd,np:S.np,pf:PF},(k,v)=>k=='sub'?undefined:v);
-function load(d){fill(T,d.T);fill(C,d.C);fill(CL,d.CL);fill(EV,d.EV);fill(NO,d.NO);fill(RS,d.RS);fill(AR,d.AR);fillO(K,d.K);fillO(AT,d.AT);S.rd=d.rd||{};fillO(PF,d.pf);S.np=d.np||{o:1,d:1,s:1,e:1};[...T,...AR].forEach(t=>{t.sm=t.sm||{};wrap(t)});C.forEach(c=>{if(c.at&&c.atd!=ymd(0)){delete c.at;delete c.atd}});last=snap()}
+const snap=()=>JSON.stringify({T,C,CL,K,AT,AM,EV,NO,RS,AR,rd:S.rd,np:S.np,pf:PF},(k,v)=>k=='sub'?undefined:v);
+function load(d){fill(T,d.T);fill(C,d.C);fill(CL,d.CL);fill(EV,d.EV);fill(NO,d.NO);fill(RS,d.RS);fill(AR,d.AR);fillO(K,d.K);fillO(AT,d.AT);fillO(AM,d.AM);S.rd=d.rd||{};fillO(PF,d.pf);S.np=d.np||{o:1,d:1,s:1,e:1};[...T,...AR].forEach(t=>{t.sm=t.sm||{};wrap(t)});C.forEach(c=>{if(c.at&&c.atd!=ymd(0)){delete c.at;delete c.atd}});last=snap()}
 async function enter(user){const{data:pr}=await sb.from('profiles').select('role,full_name').eq('id',user.id).maybeSingle();
 if(!pr){await sb.auth.signOut();render();$('#err').textContent='Your account has no profile yet. Contact the System Administrator.';return}
 if(user.user_metadata&&user.user_metadata.must_change){S.gate=user;S.u=null;UID=null;render();return}
@@ -2246,9 +2322,14 @@ ${r=='teacher'&&CL.length?`<div class="card"><h2>My classes</h2><div class="pf3-
 <button class="btn" style="margin-top:14px" onclick="out()">Sign out</button>`}
 async function chPw(f){const p=f.p.value;if(p.length<8){toast('Use at least 8 characters.');return}if(!sb){toast('Password changes need an internet connection.');return}const{error}=await sb.auth.updateUser({password:p});toast(error?'Could not change password.':'Password changed.');f.reset()}
 
-const txt=h=>new DOMParser().parseFromString(h||'','text/html').body.textContent.trim(),OKT=['B','I','U','S','STRIKE','STRONG','EM','DIV','P','BR','UL','OL','LI','H1','H2','H3','H4','DEL','CODE','PRE','BLOCKQUOTE','HR','TABLE','THEAD','TBODY','TR','TH','TD'],NN=()=>NO.find(x=>x.id==S.nid);
+const txt=h=>new DOMParser().parseFromString(h||'','text/html').body.textContent.trim(),OKT=['B','I','U','S','STRIKE','STRONG','EM','DIV','P','BR','UL','OL','LI','H1','H2','H3','H4','DEL','CODE','PRE','BLOCKQUOTE','HR','TABLE','THEAD','TBODY','TR','TH','TD','MARK'],NN=()=>NO.find(x=>x.id==S.nid);
 let nsT;
-function clean(h){const d=new DOMParser().parseFromString(h||'','text/html');d.body.querySelectorAll('*').forEach(n=>{if(!OKT.includes(n.tagName))n.replaceWith(...n.childNodes);else[...n.attributes].forEach(a=>n.removeAttribute(a.name))});return d.body.innerHTML}
+function clean(h){const d=new DOMParser().parseFromString(h||'','text/html');d.body.querySelectorAll('*').forEach(n=>{if(!OKT.includes(n.tagName)){const hc=n.tagName=='SPAN'&&window.hlOf?hlOf(n.getAttribute('style')):'';if(hc){const m=d.createElement('mark');m.className='hl-'+hc;m.append(...n.childNodes);n.replaceWith(m)}else n.replaceWith(...n.childNodes);return}const k={},t=n.tagName,cl=n.classList;
+if(t=='UL'&&cl.contains('tdl'))k.class='tdl';
+if(t=='LI'&&n.parentNode&&n.parentNode.classList&&n.parentNode.classList.contains('tdl'))k['data-c']=n.getAttribute('data-c')=='1'?'1':'0';
+if(t=='MARK'){const c=[...cl].find(x=>/^hl-[ygbpo]$/.test(x));k.class=c||'hl-y'}
+if(t=='HR'){const c=[...cl].find(x=>/^dv-[sdt]$/.test(x));if(c)k.class=c}
+[...n.attributes].forEach(a=>n.removeAttribute(a.name));Object.keys(k).forEach(q=>n.setAttribute(q,k[q]))});return d.body.innerHTML}
 const TB=[['bold','B','tb-b'],['italic','I','tb-i'],['underline','U','tb-u'],['strikeThrough','S','tb-s'],['H','Heading','tb-h'],['insertUnorderedList','Bullets',''],['insertOrderedList','Numbers',''],['removeFormat','Clear','']];
 document.addEventListener('selectionchange',()=>document.querySelectorAll('.tbr [data-c]').forEach(b=>{try{b.classList.toggle('on',b.dataset.c!='H'&&document.queryCommandState(b.dataset.c))}catch(x){}}));
 const nlist=()=>{const q=S.nq.toLowerCase();return NO.filter(n=>!q||((n.t||'')+' '+txt(n.h)).toLowerCase().includes(q)).sort((a,b)=>(b.pin||0)-(a.pin||0)||(b.u||0)-(a.u||0)).map(n=>`<div class="card pg" role="button" tabindex="0" onclick="openN(${n.id})"><h2>${e(n.t||'Untitled')}${n.pin?' ★':''}</h2><p>${e(txt(n.h)||'No text yet')}</p><span class="mu">${n.c?e(n.c)+', ':''}${lab(n.d)}</span></div>`).join('')||`<div class="card">${empty('No notes found','Tap + New note to start writing.')}</div>`};
@@ -2286,7 +2367,7 @@ fmtD=s=>new Date(s+'T00:00').toLocaleDateString('en',{weekday:'long',month:'shor
 dlgOpen=h=>{const d=$('#dlg');d.innerHTML=h;d.showModal();const t=d.querySelector('.cf-t');if(t&&matchMedia('(pointer:fine)').matches)t.focus()},
 dlgX=`<button type="button" class="x cf-x" onclick="$('#dlg').close()" aria-label="Close">×</button>`,
 cfFoot=b=>`<footer class="cf-f"><button type="button" class="btn" onclick="$('#dlg').close()">Cancel</button><button class="btn pr">${b}</button></footer>`,
-conf=()=>{if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;for(let i=0;i<24;i++){const s=document.createElement('i');s.className='cnf';s.style.cssText='--x:'+((Math.random()-.5)*380)+'px;--y:'+(-140-Math.random()*240)+'px;--r:'+(Math.random()*720)+'deg;left:50%;top:62%;background:'+['#ffe45e','#9fe0bd','#a9d4f5','#ffd9c9','#f7b9c4'][i%5];document.body.appendChild(s);setTimeout(()=>s.remove(),1100)}};
+conf=()=>{if(matchMedia('(prefers-reduced-motion:reduce)').matches||(window.qLite&&qLite()))return;for(let i=0;i<24;i++){const s=document.createElement('i');s.className='cnf';s.style.cssText='--x:'+((Math.random()-.5)*380)+'px;--y:'+(-140-Math.random()*240)+'px;--r:'+(Math.random()*720)+'deg;left:50%;top:62%;background:'+['#ffe45e','#9fe0bd','#a9d4f5','#ffd9c9','#f7b9c4'][i%5];document.body.appendChild(s);setTimeout(()=>s.remove(),1100)}};
 $('#dlg').addEventListener('click',ev=>{const d=ev.currentTarget;if(ev.target!==d)return;const r=d.getBoundingClientRect();if(ev.clientX<r.left||ev.clientX>r.right||ev.clientY<r.top||ev.clientY>r.bottom)d.close()});
 function qa(){const L=[['newTask()',IC.work,'Task','Something with a deadline. Students can hand it in.','#ffe45e'],['newEvent()',IC.cal,'Event','Something at a set time, like a meeting or exam.','#9fe0bd'],['newClass()',IC.cls,'Class','A class you teach, with its schedule.','#a9d4f5'],['newNote()',IC2.notes,'Note','Private writing, just for you.','#ffd9c9'],['linkDlg()',IC2.res,'Link','Save a website or slides link for later.','#d4e6fb']];
 dlgOpen(`<div class="cf cf-hub"><header class="cf-h"><div><h2>What would you like to add?</h2><p>Pick one. You can edit it later.</p></div>${dlgX}</header><div class="cf-b"><div class="hub">${L.map(t=>`<button class="hub-t" style="--tc:${t[4]}" onclick="$('#dlg').close();${t[0]}"><span class="ti">${t[1]}</span><b>${t[2]}</b><small>${t[3]}</small></button>`).join('')}</div><p class="cf-hint">Not sure? A <b>task</b> is something to finish by a date. An <b>event</b> is something to attend at a time.</p></div></div>`)}
@@ -2324,7 +2405,7 @@ function saveEvent(f){const al=f.al.checked,m=al?'':f.m.value,du=Number(f.du.val
 const n=[f.ty.value,en&&'until '+en,al&&'all day',f.n.value.trim()].filter(Boolean).join(', ');
 EV.push({id:Date.now(),t:f.t.value.trim(),d:f.d.value,tm:m?t12(m):'',n,ty:f.ty.value});
 const a=new Date(f.d.value+'T00:00'),b=new Date();S.sd=f.d.value;S.cm=(a.getFullYear()-b.getFullYear())*12+a.getMonth()-b.getMonth();$('#dlg').close();toast('Event added to your Calendar.');conf();render();return false}
-function helpP(){const H=[['How do I add a class and its students?','Open Classes, tap + New class, then open the class and use the Students tab to add names.'],['Task or event, which one do I use?','Use a task when students must finish something by a date. Use an event for something you attend at a time, like a meeting or exam.'],['How do I track submissions?','Create a task with "Students hand this in" turned on. Open the task and tap each student who has submitted.'],['How do I take attendance?','Open a class, choose the Attendance tab, pick the date, and tap P, L, or A for each student.'],['How do I attach a file or link to a task?','When creating a task, open "Checklist and attachments". Upload a file or pick something from Resources.'],['What triggers a notification?','Overdue and due-soon tasks, pending submissions, and upcoming events. You can switch each type off in Settings.'],['How do I archive a task?','Open the task and tap Archive. Find it again in More, then Archive.'],['Who can see my notes and class lists?','Only you. Notes and class lists stay private to your account.']];
+function helpP(){const H=[['How do I add a class and its students?','Open Classes, tap + New class, then open the class and use the Students tab to add names.'],['Task or event, which one do I use?','Use a task when students must finish something by a date. Use an event for something you attend at a time, like a meeting or exam.'],['How do I track submissions?','Create a task with "Students hand this in" turned on. Open the task and tap each student who has submitted.'],['How do I take attendance?','Open a class, choose the Attendance tab, pick the date, and tap P, L, or A for each student.'],['How do I see the dates a student was late or absent?','Open a class and tap the student\'s name, or tap their present, late or absent number in the Students tab. You get every date, and you can open any day to change it.'],['How do I download attendance as Excel?','In a class, open the Attendance tab and tap Download Excel. You can also use Attendance (Excel) on the Classes page or in More, then Settings. The file has a summary, a register for each class, and a full log.'],['How do I add a meeting to my calendar?','When the SHS Head posts a meeting, open the announcement from your notifications or Home and tap Add to my calendar.'],['How do I attach a file or link to a task?','When creating a task, open "Checklist and attachments". Upload a file or pick something from Resources.'],['What triggers a notification?','Overdue and due-soon tasks, pending submissions, and upcoming events. You can switch each type off in Settings.'],['How do I archive a task?','Open the task and tap Archive. Find it again in More, then Archive.'],['Who can see my notes and class lists?','Only you. Notes and class lists stay private to your account.']];
 return bkB()+`<div class="hd"><div><h1>Help</h1><p class="mu">Quick answers. Type a word to search.</p></div></div><div class="card"><h2>New to TASKLY?</h2><p class="mu sm">Take a one-minute guided tour of the app.</p><button class="btn pr" onclick="tourStart(true)">Start the tour</button></div><div class="rbar"><input type="search" placeholder="Search help, e.g. attendance" oninput="hq(this.value)" aria-label="Search help"></div><div class="card" id="hl">${H.map(h=>`<details class="fq"><summary>${h[0]}</summary><p>${h[1]}</p></details>`).join('')}</div>`}
 const hq=v=>{v=v.toLowerCase();document.querySelectorAll('#hl .fq').forEach(d=>d.hidden=!d.textContent.toLowerCase().includes(v))};
 function STP(t){const a=t.steps||[];if(!a.length)return '';const d=a.filter(x=>x.dn).length;return `<h3>Checklist</h3><div class="bl"><span>${d} of ${a.length} done</span></div><div class="bar"><i style="width:${Math.round(d/a.length*100)}%;background:var(--pr)"></i></div>${a.map((x,i)=>`<label class="ck st"><input type="checkbox" ${x.dn?'checked':''} onchange="stog(${t.id},${i})"> ${e(x.t)}</label>`).join('')}`}
@@ -2490,11 +2571,11 @@ uNc=n=>uCol[Number.isInteger(n.col)?n.col:n.id%6];
 function more(){if(S.mv=='notes')return notes();if(S.mv=='res')return resP();if(S.mv=='arc')return arcP();if(S.mv=='set')return setP();if(S.mv=='help')return helpP();if(S.mv=='games')return gamesP();if(S.mv=='ai')return aiP();
 return `<h1>More</h1><p class="mu">Tools and settings that don't need their own tab.</p><div class="card">${[['res','Resources','Teaching materials and links',RS.length],['notes','Notes','Your private notes',NO.length],['arc','Archive','Archived tasks',AR.length],['ai','AI Assistant','Lesson plans, quizzes, rubrics'],['games','Mini-Games','Roulette, quiz show, team maker, and more'],['set','Settings','Profile and notifications'],['help','Help','Guides and support']].map(m=>`<button class="nv tile" onclick="mv('${m[0]}')"><span class="ti">${IC2[m[0]]||IC2.help}</span><span class="fl"><b>${m[1]}</b><span class="mu">${m[2]}</span></span>${m[3]!=null?`<span class="b mu">${m[3]}</span>`:''}</button>`).join('')}<button class="nv" onclick="out()"><b>Sign out</b></button></div>`}
 /* Notes */
-const nCard=n=>`<div class="sn" style="--c:${uNc(n)};--r:${(n.id%5-2)*.7}deg" role="button" tabindex="0" onclick="openN(${n.id})"><i class="tp"></i><h2>${e(n.t||'Untitled')}${n.pin?'<em>Pinned</em>':''}</h2><p>${e(txt(n.h)||'No text yet')}</p><span>${n.c?e(n.c)+', ':''}${lab(n.d)}</span></div>`;
+const nCard=n=>`<div class="sn" style="--c:${uNc(n)};--r:${(n.id%5-2)*.7}deg" role="button" tabindex="0" onclick="openN(${n.id})"><i class="tp"></i><h2>${e(n.t||'Untitled')}${n.pin?'<em>Pinned</em>':''}</h2><p>${e(txt(n.h)||'No text yet')}</p><span>${n.c?e(n.c)+', ':''}${lab(n.d)}${nxProg(n)}</span></div>`;
 const nl2=()=>{const q=(S.nq||'').toLowerCase(),f=S.nc||'all',a=NO.filter(n=>(f=='all'||n.c==f)&&(!q||((n.t||'')+' '+txt(n.h)).toLowerCase().includes(q))).sort((a,b)=>(b.pin||0)-(a.pin||0)||(b.u||0)-(a.u||0));return a.length?`<div class="snw">${a.map(nCard).join('')}</div>`:`<div class="card">${empty('No notes found','Tap New note to start writing.')}</div>`};
 function notes(){NO.forEach(n=>{if(n.h==null){n.h=e(n.b||'');delete n.b}});if(S.nid&&NN())return notePg();
 return bkB()+`<div class="hd"><div><h1>Notes</h1><p class="mu">Private to you. Administrators cannot see your notes.</p></div><button class="btn pr" onclick="newNote()">+ New note</button></div><div class="nbar"><input type="search" placeholder="Search notes" value="${e(S.nq||'')}" oninput="S.nq=this.value;$('#nl').innerHTML=nl2()" aria-label="Search notes"><div class="fts2">${['all',...CL].map(c=>`<button class="${(S.nc||'all')==c?'on':''}" onclick="S.nc='${e(c)}';render()">${c=='all'?'All':e(c)}</button>`).join('')}</div></div><div id="nl">${nl2()}</div>`}
-function notePg(){const n=NN();return `<button class="bk" onclick="closeN()">‹ All notes</button><div class="ntp nbp" style="--c:${uNc(n)}"><div class="ntm"><select onchange="NN().c=this.value;qs()" aria-label="Class"><option value="">No class</option>${CL.map(c=>`<option ${c==n.c?'selected':''}>${e(c)}</option>`).join('')}</select><span class="ncl">${uCol.map((c,i)=>`<button style="background:${c}" onclick="NN().col=${i};qs();render()" aria-label="Color ${i+1}"></button>`).join('')}</span><span class="sp"></span><span class="mu" id="ns">Saved</span><button class="btn sm" onclick="pinN()">${n.pin?'Unpin':'Pin'}</button><button class="btn sm" onclick="delN()">Delete</button></div><input id="nt" class="ntt" placeholder="Title" value="${e(n.t)}" oninput="noteIn()"><div class="tbr">${TB.map(b=>`<button data-c="${b[0]}" class="${b[2]}" onmousedown="event.preventDefault()" onclick="fx('${b[0]}')">${b[1]}</button>`).join('')}<button onmousedown="event.preventDefault()" onclick="document.execCommand('insertText',false,'☐ ');noteIn()">To-do</button></div><div id="ed" class="ed" contenteditable="true" data-ph="Start writing..." oninput="noteIn()" onpaste="event.preventDefault();document.execCommand('insertText',false,event.clipboardData.getData('text/plain'));noteIn()">${clean(n.h)}</div><p class="mu nwc" id="nwc">${txt(n.h).split(/\s+/).filter(Boolean).length} words</p></div>`}
+function notePg(){const n=NN();return `<button class="bk" onclick="closeN()">‹ All notes</button><div class="ntp nbp" style="--c:${uNc(n)}"><div class="ntm"><select onchange="NN().c=this.value;qs()" aria-label="Class"><option value="">No class</option>${CL.map(c=>`<option ${c==n.c?'selected':''}>${e(c)}</option>`).join('')}</select><span class="ncl">${uCol.map((c,i)=>`<button style="background:${c}" onclick="NN().col=${i};qs();render()" aria-label="Color ${i+1}"></button>`).join('')}</span><span class="sp"></span><span class="mu" id="ns">Saved</span><button class="btn sm" onclick="pinN()">${n.pin?'Unpin':'Pin'}</button><button class="btn sm" onclick="delN()">Delete</button></div><input id="nt" class="ntt" placeholder="Title" value="${e(n.t)}" oninput="noteIn()">${nxBar()}<div id="ed" class="ed" contenteditable="true" data-ph="Start writing..." oninput="noteIn()" onpaste="event.preventDefault();document.execCommand('insertText',false,event.clipboardData.getData('text/plain'));noteIn()">${clean(n.h)}</div><p class="mu nwc" id="nwc">${txt(n.h).split(/\s+/).filter(Boolean).length} words</p></div>`}
 {const _ni=noteIn;noteIn=function(){_ni();const w=$('#nwc'),d=$('#ed');if(w&&d)w.textContent=txt(d.innerHTML).split(/\s+/).filter(Boolean).length+' words'}}
 /* Archive */
 function arcP(){return bkB()+`<div class="hd"><div><h1>Archive</h1><p class="mu">Archived tasks stay out of Work and Calendar. Restore them anytime.</p></div></div>${AR.length?`<div class="arw">${AR.map((t,i)=>`<div class="arf" style="--r:${(i%3-1)*.8}deg"><span class="stamp">Archived</span><b>${e(t.t)}</b><small>${e(t.c)}, due ${lab(t.d)}</small><div class="act l"><button class="btn sm pr" onclick="rest(${t.id})">Restore</button><button class="btn sm" onclick="delT(${t.id})">Delete</button></div></div>`).join('')}</div>`:`<div class="card" style="margin-top:16px">${empty('Nothing archived','Archive finished tasks from their notebook page.')}</div>`}`}
@@ -2526,7 +2607,7 @@ async function aiSend(f,t){if(AI.busy||AI.typ){aiStop();return false}const inp=(
 try{const r=await fetch(API+'/api/assistant',{method:'POST',signal:AI.ac.signal,headers:{'Content-Type':'application/json',Authorization:'Bearer '+await tok()},body:JSON.stringify({mode:'chat',input:inp,history:AI.h.slice(0,-1)})}),d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'The assistant is not available. Make sure the Vercel function is deployed.');AI.busy=0;AI.h.push({role:'model',text:''});cxType(AI.h.length-1,d.text||'')}
 catch(x){AI.busy=0;AI.err=x.name=='AbortError'?'':x.message;AI.h.pop();cxUp();const q=$('.cxc textarea');if(q&&!q.value){q.value=inp;cxGrow(q)}}
 return false}
-function cxType(i,full){const fin=()=>{AI.typ=0;acSave();cxUp()};if(matchMedia('(prefers-reduced-motion:reduce)').matches){AI.h[i].text=full;return fin()}AI.typ=1;let n=0;const go=()=>{if(AI.stop||!$('#cxs')){AI.h[i].text=AI.stop?full.slice(0,n):full;return fin()}n=Math.min(full.length,n+Math.max(3,full.length/90|0));AI.h[i].text=full.slice(0,n);if(n<full.length){cxUp();requestAnimationFrame(go)}else{AI.h[i].text=full;fin()}};go()}
+function cxType(i,full){const fin=()=>{AI.typ=0;acSave();cxUp()};if(matchMedia('(prefers-reduced-motion:reduce)').matches||(window.qLite&&qLite())){AI.h[i].text=full;return fin()}AI.typ=1;let n=0;const go=()=>{if(AI.stop||!$('#cxs')){AI.h[i].text=AI.stop?full.slice(0,n):full;return fin()}n=Math.min(full.length,n+Math.max(3,full.length/90|0));AI.h[i].text=full.slice(0,n);if(n<full.length){cxUp();requestAnimationFrame(go)}else{AI.h[i].text=full;fin()}};go()}
 const aiNew=()=>{if(AI.busy||AI.typ)return;AI.h=[];AI.id=0;AI.err='';cxUp()},aiRegen=()=>{if(AI.busy||AI.typ)return;AI.h.pop();const u=AI.h.pop();if(u)aiSend(null,u.text)},aiCopy2=i=>uCopy(AI.h[i].text),
 aiSave2=i=>{NO.unshift({id:Date.now(),t:((AI.h[i-1]&&AI.h[i-1].text)||'AI draft').slice(0,50),h:md(AI.h[i].text,0,1),c:'',d:ymd(0),u:Date.now()});qs();toast('Saved. Find it in More, then Notes.')};
 {const _r=render;render=function(){_r();const s=$('#cxs');if(s)s.scrollTop=s.scrollHeight;const lg=document.querySelector('.calw .card .mu.sm');if(lg&&/Diamonds/.test(lg.textContent))lg.innerHTML='<span class="clg"><u class="er"></u>High or overdue</span><span class="clg"><u class="wn"></u>Medium</span><span class="clg"><u class="in"></u>Low</span><span class="clg"><u class="ok"></u>Done</span><span class="clg"><u class="ev"></u>Event</span>'}}
@@ -2541,7 +2622,7 @@ gp=()=>{const k=K[GX.c];if(!k)return[];const m=AT[GX.c+'|'+ymd(0)]||{};return k.
 gfm=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0'),
 gsel=()=>`<div class="gsel">${CL.map(c=>`<button class="${c==GX.c?'on':''}" data-c="${e(c)}" onclick="GX.c=this.dataset.c;GX.teams=[];render()">${e(c)}</button>`).join('')}<label class="gtg"><input type="checkbox" ${GX.sk?'checked':''} onchange="GX.sk=+this.checked;GX.teams=[];render()"> Skip students marked absent today</label></div>`,
 uSc=(i,v)=>{GX.sc[i].p=Math.max(0,GX.sc[i].p+v);render()};
-function gcf(){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const h=document.createElement('div');h.className='cfw';for(let i=0;i<54;i++){const p=document.createElement('i');p.style.cssText='--x:'+Math.random()*100+'vw;--r:'+(Math.random()*720-360)+'deg;--d:'+(1.3+Math.random()*1.5)+'s;--c:hsl('+Math.random()*360+' 85% 60%)';h.appendChild(p)}document.body.appendChild(h);setTimeout(()=>h.remove(),3000)}
+function gcf(){if(matchMedia('(prefers-reduced-motion:reduce)').matches||(window.qLite&&qLite()))return;const h=document.createElement('div');h.className='cfw';for(let i=0;i<54;i++){const p=document.createElement('i');p.style.cssText='--x:'+Math.random()*100+'vw;--r:'+(Math.random()*720-360)+'deg;--d:'+(1.3+Math.random()*1.5)+'s;--c:hsl('+Math.random()*360+' 85% 60%)';h.appendChild(p)}document.body.appendChild(h);setTimeout(()=>h.remove(),3000)}
 function rSpin(){const p=gp(),pool=GX.nr?p.filter(x=>!GX.used[GX.c+x]):p;if(!p.length)return toast('No students to pick from in this class.');if(!pool.length)return toast('Everyone has been picked. Tap Reset picks.');if(GX.sp)return;GX.sp=1;const w=pool[Math.random()*pool.length|0],el=$('#rwn'),b=$('#rsp');b.disabled=1;el.classList.remove('win');let i=0;const N=26,st=()=>{i++;el.textContent=i<N?p[Math.random()*p.length|0]:w;el.classList.toggle('spin',i<N);if(i<N)setTimeout(st,40+i*i*.5);else{GX.sp=0;GX.w=w;GX.used[GX.c+w]=1;el.classList.add('win');b.disabled=0;gcf();setTimeout(()=>{if($('#rwn'))render()},1500)}};st()}
 function mkT(){const p=gsh(gp());if(!p.length)return toast('No students to put in teams.');GX.teams=Array.from({length:Math.min(GX.n,p.length)},()=>[]);p.forEach((s,i)=>GX.teams[i%GX.teams.length].push(s));render()}
 const cpT=()=>navigator.clipboard.writeText(GX.teams.map((t,i)=>GN[i%GN.length]+': '+t.join(', ')).join('\n')).then(()=>toast('Teams copied.')),
@@ -2575,16 +2656,16 @@ cTd=([c,i])=>{const n=_nm(),a=mins(c.tm),z=mins(c.en),d=a-n,st=c.at?`<span class
 cCard=(n,i)=>{const k=K[n],s=cStat(n);return `<div class="cc2" style="--h:${cHue(n)}" role="button" tabindex="0" onclick="cOpen(${i})" onkeydown="if(event.key=='Enter')cOpen(${i})"><div class="cc2h"><b>${e(n)}</b><span>${e(k.sj)}, ${e(k.rm)}</span></div><div class="cc2s"><span><b>${s.n}</b>students</span><span><b>${s.tk}</b>open tasks</span><span><b>${s.pct==null?'-':s.pct+'%'}</b>here today</span></div><div class="cbar"><i style="width:${s.pct||0}%"></i></div><div class="cc2t">${C.filter(c=>c.n==n).map(c=>`<span class="b in">${DN(c.d)} ${c.tm}</span>`).join('')||'<span class="mu">No schedule yet</span>'}</div><div class="cc2a"><button class="btn sm" onclick="event.stopPropagation();cOpen(${i},'a')">Take attendance</button><button class="btn sm" onclick="event.stopPropagation();LAST.c=CL[${i}];newTask()">Add task</button></div></div>`},
 cFindR=()=>{const q=(S.sq||'').trim().toLowerCase();if(!q)return '';const h=CL.flatMap((n,ci)=>K[n].stu.filter(s=>s.toLowerCase().includes(q)).map(s=>[ci,s])).slice(0,8);return h.length?h.map(([ci,s])=>`<button class="cfh" data-s="${e(s)}" onclick="S.sq='';cOpen(${ci},'s',this.dataset.s)"><b>${e(s)}</b><span class="b in">${e(CL[ci])}</span></button>`).join(''):'<p class="mu" style="padding:10px 14px">No student found.</p>'},
 sAt=(n,s)=>{const c={P:0,L:0,A:0};Object.keys(AT).forEach(k=>{if(k.startsWith(n+'|')&&AT[k][s])c[AT[k][s]]++});return c},
-sRows=()=>{const n=S.cn,k=K[n],q=(S.sf||'').toLowerCase(),m=AT[n+'|'+ymd(0)]||{};return k.stu.map((s,i)=>[s,i]).filter(x=>!q||x[0].toLowerCase().includes(q)).map(([s,i])=>{const c=sAt(n,s),h=shu(s);return `<div class="row srw"><span class="av sm2" style="background:hsl(${h} 60% 86%);color:hsl(${h} 60% 24%)">${e(s[0])}</span><div class="fl">${e(s)}${m[s]?` <span class="b ${m[s]=='P'?'ok':m[s]=='L'?'wn':'er'}">${{P:'Present',L:'Late',A:'Absent'}[m[s]]} today</span>`:''}</div><span class="sat" title="Present, late, absent so far"><i class="P">${c.P}</i><i class="L">${c.L}</i><i class="A">${c.A}</i></span><button class="x" onclick="rmS(${i})" aria-label="Remove ${e(s)}">×</button></div>`}).join('')||empty('No students found','Add students above, or clear the search.')},
+sRows=()=>{const n=S.cn,k=K[n],q=(S.sf||'').toLowerCase(),m=AT[n+'|'+ymd(0)]||{};return k.stu.map((s,i)=>[s,i]).filter(x=>!q||x[0].toLowerCase().includes(q)).map(([s,i])=>{const c=sAt(n,s),h=shu(s);return `<div class="row srw"><span class="av sm2" style="background:hsl(${h} 60% 86%);color:hsl(${h} 60% 24%)">${e(s[0])}</span><div class="fl"><button type="button" class="sn-b" onclick="stuHist(${i})" title="See dates">${e(s)}</button>${m[s]?` <span class="b ${m[s]=='P'?'ok':m[s]=='L'?'wn':'er'}">${{P:'Present',L:'Late',A:'Absent'}[m[s]]} today</span>`:''}</div><span class="sat" title="Tap a number to see the dates"><button type="button" class="P" onclick="stuHist(${i},'P')" aria-label="${c.P} present. Show dates">${c.P}</button><button type="button" class="L" onclick="stuHist(${i},'L')" aria-label="${c.L} late. Show dates">${c.L}</button><button type="button" class="A" onclick="stuHist(${i},'A')" aria-label="${c.A} absent. Show dates">${c.A}</button></span><button class="x" onclick="rmS(${i})" aria-label="Remove ${e(s)}">×</button></div>`}).join('')||empty('No students found','Add students above, or clear the search.')},
 cTasks=(n,i)=>`<div class="act l" style="margin-bottom:8px"><button class="btn pr" onclick="LAST.c=CL[${i}];newTask()">+ New task for this class</button></div>${T.filter(t=>t.c==n).sort((a,b)=>(a.s=='Done')-(b.s=='Done')||a.d.localeCompare(b.d)).map(row).join('')||empty('No tasks yet','Create a task and pick this class.')}`;
 function cls(){if(S.cn&&K[S.cn])return clsd(S.cn);const td=TS().sort((x,y)=>mins(x[0].tm)-mins(y[0].tm));
-return `<div class="hd"><div><h1>Classes</h1><p class="mu">Open a class to take attendance, manage students and see its tasks.</p></div><button class="btn pr" onclick="newClass()">+ New class</button></div><div class="cfind"><input type="search" placeholder="Find a student in any class" value="${e(S.sq||'')}" oninput="S.sq=this.value;$('#cfr').innerHTML=cFindR()" aria-label="Find a student"><div id="cfr">${cFindR()}</div></div>${td.length?`<h3 class="cth">Today</h3><div class="tdy">${td.map(cTd).join('')}</div>`:''}<h3 class="cth">Your classes</h3><div class="cgr">${CL.map(cCard).join('')||`<div class="card">${empty('No classes yet','Tap + New class to add your first section.')}</div>`}</div>`}
+return `<div class="hd"><div><h1>Classes</h1><p class="mu">Open a class to take attendance, manage students and see its tasks.</p></div><div class="act"><button class="btn" onclick="exAtt()">Attendance (Excel)</button><button class="btn pr" onclick="newClass()">+ New class</button></div></div><div class="cfind"><input type="search" placeholder="Find a student in any class" value="${e(S.sq||'')}" oninput="S.sq=this.value;$('#cfr').innerHTML=cFindR()" aria-label="Find a student"><div id="cfr">${cFindR()}</div></div>${td.length?`<h3 class="cth">Today</h3><div class="tdy">${td.map(cTd).join('')}</div>`:''}<h3 class="cth">Your classes</h3><div class="cgr">${CL.map(cCard).join('')||`<div class="card">${empty('No classes yet','Tap + New class to add your first section.')}</div>`}</div>`}
 function clsd(n){const k=K[n],ss=C.map((c,i)=>[c,i]).filter(x=>x[0].n==n),i0=CL.indexOf(n),tk=cStat(n).tk;
 return `<button class="bk" onclick="go('cls')">‹ All classes</button><div class="hero ch"><div class="cdt"><div><h1>${e(n)}</h1><p>${e(k.sj)}, ${e(k.rm)}</p></div><button class="btn sm" onclick="editClass()">${uIc(UP.pn,15)} Edit class</button></div><div class="sess">${ss.map(([c,i])=>`<span>${DN(c.d)}, ${c.tm} to ${c.en}</span>${c.at?`<span class="b ok live">Started ${c.at}</span>`:c.d.includes(NOW())?`<button class="btn sm" onclick="start(${i})">Start class</button>`:''}`).join('')}</div></div><div class="fts">${[['s','Students',k.stu.length],['a','Attendance'],['t','Tasks',tk]].map(t=>`<button class="${S.ct==t[0]?'on':''}" onclick="S.ct='${t[0]}';render()">${t[1]}${t[2]!=null?`<small class="tn">${t[2]}</small>`:''}</button>`).join('')}</div><div class="card">${S.ct=='a'?att(n):S.ct=='t'?cTasks(n,i0):stu(n)}</div>`}
-function stu(n){const k=K[n];return `<form class="af" onsubmit="return addS(this)"><input name="s" placeholder="Add a student (full name)" required autocomplete="off"><button class="btn pr">Add student</button></form><details class="cf-more"><summary>Add many students at once</summary><textarea id="bulk" rows="4" placeholder="Paste names, one per line"></textarea><button class="btn sm pr" onclick="bulkS()">Add all</button></details><div class="sfb"><input type="search" placeholder="Search this class" value="${e(S.sf||'')}" oninput="S.sf=this.value;$('#sl').innerHTML=sRows()" aria-label="Search students"><span class="mu sm">${k.stu.length} students. Only you can see this list. Numbers show present, late, absent so far.</span></div><div id="sl">${sRows()}</div>`}
+function stu(n){const k=K[n];return `<form class="af" onsubmit="return addS(this)"><input name="s" placeholder="Add a student (full name)" required autocomplete="off"><button class="btn pr">Add student</button></form><details class="cf-more"><summary>Add many students at once</summary><textarea id="bulk" rows="4" placeholder="Paste names, one per line"></textarea><button class="btn sm pr" onclick="bulkS()">Add all</button></details><div class="sfb"><input type="search" placeholder="Search this class" value="${e(S.sf||'')}" oninput="S.sf=this.value;$('#sl').innerHTML=sRows()" aria-label="Search students"><span class="mu sm">${k.stu.length} students. Only you can see this list. Numbers show present, late, absent so far. Tap a name or a number to see the exact dates.</span></div><div id="sl">${sRows()}</div>`}
 function bulkS(){const k=K[S.cn];let a=0;$('#bulk').value.split('\n').map(x=>x.trim()).filter(Boolean).forEach(x=>{if(!k.stu.some(s=>s.toLowerCase()==x.toLowerCase())){k.stu.push(x);a++}});k.stu.sort();toast(a?a+' students added.':'No new names to add.');render()}
 function att(n){const k=K[n],m=AT[n+'|'+ymd(S.ao)]||{},c={P:0,L:0,A:0};k.stu.forEach(s=>m[s]&&c[m[s]]++);const tot=k.stu.length,u=tot-c.P-c.L-c.A,w=x=>tot?x/tot*100:0;
-return `<div class="atb"><div class="act"><button class="btn sm" onclick="adt(-1)" aria-label="Previous day">‹</button><b>${new Date(ymd(S.ao)+'T00:00').toLocaleDateString('en',{weekday:'short',month:'short',day:'numeric'})}</b><button class="btn sm" onclick="adt(1)" aria-label="Next day">›</button>${S.ao?'<button class="btn sm" onclick="adt(0)">Today</button>':''}</div><button class="btn sm pr" onclick="allP()">Mark all present</button></div><div class="abar"><i class="P" style="width:${w(c.P)}%"></i><i class="L" style="width:${w(c.L)}%"></i><i class="A" style="width:${w(c.A)}%"></i></div><div class="alg"><span class="P">Present ${c.P}</span><span class="L">Late ${c.L}</span><span class="A">Absent ${c.A}</span><span class="mu">Unmarked ${u}</span></div><div class="atb2"><label class="gtg"><input type="checkbox" ${S.au?'checked':''} onchange="S.au=this.checked;render()"> Show unmarked only</label><button class="btn sm" onclick="cpAbs()">Copy absent and late list</button></div>${k.stu.map((s,i)=>[s,i]).filter(x=>!S.au||!m[x[0]]).map(([s,i])=>`<div class="row"><div class="fl">${e(s)}</div><div class="seg">${[['P','Present'],['L','Late'],['A','Absent']].map(v=>`<button class="${v[0]}${m[s]==v[0]?' on':''}" title="${v[1]}" aria-label="${v[1]}" onclick="mk2(${i},'${v[0]}')">${v[0]}</button>`).join('')}</div></div>`).join('')||empty(tot?'Everyone is marked':'No students yet',tot?'Nice work. Turn off the filter to review.':'Add students in the Students tab first.')}`}
+return `<div class="atb"><div class="act"><button class="btn sm" onclick="adt(-1)" aria-label="Previous day">‹</button><b>${new Date(ymd(S.ao)+'T00:00').toLocaleDateString('en',{weekday:'short',month:'short',day:'numeric'})}</b><button class="btn sm" onclick="adt(1)" aria-label="Next day">›</button>${S.ao?'<button class="btn sm" onclick="adt(0)">Today</button>':''}</div><button class="btn sm pr" onclick="allP()">Mark all present</button></div><div class="abar"><i class="P" style="width:${w(c.P)}%"></i><i class="L" style="width:${w(c.L)}%"></i><i class="A" style="width:${w(c.A)}%"></i></div><div class="alg"><span class="P">Present ${c.P}</span><span class="L">Late ${c.L}</span><span class="A">Absent ${c.A}</span><span class="mu">Unmarked ${u}</span></div><div class="atb2"><label class="gtg"><input type="checkbox" ${S.au?'checked':''} onchange="S.au=this.checked;render()"> Show unmarked only</label><span class="act l"><button class="btn sm" onclick="cpAbs()">Copy absent and late list</button><button class="btn sm" onclick="exAtt(${CL.indexOf(n)})">Download Excel</button></span></div>${k.stu.map((s,i)=>[s,i]).filter(x=>!S.au||!m[x[0]]).map(([s,i])=>`<div class="row"><div class="fl"><button type="button" class="sn-b" onclick="stuHist(${i})" title="See dates">${e(s)}</button></div><div class="seg">${[['P','Present'],['L','Late'],['A','Absent']].map(v=>`<button class="${v[0]}${m[s]==v[0]?' on':''}" title="${v[1]}" aria-label="${v[1]}" onclick="mk2(${i},'${v[0]}')">${v[0]}</button>`).join('')}</div></div>`).join('')||empty(tot?'Everyone is marked':'No students yet',tot?'Nice work. Turn off the filter to review.':'Add students in the Students tab first.')}`}
 function cpAbs(){const n=S.cn,m=AT[n+'|'+ymd(S.ao)]||{},g=v=>K[n].stu.filter(s=>m[s]==v).join(', ')||'none';navigator.clipboard.writeText(n+', '+ymd(S.ao)+'\nAbsent: '+g('A')+'\nLate: '+g('L')).then(()=>toast('Copied absent and late list.'))}
 function editClass(){const n=S.cn,k=K[n];dlgOpen(`<form class="cf" onsubmit="return saveEc(this)"><header class="cf-h"><span class="cf-ic ev">${IC.cls}</span><div><h2>Edit class</h2><p>${e(n)}</p></div>${dlgX}</header><div class="cf-b"><label>Subject<input name="s" value="${e(k.sj)}" required></label><label>Room<input name="r" value="${e(k.rm)}"></label></div>${cfFoot('Save changes')}</form>`)}
 function saveEc(f){const k=K[S.cn];k.sj=f.s.value.trim();k.rm=f.r.value.trim();C.forEach(c=>{if(c.n==S.cn){c.sj=k.sj;c.rm=k.rm}});$('#dlg').close();toast('Class updated.');render();return false}
@@ -2640,11 +2721,11 @@ f.dispatchEvent(new Event('input',{bubbles:true}));toast('Filled in '+b.join(', 
 {const _nt=newTask,_ne=newEvent,sm=()=>{const f=$('#dlg form'),i=f&&f.t;if(!i)return;i.addEventListener('blur',()=>uSmart(f));i.addEventListener('keydown',x=>{if(x.key=='Enter')uSmart(f)});i.insertAdjacentHTML('afterend','<p class="uhint">Tip: type “Quiz tomorrow 3pm” and the date and time fill in for you.</p>')};newTask=function(){_nt();sm()};newEvent=function(){_ne();sm()}}
 
 /* ===== SHS HEAD pages ===== */
-const HV={q:'',f:'all',tf:'all',sf:'all'},HP={gp:15,sy:'2026-2027',tm:'1st Semester',fl:{}},SG=['ICT','STEM','HUMSS','ABM','GAS'],HN=[];
+const HV={q:'',f:'all',tf:'all',sf:'all'},HP={gp:15,sy:'2026-2027',tm:'1st Semester',fl:{},ck:{},mk:{}},SG=['ICT','STEM','HUMSS','ABM','GAS'],HN=[];
 const hSv=()=>{if(!HR)return;{clearTimeout(hTm);hTm=setTimeout(async()=>{const{error}=await sb.from('app_state').upsert({user_id:UID,data:{HP,pf:PF},updated_at:new Date().toISOString()});if(error)toast('Could not save settings.')},600)}};
 
 const HA=()=>HR?HR.flatMap(r=>r.tasks.map(x=>({...x,w:r.n}))):[],hHu=s=>[150,175,130,195,110][Math.max(0,SG.indexOf(s))%5],hIn=n=>e(String(n||'').split(' ').map(w=>w[0]||'').slice(0,2).join('')),hPb=s=>`<span class="b ${PS[s][1]}${s=='act'?' live':''}">${PS[s][0]}</span>`,hSh={act:'Started',up:'Upcoming',nr:'Not recorded',rv:'Verify'},hSgO=()=>[['all','All'],...SG.map(s=>[s,s])],hKey=i=>`role="button" tabindex="0" onclick="hT(${i})" onkeydown="if(event.key=='Enter')hT(${i})"`,hCh=(k,c,o)=>`<div class="${c}" role="group">${o.map(x=>`<button class="${HV[k]==x[0]?'on':''}" onclick="HV.${k}='${x[0]}';render()">${x[1]}${x[2]!=null?` <span class="b">${x[2]}</span>`:''}</button>`).join('')}</div>`,hSt=a=>a.map(s=>`<div class="card stat ${s[2]}"><span class="mu">${s[0]}</span><b>${s[1]}</b></div>`).join(''),hBar=(l,v,c)=>`<div class="bl"><span>${l}</span><span>${v}%</span></div><div class="bar"><i style="width:${v}%;background:var(--${c})"></i></div>`,hCl=()=>{const m={};hTe().forEach(t=>t.cl.forEach(c=>m[c]={n:c,t,sg:t.sg}));return Object.values(m).sort((a,b)=>a.n.localeCompare(b.n))},hTL=()=>{const q=HV.q.toLowerCase(),L=hTe().filter(t=>(HV.f=='all'||t.sg==HV.f)&&(HV.sf=='all'||t.s==HV.sf)&&(!q||(t.n+' '+t.cl.join(' ')).toLowerCase().includes(q)));
-return L.length?`<div class="hg hfl">${L.map(t=>`<div class="tf" data-s="${t.sg}" style="--h:${hHu(t.sg)}" ${hKey(t.i)}><div class="tfh"><span class="av">${hIn(t.n)}</span><div><b>${e(t.n)}</b><small>${e(t.cl.join(', '))}</small></div></div><div class="tfs">${hPb(t.s)}${t.l?`<span class="b er">${t.l} overdue</span>`:''}</div><div class="tfm"><span>First class ${t.tm}</span><span>${t.o} open</span></div>${hBar('Tasks done',t.p,'ok')}</div>`).join('')}</div>`:`<div class="card">${(HR&&!HR.length?empty('No teacher accounts yet','The System Administrator can create them in Accounts.'):empty('No teachers match','Try a different name, class, or status.'))}</div>`},hQ=v=>{HV.q=v;$('#hl').innerHTML=hTL()};
+return L.length?`<div class="hg hfl">${L.map(t=>`<div class="tf" data-s="${t.sg}" style="--h:${hHu(t.sg)}" ${hKey(t.i)}><div class="tfh"><span class="av">${hIn(t.n)}</span><div><b>${e(t.n)}</b><small>${e(t.cl.join(', '))}</small></div></div><div class="tfs">${hPb(t.s)}${t.l?`<span class="b er">${t.l} overdue</span>`:''}</div><div class="tfm"><span>First class ${t.tm}</span><span>${t.o} open</span></div>${hLastLine(t)}${hBar('Tasks done',t.p,'ok')}</div>`).join('')}</div>`:`<div class="card">${(HR&&!HR.length?empty('No teacher accounts yet','The System Administrator can create them in Accounts.'):empty('No teachers match','Try a different name, class, or status.'))}</div>`},hQ=v=>{HV.q=v;$('#hl').innerHTML=hTL()};
 
 function hOv(){const X=hTe(),hr=new Date().getHours(),ac=X.filter(t=>t.s=='act').length,att=X.filter(t=>t.s=='nr'||t.s=='rv'),cn=X.reduce((a,t)=>a+(t.tc?t.tc.length:t.cl.length),0),pc=X.length?Math.round(ac/X.length*100):0,A=HA(),dn=A.filter(t=>t.s=='Done').length,od=A.filter(ov).length,ip=A.filter(t=>t.s=='In progress'&&!ov(t)).length,P=n=>A.length?Math.round(n/A.length*100):0,
 tl=t=>`<div class="row hm-row" onclick="hT(${t.i})"><div class="tm">${t.tm}</div><div class="fl"><b>${e(t.n)}</b><div class="mu">${e(t.cl[0]||'')}</div></div>${hPb(t.s)}</div>`,
@@ -2698,6 +2779,7 @@ ${themeCard()}${qolCard()}${soundCard()}${installCard()}${pwCard()}<div class="c
 function hT(i){const t=hTe()[i];if(!t)return;const s=t.s,op=t.m.filter(x=>x.s!='Done').sort((a,b)=>dd(a.d)-dd(b.d)).slice(0,4),msg=`You have ${t.o} open task${t.o==1?'':'s'}${t.l?', '+t.l+' overdue':''}. Please review your task list.`;
 $('#dlg').innerHTML=`<form onsubmit="return false"><h2>${e(t.n)}</h2><p class="mu">${t.sg} strand. ${e(t.cl.join(', ')||'No classes yet')}</p>${[['First class today',t.tm],['Status',hPb(s)],['Tasks done',t.p+'%'],['Open tasks',t.o],['Overdue',t.l]].concat(t.upd?[['Last saved',hAgo(t.upd)]]:[]).map(r=>`<div class="row"><div class="fl mu">${r[0]}</div><b>${r[1]}</b></div>`).join('')}
 ${s=='nr'||s=='rv'?`<p class="mu sm">No check-in is recorded for this class yet. That does not mean the teacher is absent. Follow the school's approved procedure to confirm.</p>`:''}
+${hRecent(t,i)}
 ${op.length?`<h3 class="mu sm" style="margin:12px 0 0">Next deadlines</h3>`+op.map(x=>`<div class="row"><div class="fl">${e(x.t)}<div class="mu">${e(x.c)}</div></div>${dl(x)}</div>`).join(''):''}
 <label style="margin-top:12px">Reminder message<textarea id="rmm" rows="2" maxlength="300">${e(msg)}</textarea></label><p class="mu sm">Private teacher notes are never shown here.</p>
 <div class="act"><button type="button" class="btn" onclick="$('#dlg').close()">Close</button>${HR?`<button type="button" class="btn" onclick="hFlag(${i})">${HP.fl[t.id]?'Clear flag':'Flag for verification'}</button>`:''}<button type="button" class="btn pr" onclick="hRem(${i})">Send reminder</button></div></form>`;$('#dlg').showModal()}
@@ -2721,11 +2803,11 @@ HERR=a.error?a.error.message:b.error?b.error.message:'';if(HERR){HR=null;if(rd)r
 const R=(Array.isArray(a.data)?a.data:[]).map(hRow),sg=[...new Set(R.map(r=>r.sg))].sort();
 SG.length=0;SG.push(...(sg.length?sg:['ICT','STEM','HUMSS','ABM','GAS']));if(HV.f!='all'&&!SG.includes(HV.f))HV.f='all';
 if(c.data&&c.data.data&&c.data.data.HP)Object.assign(HP,c.data.data.HP);HP.fl=HP.fl||{};
-if(sy&&sy.data&&sy.data.value)Object.assign(SY,sy.data.value);if(c.data&&c.data.data&&c.data.data.pf)fillO(PF,c.data.data.pf);fill(HN,(Array.isArray(b.data)?b.data:[]).map(x=>({id:/^[0-9a-f-]{36}$/i.test(x.id||'')?x.id:'',t:hTx(x.title,120),m:hTx(x.body,1000),a:hTx(x.audience,40),w:hAgo(x.created_at)})));
-const sig=JSON.stringify([a.data,b.data,c.data]),same=sig==HSIG;HSIG=sig;HR=R;
+if(sy&&sy.data&&sy.data.value)Object.assign(SY,sy.data.value);if(c.data&&c.data.data&&c.data.data.pf)fillO(PF,c.data.data.pf);fill(HN,(Array.isArray(b.data)?b.data:[]).map(x=>({id:/^[0-9a-f-]{36}$/i.test(x.id||'')?x.id:'',t:hTx(x.title,120),...mtX(x.body),a:hTx(x.audience,40),w:hAgo(x.created_at)})));
+const sig=JSON.stringify([a.data,b.data,c.data]),same=sig==HSIG;HSIG=sig;HR=R;try{hLog()}catch(x){console.error(x)}
 if(!rd||(quiet&&(same||/INPUT|TEXTAREA|SELECT/.test((document.activeElement||{}).tagName||'')||$('#dlg').open)))return;render()}
-async function loadAnn(){if(!sb||!UID)return;const{data,error}=await sb.from('announcements').select('id,title,body,audience,kind,to_user,created_at').order('created_at',{ascending:false}).limit(20);if(error||!data)return;const st=new Set(CL.map(c=>(c.split(' ')[1]||'').toUpperCase()));ANN=data.filter(a=>a.to_user||a.audience=='All teachers'||st.has((a.audience.split(' ')[0]||'').toUpperCase()))}
-setInterval(()=>{if(S.u&&S.u.role=='head'&&HR&&!document.hidden)hLoad(true,true)},6e4);
+async function loadAnn(){if(!sb||!UID)return;const{data,error}=await sb.from('announcements').select('id,title,body,audience,kind,to_user,created_at').order('created_at',{ascending:false}).limit(20);if(error||!data)return;const st=new Set(CL.map(c=>(c.split(' ')[1]||'').toUpperCase()));ANN=data.filter(a=>a.to_user||a.audience=='All teachers'||st.has((a.audience.split(' ')[0]||'').toUpperCase())).map(a=>{const p=mtParse(a.body);return{...a,body:p.m,mt:p.mt}})}
+setInterval(()=>{if(window.rfSkip&&rfSkip())return;if(S.u&&S.u.role=='head'&&HR&&!document.hidden)hLoad(true,true)},6e4);
 document.addEventListener('visibilitychange',()=>{if(document.hidden||!S.u)return;if(S.u.role=='head'&&HR)hLoad(true,true);else if(S.u.role=='teacher')loadAnn()});
 
 /* Head mobile nav: 4 tabs + More, breadcrumb, grouped sidebar */
@@ -2893,7 +2975,7 @@ return `<div class="hd hm-hd"><div><p class="hm-d">${new Date().toLocaleDateStri
 <div class="g g2"><div class="g"><div class="card"><h2>Needs a look</h2>${att.map(tl).join('')||'<p class="mu">Nothing needs attention.</p>'}</div><div class="card"><h2>Up next</h2>${upc.slice(0,4).map(tl).join('')||'<p class="mu">No more classes starting today.</p>'}</div></div>
 <div class="g"><div class="card"><h2>Class presence</h2>${X.slice().sort((x,y)=>hMq(x)-hMq(y)).map(tl).join('')}<p class="mu sm">Status reflects class check-ins only. Final attendance follows the school's approved procedure.</p></div></div></div>
 <div class="g g2"><div class="g"><div class="card"><h2>Task status</h2>${hBar('Completed',P(dn),'ok')}${hBar('In progress',P(ip),'in')}${hBar('Not started',P(A.length-dn-od-ip),'mu')}${hBar('Overdue',P(od),'er')}<h2 class="h2s">By strand</h2>${SG.map(s=>{const m=X.filter(t=>t.sg==s);return hBar(s+' ('+m.length+')',m.length?Math.round(m.reduce((q,t)=>q+t.p,0)/m.length):0,'ok')}).join('')}</div></div>
-<div class="g"><div class="card"><h2>Latest announcement</h2>${a0?`<div class="pn" style="margin-top:14px"><b>${e(a0.t)}</b><p>${e(a0.m)}</p></div><button class="btn sm" style="margin-top:14px" onclick="go('ann')">Manage announcements</button>`:empty('No announcements','Post one to reach all teachers.')}</div><div class="card"><h2>Recent teacher activity</h2>${hAct()}</div><p class="mu sm">Private teacher notes are never shown in this view.</p></div></div>`};
+<div class="g"><div class="card"><h2>Latest announcement</h2>${a0?`<div class="pn" style="margin-top:14px"><b>${e(a0.t)}</b>${a0.mt?`<p class="mt-l">${e(mtWhen(a0.mt))}</p>`:''}${a0.m?`<p>${e(a0.m)}</p>`:''}</div><button class="btn sm" style="margin-top:14px" onclick="go('ann')">Manage announcements</button>`:empty('No announcements','Post one to reach all teachers.')}</div><div class="card"><h2>Recent teacher activity</h2>${hAct()}</div><p class="mu sm">Private teacher notes are never shown in this view.</p></div></div>`};
 })();
 
 /* ===== v7: hero cards for teacher and admin home ===== */
@@ -2923,7 +3005,7 @@ return ins(_c(),hero2('By strand',L.length+' '+(L.length==1?'class':'classes'),'
 const _k=hTsk;hTsk=function(){const A=HA(),dn=A.filter(t=>t.s=='Done').length,od=A.filter(ov).length,ip=A.filter(t=>t.s=='In progress'&&!ov(t)).length,ns=A.length-dn-od-ip,wk=A.filter(t=>t.s!='Done'&&dd(t.d)>=0&&dd(t.d)<=7).length,op=A.length-dn,o=_k().replace(/<div class="g g4">[\s\S]*?<\/div>\n/,'');
 return ins(o,hero2('Progress',op+' open '+(op==1?'task':'tasks'),od+' overdue, '+wk+' due this week. You see titles, deadlines and status only.',[['a',dn],['u',ip],['g',ns],['r',od]].map(([c,v])=>`<i class="${c}" style="flex:${v}"></i>`).join(''),`<span><i class="a"></i>${dn} done</span><span><i class="u"></i>${ip} in progress</span><span><i class="g"></i>${ns} not started</span><span><i class="r"></i>${od} overdue</span>`,'',od?'warn':'ok'))};
 const _p=hRep;hRep=function(){const A=HA(),pc=A.length?Math.round(A.filter(t=>t.s=='Done').length/A.length*100):0,o=_p().replace(/<div class="card"><h2>Export<\/h2>[\s\S]*?<\/div><\/div>$/,'');
-return ins(o,hero2('Summary',pc+'% of tasks done','Summaries from teacher task lists and class check-ins. Private notes are never included.','','',`<div class="act" style="justify-content:flex-start;margin-top:4px"><button class="btn pr" onclick="hCsv('t')">Teacher summary (CSV)</button><button class="btn" onclick="hCsv('k')">Task list (CSV)</button></div>`,'ok'))};
+return ins(o,hero2('Summary',pc+'% of tasks done','Summaries from teacher task lists and class check-ins. Private notes are never included.','','',`<div class="act" style="justify-content:flex-start;margin-top:4px"><button class="btn pr" onclick="hCsv('t')">Teacher summary (CSV)</button><button class="btn" onclick="hCsv('k')">Task list (CSV)</button><button class="btn" onclick="hxEx()">Teacher attendance (Excel)</button></div>`,'ok'))};
 const _a=hAdm;hAdm=function(){return ins(_a(),hero2('School',e(SY.name),'School settings and monitoring rules for the SHS.','','',`<div class="hs-ch"><span class="hs-c"><i></i>${e(SY.year)}</span><span class="hs-c"><i></i>${e(SY.term)}</span><span class="hs-c ${HR?'a':'w'}"><i></i>${HR?'Connected':'Not connected'}</span></div>`,'ok'))};
 })();
 
@@ -3054,7 +3136,7 @@ let bar=null,seeded=false,ch=null,kt=0;
 function drop(now){const b=bar;if(!b)return;bar=null;if(now){b.remove();return}b.classList.add('out');b.addEventListener('animationend',ev=>{if(ev.target===b)b.remove()});setTimeout(()=>b.remove(),700)}
 function show(x,more){drop(true);
 const b=document.createElement('div'),id=x.id;b.className='annbar'+(x.kind=='reminder'?' rem':'');b.setAttribute('role','status');
-b.innerHTML=`<button type="button" class="annbar-m"><i class="annbar-i">${ICON}</i><span class="annbar-t"><small>${who(x)}${more?' (+'+more+' more)':''}</small><b>${e(x.title)}</b>${x.body?`<span>${e(x.body)}</span>`:''}</span></button><button type="button" class="annbar-x" aria-label="Dismiss">×</button><i class="annbar-p"></i>`;
+b.innerHTML=`<button type="button" class="annbar-m"><i class="annbar-i">${ICON}</i><span class="annbar-t"><small>${who(x)}${more?' (+'+more+' more)':''}</small><b>${e(x.title)}</b>${(x.mt||x.body)?`<span>${e((x.mt?mtWhen(x.mt)+(x.body?'. ':''):'')+(x.body||''))}</span>`:''}</span></button><button type="button" class="annbar-x" aria-label="Dismiss">×</button><i class="annbar-p"></i>`;
 b.querySelector('.annbar-m').onclick=()=>{drop(true);annOpen(id)};
 b.querySelector('.annbar-x').onclick=()=>drop();
 b.querySelector('.annbar-p').addEventListener('animationend',()=>{if(bar===b)drop()});
@@ -3063,10 +3145,10 @@ let y0=null;b.addEventListener('touchstart',ev=>{y0=ev.touches[0].clientY},{pass
 function ring(){const b=$('.top .bell');if(!b)return;let i=b.querySelector('i');const n=unread();if(n){if(!i){i=document.createElement('i');b.appendChild(i)}i.textContent=n}else if(i)i.remove();b.classList.remove('ring');void b.offsetWidth;b.classList.add('ring')}
 window.annOpen=id=>{const x=find(id);if(!x)return false;S.rd['a'+x.id]=1;closeAll();
 let d=document.getElementById('anndlg');if(!d){d=document.createElement('dialog');d.id='anndlg';d.addEventListener('click',ev=>{if(ev.target===d)d.close()});document.body.appendChild(d)}
-d.innerHTML=`<div class="annd${x.kind=='reminder'?' rem':''}"><i class="annd-pin"></i><b class="annd-k">${who(x)}</b><h2 class="annd-t">${e(x.title)}</h2>${x.body?`<p class="annd-b">${e(x.body)}</p>`:''}<div class="annd-m"><span>${e(when(x.created_at))}</span><span>${x.to_user?'Sent to you':e(x.audience||'All teachers')}</span></div><div class="act"><button type="button" class="btn pr" onclick="this.closest('dialog').close()">Got it</button></div></div>`;
+d.innerHTML=`<div class="annd${x.kind=='reminder'?' rem':''}"><i class="annd-pin"></i><b class="annd-k">${who(x)}</b><h2 class="annd-t">${e(x.title)}</h2>${x.body?`<p class="annd-b">${e(x.body)}</p>`:''}${x.mt?mtCard(x):''}<div class="annd-m"><span>${e(when(x.created_at))}</span><span>${x.to_user?'Sent to you':e(x.audience||'All teachers')}</span></div>${x.mt?`<div class="act mt-a">${mtBtns(x)}</div>`:''}<div class="act"><button type="button" class="btn pr" onclick="this.closest('dialog').close()">Got it</button></div></div>`;
 if(!d.open)d.showModal();render();return true};
 window.annPn=()=>{const x=ANN[0];if(!x)return'';const i=aid(x.id),nw=!S.rd['a'+x.id];
-return`<aside class="pn pn-a" role="button" tabindex="0" onclick="annOpen('${i}')" onkeydown="if(event.key=='Enter'||event.key==' '){event.preventDefault();annOpen('${i}')}"><b>${who(x)}${nw?'<em>New</em>':''}</b><p><span class="pn-t">${e(x.title)}</span>${x.body?' '+e(x.body):''}</p><small>${e(when(x.created_at))}. Tap to read.</small></aside>`};
+return`<aside class="pn pn-a" role="button" tabindex="0" onclick="annOpen('${i}')" onkeydown="if(event.key=='Enter'||event.key==' '){event.preventDefault();annOpen('${i}')}"><b>${who(x)}${nw?'<em>New</em>':''}</b><p><span class="pn-t">${e(x.title)}</span>${x.body?' '+e(x.body):''}</p>${x.mt?`<p class="pn-mt">${e(mtWhen(x.mt))}</p>`:''}<small>${e(when(x.created_at))}. Tap to read.</small></aside>`};
 const _la=loadAnn;
 window.loadAnn=async function(){const prev=ANN;await _la.apply(this,arguments);if(ANN===prev)return;
 const first=!seeded;seeded=true;if(first||ids(ANN)==ids(prev))return;
@@ -3079,12 +3161,12 @@ if(!on){if(ch){try{sb.removeChannel(ch)}catch(x){}ch=null}seeded=false;return}
 if(ch||!sb.channel)return;
 try{ch=sb.channel('tk-announcements').on('postgres_changes',{event:'*',schema:'public',table:'announcements'},()=>{clearTimeout(kt);kt=setTimeout(()=>loadAnn(),350)}).subscribe()}catch(x){ch=null}}
 {const _r=render;render=function(){const r=_r.apply(this,arguments);live();return r}}
-setInterval(()=>{if(S.u&&S.u.role=='teacher'&&UID&&!document.hidden&&navigator.onLine!==false)loadAnn()},3e4);
+setInterval(()=>{if(window.rfSkip&&rfSkip())return;if(S.u&&S.u.role=='teacher'&&UID&&!document.hidden&&navigator.onLine!==false)loadAnn()},3e4);
 })();
 /* ===== Resources: image thumbnails and rename ===== */
 (()=>{
 const IMG=/\.(jpe?g|png|gif|webp|avif|bmp|svg)$/i,TH={},sel='img.rimg[data-th]:not([src])';let busy=false;
-window.rImg=x=>{if(!x.path||!IMG.test(x.path)||x.size>6e6)return'';const c=TH[x.path];if(c&&c.exp>Date.now()&&!c.url)return'';return`<img class="rimg" alt="" decoding="async" data-th="${e(x.path)}"${c&&c.exp>Date.now()?` src="${e(c.url)}"`:''} onerror="this.remove()">`};
+window.rImg=x=>{if(!x.path||!IMG.test(x.path)||x.size>6e6||(window.qSave&&qSave()))return'';const c=TH[x.path];if(c&&c.exp>Date.now()&&!c.url)return'';return`<img class="rimg" alt="" decoding="async" data-th="${e(x.path)}"${c&&c.exp>Date.now()?` src="${e(c.url)}"`:''} onerror="this.remove()">`};
 const put=()=>document.querySelectorAll(sel).forEach(i=>{const c=TH[i.dataset.th];if(!c||c.exp<=Date.now())return;if(c.url)i.src=c.url;else i.remove()});
 async function thumbs(){put();const need=[...new Set([...document.querySelectorAll(sel)].map(i=>i.dataset.th))];
 if(!need.length||busy||!sb||!UID||navigator.onLine===false)return;busy=true;
@@ -3102,9 +3184,9 @@ x.t=n;$('#dlg').close();toast('Renamed.');render();return false};
 /* ===== Preferences (quality of life) and the guided tour ===== */
 (()=>{
 const QK='tk-q',TF='tk-tour-1-';let Q={};try{Q=JSON.parse(localStorage.getItem(QK)||'{}')||{}}catch(x){}
-const osRm=()=>matchMedia('(prefers-reduced-motion:reduce)').matches,rmEff=()=>Q.rm===undefined?osRm():!!Q.rm,rmApply=()=>document.documentElement.classList.toggle('rm',rmEff());
-rmApply();
-window.qSet=(k,v)=>{Q[k]=v;try{localStorage.setItem(QK,JSON.stringify(Q))}catch(x){}if(k=='rm')rmApply();render()};
+const dsv=()=>!!(navigator.connection&&navigator.connection.saveData===true),liteOn=()=>!!Q.lite,saveOn=()=>Q.sd===undefined?dsv():!!Q.sd,perfApply=()=>{const h=document.documentElement;h.classList.toggle('lite',liteOn());h.classList.toggle('sd',saveOn())};
+window.qLite=liteOn;window.qSave=saveOn;perfApply();
+window.qSet=(k,v)=>{Q[k]=v;try{localStorage.setItem(QK,JSON.stringify(Q))}catch(x){}if(k=='lite'||k=='sd')perfApply();render()};
 window.qStart=r=>r=='teacher'&&['home','work','cal','cls'].indexOf(Q.start)>-1?Q.start:NAV[r][0][0];
 window.qDue=()=>[0,1,3,7].indexOf(+Q.due)>-1?+Q.due:1;
 window.qPri=()=>['High','Medium','Low'].indexOf(Q.pri)>-1?Q.pri:'';
@@ -3116,7 +3198,7 @@ window.qBackup=()=>{dl('taskly-backup-'+ymd(0)+'.json','application/json',snap()
 window.qolCard=()=>{const tc=S.u&&S.u.role=='teacher',
 seg=(k,o,cur)=>`<div class="fts2 qseg" role="group">${o.map(x=>`<button class="${String(cur)==String(x[0])?'on':''}" onclick="qSet('${k}',${typeof x[0]=='number'?x[0]:"'"+x[0]+"'"})">${x[1]}</button>`).join('')}</div>`,
 sw=(k,l,on)=>`<label class="sw2 qsw"><span>${l}</span><input type="checkbox" ${on?'checked':''} onchange="qSet('${k}',this.checked?1:0)"></label>`;
-return`<div class="card"><h2>Preferences</h2>${tc?`<p class="mu sm">Open TASKLY on</p>${seg('start',[['home','Home'],['work','Work'],['cal','Calendar'],['cls','Classes']],Q.start||'home')}<p class="mu sm">New tasks are due</p>${seg('due',[[0,'Today'],[1,'Tomorrow'],[3,'In 3 days'],[7,'Next week']],qDue())}<p class="mu sm">New tasks start as</p>${seg('pri',[['','Last used'],['High','High'],['Medium','Medium'],['Low','Low']],qPri())}${sw('ab','Banner for new announcements',qAb())}`:''}${sw('rm','Reduce motion',rmEff())}</div><div class="card"><h2>Help and backup</h2><p class="mu sm">New to TASKLY? Take the guided tour again any time.</p><button class="btn pr" onclick="tourStart(true)">Replay the tutorial</button>${tc?`<p class="mu sm" style="margin-top:16px">Keep a copy of your work on this device.</p><div class="act l"><button class="btn sm" onclick="qCsv()">Download tasks (CSV)</button><button class="btn sm" onclick="qBackup()">Download full backup</button></div>`:''}</div>`};
+return`<div class="card"><h2>Preferences</h2>${tc?`<p class="mu sm">Open TASKLY on</p>${seg('start',[['home','Home'],['work','Work'],['cal','Calendar'],['cls','Classes']],Q.start||'home')}<p class="mu sm">New tasks are due</p>${seg('due',[[0,'Today'],[1,'Tomorrow'],[3,'In 3 days'],[7,'Next week']],qDue())}<p class="mu sm">New tasks start as</p>${seg('pri',[['','Last used'],['High','High'],['Medium','Medium'],['Low','Low']],qPri())}${sw('ab','Banner for new announcements',qAb())}`:''}</div><div class="card"><h2>Performance</h2>${sw('lite','Lite mode',liteOn())}<p class="mu sm">Turns off blur, shadows, confetti and count-up numbers. Helps older phones feel smoother.</p>${sw('sd','Data saver',saveOn())}<p class="mu sm">Skips image previews and checks for new data less often. New announcements still arrive right away.</p><p class="mu sm pf-st" id="pf-st"></p><div class="act l"><button class="btn sm" onclick="perfRefresh()">Refresh app files</button></div><p class="mu sm">Use Refresh app files if TASKLY looks out of date after an update. Your data is not affected.</p></div><div class="card"><h2>Help and backup</h2><p class="mu sm">New to TASKLY? Take the guided tour again any time.</p><button class="btn pr" onclick="tourStart(true)">Replay the tutorial</button>${tc?`<p class="mu sm" style="margin-top:16px">Keep a copy of your work on this device.</p><div class="act l"><button class="btn sm" onclick="exAtt()">Download attendance (Excel)</button><button class="btn sm" onclick="qCsv()">Download tasks (CSV)</button><button class="btn sm" onclick="qBackup()">Download full backup</button></div>`:''}</div>`};
 
 /* ---------- guided tour ---------- */
 const sleep=ms=>new Promise(r=>setTimeout(r,ms)),vis=el=>!!el&&el.getClientRects().length>0&&getComputedStyle(el).visibility!='hidden',
@@ -3204,6 +3286,333 @@ document.addEventListener('keydown',key,true);addEventListener('resize',repSoon)
 function tryAuto(n){if(TR||!tourWill())return;if(document.querySelector('dialog[open]')||S.gate||!S.u){if(n<14)setTimeout(()=>tryAuto(n+1),800);return}tourStart(false,true)}
 {const _r=render;render=function(){const x=_r.apply(this,arguments);if(!S.u||!UID)auto=false;else if(!auto&&tourWill()){auto=true;setTimeout(()=>tryAuto(0),1200)}if(TR)repSoon();return x}}
 })();
+
+/* ===== v10: attendance history, Excel export, meetings, notes tools, performance ===== */
+(()=>{
+const ymdD=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'),
+fD=d=>new Date(d+'T00:00').toLocaleDateString('en',{weekday:'short',month:'short',day:'numeric',year:'numeric'}),
+fDs=d=>new Date(d+'T00:00').toLocaleDateString('en',{month:'short',day:'numeric'}),
+fM=d=>new Date(d+'T00:00').toLocaleDateString('en',{month:'long',year:'numeric'}),
+fT=ms=>new Date(ms).toLocaleTimeString('en',{hour:'numeric',minute:'2-digit'}).replace(/\s/g,' '),
+svLabel=(d,t)=>{if(!t)return '';const m=ymdD(new Date(t));return 'Saved '+(m==d?'':fDs(m)+', ')+fT(t)},
+SL={P:'Present',L:'Late',A:'Absent',N:'Not recorded'},SC={P:'ok',L:'wn',A:'er',N:'mu'},
+OPEN0='0000-00-00',OPEN1='9999-99-99';
+
+/* ---------- student attendance history ---------- */
+const stMarks=(c,s)=>{const o=[],n=c.length+1;Object.keys(AT).forEach(k=>{if(k.length!=n+10||k.slice(0,n)!=c+'|')return;const v=AT[k][s];if(v&&SL[v])o.push({d:k.slice(n),v,t:AM[k]||0})});return o.sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:0)};
+const AH={c:'',s:'',f:''};
+const ahBody=()=>{const m=stMarks(AH.c,AH.s),n={P:0,L:0,A:0};m.forEach(x=>n[x.v]++);const tot=n.P+n.L+n.A,rate=tot?Math.round((n.P+n.L)/tot*100):null,L=AH.f?m.filter(x=>x.v==AH.f):m;let mo='';
+const rows=L.map(x=>{const h=x.d.slice(0,7)==mo?'':(mo=x.d.slice(0,7),`<h3 class="ah-m">${e(fM(x.d))}</h3>`);return h+`<div class="ah-r"><div class="ah-d"><b>${e(fD(x.d))}</b>${x.t?`<small>${e(svLabel(x.d,x.t))}</small>`:''}</div><span class="b ${SC[x.v]}">${SL[x.v]}</span><button type="button" class="btn sm" onclick="ahGo('${x.d}')">Open day</button></div>`}).join('');
+return `<div class="ah-sum">${['P','L','A'].map(k=>`<button type="button" class="ah-t ${k}${AH.f==k?' on':''}" onclick="ahF('${k}')" aria-pressed="${AH.f==k}"><b>${n[k]}</b><span>${SL[k]}</span></button>`).join('')}<div class="ah-t R"><b>${rate==null?'-':rate+'%'}</b><span>Attended</span></div></div>
+<p class="ah-note">${AH.f?`Showing ${SL[AH.f].toLowerCase()} dates only.<button type="button" class="btn sm" onclick="ahF('${AH.f}')">Show all</button>`:tot?`${tot} ${tot==1?'day':'days'} recorded. Tap a number to see only those dates.`:''}</p>
+<div>${rows||empty(tot?'No dates here':'No dates yet',tot?'This student has no days with that mark.':'Mark this student in the Attendance tab and the dates show up here.')}</div>`};
+window.stuHist=(i,f)=>{const k=K[S.cn];if(!k||!k.stu[i])return;AH.c=S.cn;AH.s=k.stu[i];AH.f=f||'';
+dlgOpen(`<div class="cf"><header class="cf-h"><span class="cf-ic">${IC.cls}</span><div><h2>${e(AH.s)}</h2><p>${e(AH.c)}. Attendance by date.</p></div>${dlgX}</header><div class="cf-b" id="ahb">${ahBody()}</div><footer class="cf-f"><button type="button" class="btn" onclick="exStu()">Download Excel</button><button type="button" class="btn pr" onclick="$('#dlg').close()">Done</button></footer></div>`)};
+window.ahF=f=>{AH.f=AH.f==f?'':f;const b=$('#ahb');if(b)b.innerHTML=ahBody()};
+window.ahGo=d=>{$('#dlg').close();S.cn=AH.c;S.ct='a';S.ao=dd(d);S.an=1;render();scrollTo(0,0)};
+
+/* ---------- minimal .xlsx writer (no libraries, works offline) ---------- */
+const XL=(()=>{const enc=new TextEncoder(),CT=new Uint32Array(256);for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;CT[n]=c>>>0}
+const crc=b=>{let c=0xFFFFFFFF;for(let i=0;i<b.length;i++)c=CT[(c^b[i])&255]^(c>>>8);return(c^0xFFFFFFFF)>>>0},
+xe=s=>String(s).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g,'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'),
+colL=n=>{let s='';n++;while(n>0){const m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=Math.floor((n-1)/26)}return s},
+XH='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>',NS='http://schemas.openxmlformats.org/spreadsheetml/2006/main';
+function zip(files){const parts=[],cen=[],now=new Date(),dt=(((now.getFullYear()-1980)<<9)|((now.getMonth()+1)<<5)|now.getDate())&0xFFFF,tm=((now.getHours()<<11)|(now.getMinutes()<<5)|(now.getSeconds()>>1))&0xFFFF;let off=0;
+files.forEach(f=>{const nm=enc.encode(f.n),c=crc(f.d),h=new DataView(new ArrayBuffer(30));
+h.setUint32(0,0x04034b50,true);h.setUint16(4,20,true);h.setUint16(6,0x0800,true);h.setUint16(8,0,true);h.setUint16(10,tm,true);h.setUint16(12,dt,true);h.setUint32(14,c,true);h.setUint32(18,f.d.length,true);h.setUint32(22,f.d.length,true);h.setUint16(26,nm.length,true);h.setUint16(28,0,true);
+parts.push(new Uint8Array(h.buffer),nm,f.d);
+const g=new DataView(new ArrayBuffer(46));g.setUint32(0,0x02014b50,true);g.setUint16(4,20,true);g.setUint16(6,20,true);g.setUint16(8,0x0800,true);g.setUint16(10,0,true);g.setUint16(12,tm,true);g.setUint16(14,dt,true);g.setUint32(16,c,true);g.setUint32(20,f.d.length,true);g.setUint32(24,f.d.length,true);g.setUint16(28,nm.length,true);g.setUint32(42,off,true);
+cen.push(new Uint8Array(g.buffer),nm);off+=30+nm.length+f.d.length});
+const cs=cen.reduce((a,x)=>a+x.length,0),end=new DataView(new ArrayBuffer(22));end.setUint32(0,0x06054b50,true);end.setUint16(8,files.length,true);end.setUint16(10,files.length,true);end.setUint32(12,cs,true);end.setUint32(16,off,true);
+return new Blob([...parts,...cen,new Uint8Array(end.buffer)],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})}
+/* style ids, see styles() below */
+const X={t:1,m:2,h:3,x:4,c:5,P:6,L:7,A:8,pc:9,b:10,g:11,tb:12,dt:13,hd:14,dtm:15,N:11};
+const styles=()=>XH+`<styleSheet xmlns="${NS}"><numFmts count="4"><numFmt numFmtId="164" formatCode="0.0&quot;%&quot;"/><numFmt numFmtId="165" formatCode="ddd, mmm d, yyyy"/><numFmt numFmtId="166" formatCode="mmm d"/><numFmt numFmtId="167" formatCode="mmm d, yyyy h:mm AM/PM"/></numFmts>
+<fonts count="8"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="15"/><color rgb="FF1B3358"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font><font><i/><sz val="10"/><color rgb="FF5D6B82"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FF17734B"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FF9A5B06"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFAE2A1F"/><name val="Calibri"/></font></fonts>
+<fills count="7"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF1B3358"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFE1F4EA"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFCEFD6"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFFBE5E2"/><bgColor indexed="64"/></patternFill></fill><fill><patternFill patternType="solid"><fgColor rgb="FFF3F5F8"/><bgColor indexed="64"/></patternFill></fill></fills>
+<borders count="2"><border><left/><right/><top/><bottom/><diagonal/></border><border><left style="thin"><color rgb="FFDFE4EC"/></left><right style="thin"><color rgb="FFDFE4EC"/></right><top style="thin"><color rgb="FFDFE4EC"/></top><bottom style="thin"><color rgb="FFDFE4EC"/></bottom><diagonal/></border></borders>
+<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
+<cellXfs count="16"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>
+<xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/>
+<xf numFmtId="0" fontId="4" fillId="0" borderId="0" xfId="0" applyFont="1"/>
+<xf numFmtId="0" fontId="3" fillId="2" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center" wrapText="1"/></xf>
+<xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1" applyAlignment="1"><alignment vertical="center"/></xf>
+<xf numFmtId="0" fontId="0" fillId="0" borderId="1" xfId="0" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>
+<xf numFmtId="0" fontId="5" fillId="3" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>
+<xf numFmtId="0" fontId="6" fillId="4" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>
+<xf numFmtId="0" fontId="7" fillId="5" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>
+<xf numFmtId="164" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>
+<xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/>
+<xf numFmtId="0" fontId="4" fillId="6" borderId="1" xfId="0" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>
+<xf numFmtId="0" fontId="1" fillId="0" borderId="1" xfId="0" applyFont="1" applyBorder="1" applyAlignment="1"><alignment vertical="center"/></xf>
+<xf numFmtId="165" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1" applyAlignment="1"><alignment horizontal="left" vertical="center"/></xf>
+<xf numFmtId="166" fontId="3" fillId="2" borderId="1" xfId="0" applyNumberFormat="1" applyFont="1" applyFill="1" applyBorder="1" applyAlignment="1"><alignment horizontal="center" vertical="center"/></xf>
+<xf numFmtId="167" fontId="0" fillId="0" borderId="1" xfId="0" applyNumberFormat="1" applyBorder="1" applyAlignment="1"><alignment horizontal="left" vertical="center"/></xf></cellXfs>
+<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+const cellXml=(c,ri,ci)=>{if(c==null)return '';const a=colL(ci)+(ri+1);let v=c,s=0,f=null;if(typeof c=='object'){v=c.v;s=c.s||0;f=c.f||null}const sa=s?` s="${s}"`:'';
+if(f!=null)return `<c r="${a}"${sa}><f>${xe(f)}</f><v>${typeof v=='number'&&isFinite(v)?v:0}</v></c>`;
+if(v===''||v==null)return s?`<c r="${a}"${sa}/>`:'';
+if(typeof v=='number')return isFinite(v)?`<c r="${a}"${sa}><v>${v}</v></c>`:'';
+return `<c r="${a}"${sa} t="inlineStr"><is><t xml:space="preserve">${xe(v)}</t></is></c>`};
+const sheetXml=sh=>{const rows=sh.rows;let nc=1;rows.forEach(r=>{if(r.length>nc)nc=r.length});
+let x=XH+`<worksheet xmlns="${NS}"><dimension ref="A1:${colL(nc-1)}${Math.max(rows.length,1)}"/><sheetViews><sheetView workbookViewId="0"${sh.first?' tabSelected="1"':''}>`;
+if(sh.freeze){const fx=sh.freeze[0],fy=sh.freeze[1];x+=`<pane ${fx?`xSplit="${fx}" `:''}${fy?`ySplit="${fy}" `:''}topLeftCell="${colL(fx)}${fy+1}" activePane="${fx&&fy?'bottomRight':fy?'bottomLeft':'topRight'}" state="frozen"/>`}
+x+='</sheetView></sheetViews><sheetFormatPr defaultRowHeight="18"/>';
+if(sh.cols)x+='<cols>'+sh.cols.map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join('')+'</cols>';
+x+='<sheetData>'+rows.map((r,ri)=>{const h=sh.rowH&&sh.rowH[ri];return `<row r="${ri+1}"${h?` ht="${h}" customHeight="1"`:''}>`+r.map((c,ci)=>cellXml(c,ri,ci)).join('')+'</row>'}).join('')+'</sheetData>';
+if(sh.filter)x+=`<autoFilter ref="${sh.filter}"/>`;
+if(sh.merges&&sh.merges.length)x+=`<mergeCells count="${sh.merges.length}">`+sh.merges.map(m=>`<mergeCell ref="${m}"/>`).join('')+'</mergeCells>';
+return x+'<pageMargins left="0.5" right="0.5" top="0.6" bottom="0.6" header="0.3" footer="0.3"/><pageSetup orientation="landscape"/></worksheet>'};
+function book(sheets){const used=new Set();sheets.forEach((sh,i)=>{let n=String(sh.name).replace(/[\[\]:*?\/\\]/g,' ').replace(/\s+/g,' ').trim().slice(0,31)||'Sheet';let b=n,k=2;while(used.has(n.toLowerCase())){const sx=' '+k++;n=b.slice(0,31-sx.length)+sx}used.add(n.toLowerCase());sh.nm=n;sh.first=i==0});
+const R='http://schemas.openxmlformats.org/officeDocument/2006/relationships',P='http://schemas.openxmlformats.org/package/2006/relationships';
+const files=[{n:'[Content_Types].xml',d:enc.encode(XH+'<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>'+sheets.map((s,i)=>`<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('')+'<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/></Types>')},
+{n:'_rels/.rels',d:enc.encode(XH+`<Relationships xmlns="${P}"><Relationship Id="rId1" Type="${R}/officeDocument" Target="xl/workbook.xml"/></Relationships>`)},
+{n:'xl/workbook.xml',d:enc.encode(XH+`<workbook xmlns="${NS}" xmlns:r="${R}"><bookViews><workbookView xWindow="0" yWindow="0" windowWidth="24000" windowHeight="12000"/></bookViews><sheets>`+sheets.map((s,i)=>`<sheet name="${xe(s.nm)}" sheetId="${i+1}" r:id="rId${i+1}"/>`).join('')+'</sheets><calcPr calcId="191029" fullCalcOnLoad="1"/></workbook>')},
+{n:'xl/_rels/workbook.xml.rels',d:enc.encode(XH+`<Relationships xmlns="${P}">`+sheets.map((s,i)=>`<Relationship Id="rId${i+1}" Type="${R}/worksheet" Target="worksheets/sheet${i+1}.xml"/>`).join('')+`<Relationship Id="rId${sheets.length+1}" Type="${R}/styles" Target="styles.xml"/></Relationships>`)},
+{n:'xl/styles.xml',d:enc.encode(styles())}];
+sheets.forEach((s,i)=>files.push({n:`xl/worksheets/sheet${i+1}.xml`,d:enc.encode(sheetXml(s))}));
+return zip(files)}
+return{book,colL,X}})();
+window.XL=XL;
+const xd=d=>Math.round((Date.UTC(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8,10))-Date.UTC(1899,11,30))/864e5),
+xt=ms=>{const d=new Date(ms);return (Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),d.getHours(),d.getMinutes(),d.getSeconds())-Date.UTC(1899,11,30))/864e5},
+xDl=(blob,name)=>{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)},
+slug=s=>String(s).replace(/[^\w]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)||'file',
+per=(fr,to)=>fr==OPEN0&&to==OPEN1?'All recorded dates':fr==OPEN0?'Up to '+fD(to):to==OPEN1?'From '+fD(fr):fD(fr)+' to '+fD(to),
+stamp=()=>'Generated '+new Date().toLocaleString('en',{dateStyle:'medium',timeStyle:'short'}).replace(/\s/g,' ');
+
+/* ---------- teacher: attendance workbook ---------- */
+const exRecs=(cls,fr,to,stu)=>{const set=new Set(cls),o=[];Object.keys(AT).forEach(k=>{if(k.length<12)return;const c=k.slice(0,-11),d=k.slice(-10);if(!set.has(c)||d<fr||d>to)return;const m=AT[k];Object.keys(m).forEach(s=>{if(SL[m[s]]&&m[s]!='N'&&(!stu||s==stu))o.push({c,d,s,v:m[s],t:AM[k]||0})})});return o};
+function exBookT(o){const X=XL.X,L=XL.colL,recs=exRecs(o.cls,o.from,o.to,o.stu),pt=per(o.from,o.to),who=(S.u&&S.u.name)||'',sheets=[];
+const by={};recs.forEach(r=>{const a=(by[r.c]=by[r.c]||{});const b=(a[r.s]=a[r.s]||{P:0,L:0,A:0});b[r.v]++});
+const days={},mark={};recs.forEach(r=>{(days[r.c]=days[r.c]||new Set()).add(r.d);mark[r.c+'|'+r.d+'|'+r.s]=r.v});
+const names=c=>{const a=new Set((K[c]&&K[c].stu)||[]);Object.keys(by[c]||{}).forEach(s=>a.add(s));return[...a].filter(s=>!o.stu||s==o.stu).sort((x,y)=>x.localeCompare(y))};
+/* summary */
+const hd=['#','Class','Student','Present','Late','Absent','Days marked','Attendance rate'],rows=[[{v:o.stu?'Attendance: '+o.stu:'Attendance summary',s:X.t}],[{v:(who?'Teacher: '+who+'.  ':'')+'Period: '+pt+'.',s:X.m}],[{v:stamp()+'. Attendance rate counts Present and Late as attended.',s:X.m}],hd.map(h=>({v:h,s:X.h}))];
+let n=0,tP=0,tL=0,tA=0;
+o.cls.forEach(c=>names(c).forEach(s=>{const t=(by[c]&&by[c][s])||{P:0,L:0,A:0},m=t.P+t.L+t.A;n++;tP+=t.P;tL+=t.L;tA+=t.A;const r=rows.length+1;
+rows.push([{v:n,s:X.c},{v:c,s:X.x},{v:s,s:X.x},{v:t.P,s:X.c},{v:t.L,s:X.c},{v:t.A,s:X.c},{v:m,s:X.c,f:`SUM(D${r}:F${r})`},{v:m?Math.round((t.P+t.L)/m*1000)/10:0,s:X.pc,f:`IF(G${r}=0,0,ROUND((D${r}+E${r})/G${r}*100,1))`}])}));
+if(n){const a=5,z=rows.length,r=z+1,tm=tP+tL+tA;rows.push([{v:'',s:X.tb},{v:'',s:X.tb},{v:'All students',s:X.tb},{v:tP,s:X.c,f:`SUM(D${a}:D${z})`},{v:tL,s:X.c,f:`SUM(E${a}:E${z})`},{v:tA,s:X.c,f:`SUM(F${a}:F${z})`},{v:tm,s:X.c,f:`SUM(G${a}:G${z})`},{v:tm?Math.round((tP+tL)/tm*1000)/10:0,s:X.pc,f:`IF(G${r}=0,0,ROUND((D${r}+E${r})/G${r}*100,1))`}])}
+sheets.push({name:'Summary',rows,cols:[6,18,30,10,10,10,13,16],freeze:[0,4],rowH:{0:24},filter:n?`A4:H${4+n}`:null});
+/* register, one sheet per class */
+if(!o.stu)o.cls.forEach(c=>{const ds=[...(days[c]||[])].sort(),ns=names(c),nd=ds.length,r=[[{v:'Attendance register: '+c,s:X.t}],[{v:((K[c]&&K[c].sj)||'')+((K[c]&&K[c].rm)?', '+K[c].rm:'')+'.  Period: '+pt+'.',s:X.m}],[{v:'P = Present, L = Late, A = Absent. Grey cells were not marked that day. '+stamp()+'.',s:X.m}],[{v:'#',s:X.h},{v:'Student',s:X.h},...ds.map(d=>({v:xd(d),s:X.hd})),{v:'Present',s:X.h},{v:'Late',s:X.h},{v:'Absent',s:X.h},{v:'Rate',s:X.h}]];
+const c0=2,c1=c0+nd-1,tc=c0+nd;
+ns.forEach((s,i)=>{const row=r.length+1,cells=[{v:i+1,s:X.c},{v:s,s:X.x}];let p=0,l=0,a=0;ds.forEach(d=>{const v=mark[c+'|'+d+'|'+s];if(v){cells.push({v,s:X[v]});if(v=='P')p++;else if(v=='L')l++;else a++}else cells.push({v:'',s:X.g})});
+const rg=nd?`${L(c0)}${row}:${L(c1)}${row}`:'',cf=k=>nd?{v:k=='P'?p:k=='L'?l:a,s:X.c,f:`COUNTIF(${rg},"${k}")`}:{v:0,s:X.c},pl=L(tc),ll=L(tc+1),al=L(tc+2),m=p+l+a;
+cells.push(cf('P'),cf('L'),cf('A'),{v:m?Math.round((p+l)/m*1000)/10:0,s:X.pc,f:`IF(SUM(${pl}${row}:${al}${row})=0,0,ROUND((${pl}${row}+${ll}${row})/SUM(${pl}${row}:${al}${row})*100,1))`});r.push(cells)});
+if(!nd)r.push([{v:'No attendance recorded in this period.',s:X.m}]);
+sheets.push({name:'Register '+c,rows:r,cols:[5,28,...ds.map(()=>7),10,10,10,10],freeze:[2,4],rowH:{0:24}})});
+/* log */
+const lg=recs.slice().sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:a.c.localeCompare(b.c)||a.s.localeCompare(b.s)),rr=[[{v:'Attendance log',s:X.t}],[{v:'Every mark, newest first. '+stamp()+'. "Last saved" is when that class day was last saved.',s:X.m}],[],['Date','Day','Class','Student','Status','Last saved'].map(h=>({v:h,s:X.h}))];
+lg.forEach(r=>rr.push([{v:xd(r.d),s:X.dt},{v:new Date(r.d+'T00:00').toLocaleDateString('en',{weekday:'long'}),s:X.x},{v:r.c,s:X.x},{v:r.s,s:X.x},{v:SL[r.v],s:X[r.v]},r.t?{v:xt(r.t),s:X.dtm}:{v:'',s:X.x}]));
+sheets.push({name:'Log',rows:rr,cols:[18,13,18,30,12,22],freeze:[0,4],filter:lg.length?`A4:F${4+lg.length}`:null,rowH:{0:24}});
+return XL.book(sheets)}
+/* export dialog */
+const EX={c:'all',r:'all',a:'',b:''},exRange=()=>{const t=ymd(0);return EX.r=='mo'?[t.slice(0,8)+'01',t]:EX.r=='30'?[ymd(-29),t]:EX.r=='cu'?[EX.a||OPEN0,EX.b||OPEN1]:[OPEN0,OPEN1]},
+exCls=()=>EX.c=='all'?CL.slice():CL.includes(EX.c)?[EX.c]:CL.slice();
+window.exAtt=ci=>{if(!CL.length){toast('Add a class first.');return}EX.c=Number.isInteger(ci)&&CL[ci]?CL[ci]:'all';EX.r='all';EX.a=ymd(-30);EX.b=ymd(0);
+dlgOpen(`<form class="cf" onsubmit="return exDo(this)" oninput="exUp(this)" onchange="exUp(this)"><header class="cf-h"><span class="cf-ic ev">${IC.cal}</span><div><h2>Download attendance</h2><p>An Excel file with a summary, a register for each class, and a full log.</p></div>${dlgX}</header><div class="cf-b">
+<section><h3>Which class?</h3><div class="cf-ch">${['all',...CL].map(c=>`<label class="cfc"><input type="radio" name="c" value="${e(c)}" ${c==EX.c?'checked':''}><span>${c=='all'?'All classes':e(c)}</span></label>`).join('')}</div></section>
+<section><h3>Which dates?</h3><div class="cf-ch">${[['all','All recorded dates'],['mo','This month'],['30','Last 30 days'],['cu','Choose dates']].map(([v,l])=>`<label class="cfc"><input type="radio" name="r" value="${v}" ${v==EX.r?'checked':''}><span>${l}</span></label>`).join('')}</div><div class="cf-r" id="exc" hidden><label>From<input type="date" name="a" value="${EX.a}"></label><label>To<input type="date" name="b" value="${EX.b}"></label></div><p class="cf-hint" id="exp"></p></section></div>${cfFoot('Download Excel')}</form>`);exUp($('#dlg form'))};
+window.exUp=f=>{if(!f||!f.c||!f.r)return;EX.c=f.c.value;EX.r=f.r.value;if(f.a)EX.a=f.a.value;if(f.b)EX.b=f.b.value;const c=$('#exc');if(c)c.hidden=EX.r!='cu';
+const[fr,to]=exRange(),recs=exRecs(exCls(),fr,to),dy=new Set(recs.map(r=>r.c+r.d)).size,h=$('#exp'),b=f.querySelector('.btn.pr');
+if(h)h.textContent=recs.length?recs.length+' marks across '+dy+(dy==1?' class day':' class days')+'.':'Nothing is recorded in these dates yet.';if(b)b.disabled=!recs.length;
+if(EX.r=='cu'&&fr>to&&b){b.disabled=true;if(h)h.textContent='The start date is after the end date.'}};
+window.exDo=f=>{exUp(f);const[fr,to]=exRange(),cls=exCls();if(!exRecs(cls,fr,to).length)return false;
+try{xDl(exBookT({cls,from:fr,to}),'TASKLY-attendance-'+(EX.c=='all'?'all-classes':slug(EX.c))+'-'+ymd(0)+'.xlsx');$('#dlg').close();toast('Excel file downloaded.')}catch(x){console.error(x);toast('Could not create the Excel file.')}return false};
+window.exStu=()=>{const c=AH.c,s=AH.s;if(!stMarks(c,s).length){toast('Nothing recorded for this student yet.');return}
+try{xDl(exBookT({cls:[c],stu:s,from:OPEN0,to:OPEN1}),'TASKLY-'+slug(s)+'-'+slug(c)+'-'+ymd(0)+'.xlsx');toast('Excel file downloaded.')}catch(x){console.error(x);toast('Could not create the Excel file.')}};
+window.__v10={XL,exBookT,exRecs,stMarks,per,xd,fD};
+
+/* ---------- SHS Head: teacher attendance log (built from check-ins) ---------- */
+const mn2=t=>{const m=String(t||'').match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);return m?(m[1]%12+(m[3].toUpperCase()=='PM'?12:0))*60+ +m[2]:-1},
+hNorm=t=>String(t||'').replace(/\s/g,' '),
+hGp=()=>Number(HP.gp)||15;
+const hEff=(tid,d)=>{const mk=((HP.mk||{})[tid]||{})[d],it=((HP.ck||{})[tid]||{})[d]||[],ok=it.filter(x=>x[2]);let a='N';
+if(ok.length)a=ok.some(x=>mn2(x[2])-mn2(x[1])>hGp())?'L':'P';
+return{d,s:mk||a,src:mk?'head':it.length?'auto':'none',auto:a,mk:mk||'',lines:it.map(x=>({c:x[0],s:x[1],a:x[2],late:x[2]?Math.max(0,mn2(x[2])-mn2(x[1])):0}))}};
+const hDays=tid=>{const s=new Set([...Object.keys((HP.ck||{})[tid]||{}),...Object.keys((HP.mk||{})[tid]||{})]);return[...s].sort().reverse().map(d=>hEff(tid,d))};
+window.hLog=()=>{if(!HR)return;HP.ck=HP.ck||{};HP.mk=HP.mk||{};let ch=0;const td=ymd(0),n=_nm(),dy=NOW(),gp=hGp();
+HR.forEach(r=>{if(!r.id)return;const L=HP.ck[r.id]=HP.ck[r.id]||{};
+(r.sched||[]).forEach(c=>{if(!c.tm)return;const key=x=>x[0]==c.n&&x[1]==c.tm;
+if(c.at&&c.atd){const a=hNorm(c.at),day=L[c.atd]=L[c.atd]||[],x=day.find(key);if(!x){day.push([c.n,c.tm,a]);ch=1}else if(x[2]!=a){x[2]=a;ch=1}}
+if(!(c.at&&c.atd==td)&&(c.d||[]).includes(dy)&&n-mins(c.tm)>=gp){const day=L[td]=L[td]||[];if(!day.some(key)){day.push([c.n,c.tm,'']);ch=1}}});
+const ks=Object.keys(L).sort();while(ks.length>120){delete L[ks.shift()];ch=1}});
+if(ch)hSv()};
+const hLate=l=>l.a&&l.late>hGp(),
+hLines=x=>x.lines.map(l=>`<small>${e(l.c)}: ${l.a?'checked in '+e(l.a)+(hLate(l)?', '+l.late+' min after the start':'')+' (class at '+e(l.s)+')':'no check-in recorded (class at '+e(l.s)+')'}</small>`).join('')+(x.src=='head'?`<small>Recorded by you${x.auto!='N'&&x.auto!=x.s?'. Check-ins showed '+SL[x.auto].toLowerCase():''}</small>`:'');
+const hRow2=x=>`<div class="ah-r"><div class="ah-d"><b>${e(fD(x.d))}</b>${hLines(x)}</div><span class="b ${SC[x.s]}">${SL[x.s]}</span></div>`;
+window.hLastLine=t=>{if(!t.id)return '';const D=hDays(t.id).filter(x=>x.lines.some(l=>l.a)),x=D[0];if(!x)return `<p class="hx-last">No check-ins recorded yet.</p>`;const l=x.lines.filter(q=>q.a).pop();return `<p class="hx-last">Last check-in ${e(fD(x.d))}, ${e(l.a)}</p>`};
+window.hRecent=(t,i)=>{if(!t.id)return '';const D=hDays(t.id).slice(0,4);
+return `<h3 class="mu sm" style="margin:12px 0 0">Attendance by date</h3>${D.length?D.map(hRow2).join(''):`<p class="mu sm">No check-ins recorded yet. History builds up each time TASKLY loads school data.</p>`}<button type="button" class="btn sm" style="margin-top:8px" onclick="hxHist(${i})">See all dates and record a status</button>`};
+/* history dialog */
+const HX={i:-1,f:'',d:''};
+const hxBody=()=>{const t=hTe()[HX.i];if(!t)return '';const D=hDays(t.id),n={P:0,L:0,A:0,N:0};D.forEach(x=>n[x.s]++);const L=HX.f?D.filter(x=>x.s==HX.f):D,tot=n.P+n.L+n.A,rate=tot?Math.round((n.P+n.L)/tot*100):null;let mo='';
+const rows=L.map(x=>{const h=x.d.slice(0,7)==mo?'':(mo=x.d.slice(0,7),`<h3 class="ah-m">${e(fM(x.d))}</h3>`);return h+hRow2(x)}).join('');
+return `<div class="ah-sum">${['P','L','A','N'].map(k=>`<button type="button" class="ah-t ${k}${HX.f==k?' on':''}" onclick="hxF('${k}')" aria-pressed="${HX.f==k}"><b>${n[k]}</b><span>${SL[k]}</span></button>`).join('')}</div>
+<p class="ah-note">${HX.f?`Showing ${SL[HX.f].toLowerCase()} dates only.<button type="button" class="btn sm" onclick="hxF('${HX.f}')">Show all</button>`:`${tot?rate+'% attended. ':''}Late means a check-in more than ${hGp()} minutes after the class start. TASKLY never marks a teacher absent by itself.`}</p>
+<div class="hx-rec"><h3>Record a status</h3><div class="row2"><label>Date<input type="date" id="hxd" value="${e(HX.d||ymd(0))}" max="${ymd(0)}" oninput="HX.d=this.value"></label><div class="seg" role="group" aria-label="Status">${['P','L','A'].map(k=>`<button type="button" class="${k}" title="${SL[k]}" aria-label="${SL[k]}" onclick="hxMark('${k}')">${k}</button>`).join('')}</div><button type="button" class="btn sm" onclick="hxMark('')">Clear</button></div><p class="hx-last">Use this after you have confirmed with the teacher or the school's procedure. It replaces the check-in result for that date.</p></div>
+<div>${rows||empty(D.length?'No dates here':'No dates yet','Dates appear here once a teacher checks in, or when you record one above.')}</div>`};
+window.HX=HX;
+window.hxHist=(i,f)=>{const t=hTe()[i];if(!t)return;HX.i=i;HX.f=f||'';HX.d=ymd(0);
+dlgOpen(`<div class="cf"><header class="cf-h"><span class="cf-ic">${IC.cal}</span><div><h2>${e(t.n)}</h2><p>Attendance by date.</p></div>${dlgX}</header><div class="cf-b" id="hxb">${hxBody()}</div><footer class="cf-f"><button type="button" class="btn" onclick="hT(${i})">Back</button><button type="button" class="btn" onclick="hxEx(${i})">Download Excel</button></footer></div>`)};
+window.hxF=f=>{HX.f=HX.f==f?'':f;const b=$('#hxb');if(b)b.innerHTML=hxBody()};
+window.hxMark=v=>{const t=hTe()[HX.i];if(!t)return;const inp=$('#hxd'),d=inp?inp.value:HX.d;if(!t.id||!HR){toast('Not connected. Refresh the data and try again.');return}
+if(!/^\d{4}-\d{2}-\d{2}$/.test(d)){toast('Pick a date.');return}if(d>ymd(0)){toast('You cannot record a future date.');return}
+HX.d=d;HP.mk=HP.mk||{};const m=HP.mk[t.id]=HP.mk[t.id]||{};if(v)m[d]=v;else delete m[d];if(!Object.keys(m).length)delete HP.mk[t.id];hSv();
+const b=$('#hxb');if(b)b.innerHTML=hxBody();toast(v?'Recorded '+SL[v].toLowerCase()+' for '+fD(d)+'.':'Cleared the recorded status for '+fD(d)+'.')};
+/* head: workbook */
+function hxBook(o){const X=XL.X,L=XL.colL,TE=hTe().filter(t=>t.id&&(o.only==null||t.i==o.only)),sheets=[],pt=per(o.from,o.to);
+const dd2=t=>hDays(t.id).filter(x=>x.d>=o.from&&x.d<=o.to),all=TE.map(t=>[t,dd2(t)]);
+const ds=[...new Set(all.flatMap(([t,a])=>a.map(x=>x.d)))].sort();
+const rows=[[{v:o.only!=null&&TE[0]?'Teacher attendance: '+TE[0].n:'Teacher attendance summary',s:X.t}],[{v:'Period: '+pt+'.  Prepared by '+((S.u&&S.u.name)||'the SHS Head')+'.',s:X.m}],[{v:stamp()+'. Status comes from class check-ins and statuses you recorded. Late means more than '+hGp()+' minutes after the class start. Rate counts Present and Late as attended.',s:X.m}],['#','Teacher','Strand','Classes','Present','Late','Absent','Not recorded','Days logged','Attendance rate'].map(h=>({v:h,s:X.h}))];
+all.forEach(([t,a],i)=>{const c={P:0,L:0,A:0,N:0};a.forEach(x=>c[x.s]++);const r=rows.length+1,m=c.P+c.L+c.A;
+rows.push([{v:i+1,s:X.c},{v:t.n,s:X.x},{v:t.sg,s:X.x},{v:t.cl.join(', '),s:X.x},{v:c.P,s:X.c},{v:c.L,s:X.c},{v:c.A,s:X.c},{v:c.N,s:X.c},{v:a.length,s:X.c,f:`SUM(E${r}:H${r})`},{v:m?Math.round((c.P+c.L)/m*1000)/10:0,s:X.pc,f:`IF(SUM(E${r}:G${r})=0,0,ROUND((E${r}+F${r})/SUM(E${r}:G${r})*100,1))`}])});
+sheets.push({name:'Summary',rows,cols:[6,28,12,34,10,10,10,13,12,16],freeze:[0,4],rowH:{0:24},filter:all.length?`A4:J${4+all.length}`:null});
+const rg=[[{v:'Teacher register',s:X.t}],[{v:'P = Present, L = Late, A = Absent, blank = not recorded. '+stamp()+'.',s:X.m}],[],[{v:'#',s:X.h},{v:'Teacher',s:X.h},...ds.map(d=>({v:xd(d),s:X.hd}))]];
+all.forEach(([t,a],i)=>{const mp={};a.forEach(x=>{mp[x.d]=x.s});rg.push([{v:i+1,s:X.c},{v:t.n,s:X.x},...ds.map(d=>{const v=mp[d];return v&&v!='N'?{v,s:X[v]}:{v:'',s:X.g}})])});
+if(!ds.length)rg.push([{v:'No attendance logged in this period.',s:X.m}]);
+sheets.push({name:'Register',rows:rg,cols:[5,28,...ds.map(()=>7)],freeze:[2,4],rowH:{0:24}});
+const lg=all.flatMap(([t,a])=>a.map(x=>({t,x}))).sort((p,q)=>p.x.d<q.x.d?1:p.x.d>q.x.d?-1:p.t.n.localeCompare(q.t.n));
+const lr=[[{v:'Attendance log',s:X.t}],[{v:'Newest first. '+stamp()+'.',s:X.m}],[],['Date','Day','Teacher','Strand','Status','Source','Details'].map(h=>({v:h,s:X.h}))];
+lg.forEach(({t,x})=>lr.push([{v:xd(x.d),s:X.dt},{v:new Date(x.d+'T00:00').toLocaleDateString('en',{weekday:'long'}),s:X.x},{v:t.n,s:X.x},{v:t.sg,s:X.x},{v:SL[x.s],s:X[x.s]},{v:x.src=='head'?'Recorded by head':x.src=='auto'?'Class check-in':'',s:X.x},{v:x.lines.map(l=>l.c+': '+(l.a?'checked in '+l.a+' (class '+l.s+')':'no check-in (class '+l.s+')')).join('; '),s:X.x}]));
+sheets.push({name:'Log',rows:lr,cols:[18,13,28,12,14,17,70],freeze:[0,4],filter:lg.length?`A4:G${4+lg.length}`:null,rowH:{0:24}});
+return{blob:XL.book(sheets),n:lg.length}}
+const HE={r:'all',a:'',b:''},hxRange=()=>{const t=ymd(0);return HE.r=='mo'?[t.slice(0,8)+'01',t]:HE.r=='30'?[ymd(-29),t]:HE.r=='cu'?[HE.a||OPEN0,HE.b||OPEN1]:[OPEN0,OPEN1]};
+window.hxEx=i=>{if(!HR){toast('Not connected. Refresh the data and try again.');return}
+if(Number.isInteger(i)){const o=hxBook({from:OPEN0,to:OPEN1,only:i});if(!o.n){toast('No attendance logged for this teacher yet.');return}const t=hTe()[i];try{xDl(o.blob,'TASKLY-teacher-attendance-'+slug(t?t.n:'teacher')+'-'+ymd(0)+'.xlsx');toast('Excel file downloaded.')}catch(x){console.error(x);toast('Could not create the Excel file.')}return}
+HE.r='all';HE.a=ymd(-30);HE.b=ymd(0);
+dlgOpen(`<form class="cf" onsubmit="return hxDo(this)" oninput="hxUp(this)" onchange="hxUp(this)"><header class="cf-h"><span class="cf-ic ev">${IC.cal}</span><div><h2>Teacher attendance</h2><p>An Excel file with a summary, a register by date, and a full log.</p></div>${dlgX}</header><div class="cf-b"><section><h3>Which dates?</h3><div class="cf-ch">${[['all','All logged dates'],['mo','This month'],['30','Last 30 days'],['cu','Choose dates']].map(([v,l])=>`<label class="cfc"><input type="radio" name="r" value="${v}" ${v==HE.r?'checked':''}><span>${l}</span></label>`).join('')}</div><div class="cf-r" id="hxc" hidden><label>From<input type="date" name="a" value="${HE.a}"></label><label>To<input type="date" name="b" value="${HE.b}"></label></div><p class="cf-hint" id="hxp"></p></section></div>${cfFoot('Download Excel')}</form>`);hxUp($('#dlg form'))};
+window.hxUp=f=>{if(!f||!f.r)return;HE.r=f.r.value;if(f.a)HE.a=f.a.value;if(f.b)HE.b=f.b.value;const c=$('#hxc');if(c)c.hidden=HE.r!='cu';const[fr,to]=hxRange(),n=hTe().reduce((s,t)=>s+(t.id?hDays(t.id).filter(x=>x.d>=fr&&x.d<=to).length:0),0),h=$('#hxp'),b=f.querySelector('.btn.pr');
+if(h)h.textContent=n?n+' teacher '+(n==1?'day':'days')+' logged. History starts the first time this version loads school data.':'Nothing is logged in these dates yet.';if(b)b.disabled=!n;if(HE.r=='cu'&&fr>to&&b){b.disabled=true;if(h)h.textContent='The start date is after the end date.'}};
+window.hxDo=f=>{hxUp(f);const[fr,to]=hxRange(),o=hxBook({from:fr,to});if(!o.n)return false;try{xDl(o.blob,'TASKLY-teacher-attendance-'+ymd(0)+'.xlsx');$('#dlg').close();toast('Excel file downloaded.')}catch(x){console.error(x);toast('Could not create the Excel file.')}return false};
+window.__v10.hEff=hEff;window.__v10.hDays=hDays;window.__v10.hxBook=hxBook;
+
+/* ---------- meetings in announcements ---------- */
+const MT_RE=/^\u27e6MTG\|(\d{4}-\d{2}-\d{2})\|(\d{2}:\d{2})\|(\d{2}:\d{2})?\|([^\u27e7]*)\u27e7\n?/;
+window.mtParse=b=>{b=String(b==null?'':b);const m=b.match(MT_RE);return m?{m:b.slice(m[0].length),mt:{d:m[1],s:m[2],e:m[3]||'',p:m[4]||''}}:{m:b,mt:null}};
+window.mtPack=(m,mt)=>mt?'\u27e6MTG|'+mt.d+'|'+mt.s+'|'+(mt.e||'')+'|'+String(mt.p||'').replace(/[|\u27e6\u27e7\r\n\s]+/g,' ').trim().slice(0,80)+'\u27e7\n'+m:m;
+window.mtX=b=>{const p=mtParse(b);return{m:hTx(p.m,1000),mt:p.mt}};
+window.mtShort=mt=>new Date(mt.d+'T00:00').toLocaleDateString('en',{weekday:'short',month:'short',day:'numeric'})+' at '+t12(mt.s);
+window.mtWhen=mt=>new Date(mt.d+'T00:00').toLocaleDateString('en',{weekday:'short',month:'short',day:'numeric'})+', '+t12(mt.s)+(mt.e?' to '+t12(mt.e):'')+(mt.p?', '+mt.p:'');
+const aidOf=v=>String(v).replace(/[^\w-]/g,''),annBy=id=>ANN.find(x=>aidOf(x.id)==id);
+window.mtCard=x=>{const m=x.mt,d=new Date(m.d+'T00:00');return `<div class="mtc"><div class="mtc-d"><small>${e(d.toLocaleDateString('en',{month:'short'}))}</small><b>${d.getDate()}</b></div><div class="mtc-t"><b>${e(d.toLocaleDateString('en',{weekday:'long',month:'long',day:'numeric',year:'numeric'}))}</b><span>${e(t12(m.s)+(m.e?' to '+t12(m.e):''))}</span>${m.p?`<span>${e(m.p)}</span>`:''}</div></div>`};
+window.mtBtns=x=>{const m=x.mt,id=aidOf(x.id),on=EV.some(v=>v.ann==String(x.id)),past=m.d<ymd(0);
+return (on?`<button type="button" class="btn" disabled>Added to calendar</button><button type="button" class="btn pr" onclick="mtView('${m.d}')">View in calendar</button>`:past?`<button type="button" class="btn" disabled>This meeting has passed</button>`:`<button type="button" class="btn pr" onclick="mtAdd('${id}')">Add to my calendar</button>`)+`<button type="button" class="btn" onclick="mtIcs('${id}')">Download .ics</button>`};
+window.mtAdd=id=>{const x=annBy(id);if(!x||!x.mt)return;const m=x.mt;if(EV.some(v=>v.ann==String(x.id))){toast('Already on your calendar.');return}
+EV.push({id:Date.now(),t:x.title,d:m.d,tm:t12(m.s),n:['Meeting',m.e&&'until '+t12(m.e),m.p].filter(Boolean).join(', '),ty:'Meeting',ann:String(x.id)});
+const a=new Date(m.d+'T00:00'),b=new Date();S.sd=m.d;S.cm=(a.getFullYear()-b.getFullYear())*12+a.getMonth()-b.getMonth();toast('Meeting added to your calendar.');annOpen(id)};
+window.mtView=d=>{const dl=document.getElementById('anndlg');if(dl&&dl.open)dl.close();S.sd=d;go('cal')};
+window.mtIcs=id=>{const x=annBy(id);if(!x||!x.mt)return;const m=x.mt,p=n=>String(n).padStart(2,'0'),dt=(d,t)=>d.replace(/-/g,'')+'T'+t.replace(':','')+'00',
+en=m.e||(()=>{const q=m.s.split(':').map(Number),z=q[0]*60+q[1]+60;return p(Math.floor(z/60)%24)+':'+p(z%60)})(),
+esc=s=>String(s||'').replace(/\\/g,'\\\\').replace(/[,;]/g,'\\$&').replace(/\r?\n/g,'\\n'),now=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
+const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//TASKLY//SHS//EN','CALSCALE:GREGORIAN','BEGIN:VEVENT','UID:taskly-'+id+'@taskly','DTSTAMP:'+now,'DTSTART:'+dt(m.d,m.s),'DTEND:'+dt(m.d,en),'SUMMARY:'+esc(x.title),m.p?'LOCATION:'+esc(m.p):'',x.body?'DESCRIPTION:'+esc(x.body):'','BEGIN:VALARM','TRIGGER:-PT15M','ACTION:DISPLAY','DESCRIPTION:'+esc(x.title),'END:VALARM','END:VEVENT','END:VCALENDAR'].filter(Boolean),
+fold=l=>{let o='';while(l.length>74){o+=l.slice(0,74)+'\r\n ';l=l.slice(74)}return o+l};
+xDl(new Blob([L.map(fold).join('\r\n')+'\r\n'],{type:'text/calendar;charset=utf-8'}),'meeting-'+slug(x.title)+'.ics');toast('Calendar file downloaded.')};
+window.mtTog=cb=>{const f=cb.form,b=f.querySelector('.mt-f');b.hidden=!cb.checked;f.m.required=!cb.checked;f.md.required=cb.checked;f.ms.required=cb.checked};
+hNew=function(){const td=ymd(0);$('#dlg').innerHTML=`<form onsubmit="return hPost(this)"><h2>New announcement</h2><label>Title<input name="t" required maxlength="120" placeholder="e.g. Faculty meeting moved"></label><label>Message<textarea name="m" rows="3" maxlength="900" required placeholder="What should teachers know?"></textarea></label><label>Send to<select name="a"><option>All teachers${SG.map(s=>`<option>${s} teachers`).join('')}</select></label>
+<label class="sw2 qsw"><span>This is a meeting<small class="mu">Teachers can add it to their calendar.</small></span><input type="checkbox" name="mt" onchange="mtTog(this)"></label>
+<div class="mt-f" hidden><div class="tb2"><label>Date<input type="date" name="md" min="${td}" value="${td}"></label><label>Starts<input type="time" name="ms" value="15:00"></label></div><div class="tb2"><label>Ends <small>(optional)</small><input type="time" name="me"></label><label>Where <small>(optional)</small><input name="mp" maxlength="80" placeholder="e.g. Room 204" autocomplete="off"></label></div></div>
+<div class="act"><button type="button" class="btn" onclick="$('#dlg').close()">Cancel</button><button class="btn pr">Post announcement</button></div></form>`;$('#dlg').showModal()};
+hPost2=async function(f){const t=f.t.value.trim(),m0=f.m.value.trim(),a=f.a.value,b=f.querySelector('.btn.pr'),on=!!(f.mt&&f.mt.checked);let mt=null;
+if(on){const d=f.md.value,s=f.ms.value,en=f.me.value,p=f.mp.value.trim();if(!d||!s){toast('Pick the meeting date and start time.');return}if(d<ymd(0)){toast('Pick today or a later date for the meeting.');return}if(en&&en<=s){toast('The end time must be after the start time.');return}
+mt={d,s,e:en,p:p.replace(/[|\u27e6\u27e7\r\n\s]+/g,' ').trim().slice(0,80)}}
+if(!t||(!on&&!m0))return;if(!HR){toast('Not connected. Refresh the data and try again.');return}
+b.disabled=true;const{data,error}=await sb.from('announcements').insert({title:t,body:mtPack(m0,mt),audience:a}).select('id').single();
+if(error){b.disabled=false;toast('Could not post: '+error.message);return}
+HN.unshift({id:data.id,t,m:m0,mt,a,w:'Just now'});$('#dlg').close();toast(mt?'Meeting posted. Teachers can add it to their calendar.':'Announcement posted.');render()};
+hAnn=function(){return `<div class="hd"><div><h1>Announcements</h1><p class="mu">Post a notice or a meeting for all teachers or one strand. Teachers see it in their notifications and can add meetings to their calendar.</p></div><button class="btn pr" onclick="hNew()">+ New announcement</button></div>
+${HN.length?`<div class="hn">${HN.map((a,i)=>`<article class="hp" style="--c:${uCol[i%6]};--r:${(i%3-1)*.9}deg"><h3>${e(a.t)}</h3>${a.mt?`<p class="mt-l"><b>Meeting.</b> ${e(mtWhen(a.mt))}</p>`:''}${a.m?`<p>${e(a.m)}</p>`:''}<small>${e(a.a)}, ${a.w}</small><div class="act"><button class="btn sm" onclick="hDel(${i})">Remove</button></div></article>`).join('')}</div>`:`<div class="card">${empty('No announcements yet','Post one to reach all teachers.')}</div>`}`};
+
+/* ---------- notes: checklists, highlights, dividers, shortcuts ---------- */
+const NI={un:_i('<path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/>'),re:_i('<path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 000 12h3"/>'),
+ul:_i('<circle cx="5" cy="7" r="1.3"/><circle cx="5" cy="12" r="1.3"/><circle cx="5" cy="17" r="1.3"/><path d="M10 7h10M10 12h10M10 17h10"/>'),
+ol:_i('<path d="M11 7h9M11 12h9M11 17h9"/><path d="M4.5 5.5l1.5-1V9"/><path d="M4 13.5c0-1.2 2.4-1.2 2.4 0 0 1.1-2.4 1.8-2.4 3H6.6"/>'),
+ck:_i('<rect x="3.5" y="4" width="5.5" height="5.5" rx="1.3"/><path d="M4.7 6.8l1.2 1.2 2-2.3"/><path d="M12.5 6.800H20.5"/><rect x="3.5" y="14" width="5.5" height="5.5" rx="1.3"/><path d="M12.5 16.800H20.5"/>'),
+in:_i('<path d="M4 5.500h16M12 10.500h8M12 15.500h8M4 20.500h16"/><path d="M4 9.500l3.5 2.500L4 14.500z"/>'),
+out:_i('<path d="M4 5.500h16M12 10.500h8M12 15.500h8M4 20.500h16"/><path d="M7.5 9.500L4 12l3.5 2.500z"/>'),
+hl:_i('<path d="M14.5 4.500l5 5L10 19H5v-5z"/><path d="M12 7l5 5"/><path d="M4 21.500h16"/>'),
+hr:_i('<path d="M3 12h18"/><path d="M7 7h10M7 17h10" opacity=".45"/>'),
+qt:_i('<path d="M7 17.500c-1.7 0-3-1.3-3-3 0-3 2-5.5 5-6.500M17 17.500c-1.7 0-3-1.3-3-3 0-3 2-5.5 5-6.5"/>'),
+dt:_i('<rect x="3.5" y="5" width="17" height="15.5" rx="3.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'),
+cl:_i('<path d="M5 5l14 14"/><path d="M9 5h10M13 5l-1.5 6M8 19h6"/>')};
+const nxb=(k,t,h,c)=>`<button type="button" ${c?`data-c="${c}" `:''}data-k="${k}" class="nx-b" title="${t}" aria-label="${t}" onmousedown="event.preventDefault()" onclick="nx('${k}')">${h}</button>`,sp='<i class="nx-s"></i>';
+window.nxBar=()=>`<div class="nx-wrap"><div class="tbr nx-tb" role="toolbar" aria-label="Formatting">${nxb('undo','Undo',NI.un)}${nxb('redo','Redo',NI.re)}${sp}${nxb('bold','Bold','<b>B</b>','bold')}${nxb('italic','Italic','<i>I</i>','italic')}${nxb('underline','Underline','<u>U</u>','underline')}${nxb('strike','Strikethrough','<s>S</s>','strikeThrough')}${sp}${nxb('h2','Heading','<b>H2</b>')}${nxb('h3','Subheading','<b>H3</b>')}${sp}${nxb('ul','Bullet list',NI.ul)}${nxb('ol','Numbered list',NI.ol)}${nxb('ck','Checklist',NI.ck)}${nxb('in','Indent',NI.in)}${nxb('out','Outdent',NI.out)}${sp}${nxb('hl','Highlight',NI.hl)}${nxb('hr','Divider',NI.hr)}${nxb('qt','Quote',NI.qt)}${nxb('dt',"Insert today's date",NI.dt)}${sp}${nxb('clr','Clear formatting',NI.cl)}</div><div id="nxp" class="nx-p" hidden></div></div>`;
+window.nxProg=n=>{const h=String(n.h||''),t=(h.match(/data-c="[01]"/g)||[]).length;if(!t)return '';const d=(h.match(/data-c="1"/g)||[]).length;return `<span class="nx-pg" title="Checklist progress">${d}/${t} done</span>`};
+const nxUp=t=>{const s=getSelection(),ed=$('#ed');let n=s&&s.anchorNode;t=t.toUpperCase();while(n&&n!==ed){if(n.nodeType==1&&n.tagName==t)return n;n=n.parentNode}return null};
+function nxNorm(){const ed=$('#ed');if(!ed)return;ed.querySelectorAll('ul.tdl ul').forEach(u=>u.classList.add('tdl'));
+ed.querySelectorAll('ul.tdl>li').forEach(li=>{const v=li.getAttribute('data-c');if(v!=='1'&&v!=='0')li.setAttribute('data-c','0')});
+ed.querySelectorAll('li[data-c]').forEach(li=>{const p=li.parentNode;if(!(p&&p.tagName=='UL'&&p.classList.contains('tdl')))li.removeAttribute('data-c')});
+ed.querySelectorAll('.tdl').forEach(x=>{if(x.tagName!='UL')x.classList.remove('tdl')})}
+function nxToBullets(ul){[ul,...ul.querySelectorAll('ul.tdl')].forEach(u=>{u.classList.remove('tdl');if(!u.classList.length)u.removeAttribute('class')});ul.querySelectorAll('li[data-c]').forEach(li=>li.removeAttribute('data-c'))}
+function nxCk(){const ed=$('#ed');ed.focus();let ul=nxUp('ul');
+if(ul&&ul.classList.contains('tdl')){nxToBullets(ul);return}
+if(!ul){document.execCommand('insertUnorderedList');ul=nxUp('ul');const li=nxUp('li');
+if(ul&&li&&!ul.classList.contains('tdl')&&ul.children.length>1){const s=getSelection(),an=s.anchorNode,ao=s.anchorOffset,next=[];for(let n=li.nextElementSibling;n;n=n.nextElementSibling)next.push(n);
+const nu=document.createElement('ul');ul.after(nu);nu.appendChild(li);if(next.length){const u3=document.createElement('ul');nu.after(u3);next.forEach(x=>u3.appendChild(x))}ul=nu;try{s.collapse(an,ao)}catch(x){}}}
+if(ul){ul.classList.add('tdl');nxNorm()}}
+function nxList(cmd){const ul=nxUp('ul');if(cmd=='insertUnorderedList'&&ul&&ul.classList.contains('tdl')){nxToBullets(ul);return}document.execCommand(cmd)}
+function nxBlock(k){const cur=String(document.queryCommandValue('formatBlock')||'').toLowerCase().replace(/[<>]/g,'');document.execCommand('formatBlock',false,cur==k?'div':k)}
+function nxQuote(){const cur=String(document.queryCommandValue('formatBlock')||'').toLowerCase().replace(/[<>]/g,'');document.execCommand('formatBlock',false,cur=='blockquote'?'div':'blockquote')}
+const HLC=[['y','Yellow'],['g','Green'],['b','Blue'],['p','Pink'],['o','Orange']];
+function nxPop(w){const p=$('#nxp');if(!p)return;if(!w||(p.dataset.w==w&&!p.hidden)){p.hidden=true;p.dataset.w='';return}p.dataset.w=w;p.hidden=false;
+p.innerHTML=w=='hl'?HLC.map(([c,l])=>`<button type="button" class="nx-sw hl-${c}" title="${l} highlight" aria-label="${l} highlight" onmousedown="event.preventDefault()" onclick="nxHl('${c}')"></button>`).join('')+`<button type="button" class="btn sm" onmousedown="event.preventDefault()" onclick="nxHl('')">Remove highlight</button>`
+:[['s','Line'],['d','Dashed'],['t','Dots']].map(([c,l])=>`<button type="button" class="nx-dv" onmousedown="event.preventDefault()" onclick="nxHr('${c}')"><hr class="dv-${c}"><span>${l}</span></button>`).join('')}
+const HLH={y:'#fff3a3',g:'#c6efd3',b:'#cde2ff',p:'#ffd1df',o:'#ffd9b3'},HLN={};Object.keys(HLH).forEach(k=>{const x=HLH[k];HLN[k]=[1,3,5].map(i=>parseInt(x.slice(i,i+2),16))});
+window.hlOf=st=>{const m=String(st||'').match(/background(?:-color)?\s*:\s*(?:rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)[^)]*\)|#([0-9a-f]{6}|[0-9a-f]{3})\b)/i);if(!m)return '';let r,g,b;if(m[1]!=null){r=+m[1];g=+m[2];b=+m[3]}else{let x=m[4];if(x.length==3)x=x.replace(/./g,'$&$&');r=parseInt(x.slice(0,2),16);g=parseInt(x.slice(2,4),16);b=parseInt(x.slice(4,6),16)}
+let best='',bd=1e9;for(const k in HLN){const v=HLN[k],d=Math.abs(v[0]-r)+Math.abs(v[1]-g)+Math.abs(v[2]-b);if(d<bd){bd=d;best=k}}return bd<=24?best:''};
+window.nxHl=c=>{const ed=$('#ed'),sel=getSelection();if(!ed||!sel.rangeCount)return;ed.focus();let r=sel.getRangeAt(0);if(!ed.contains(r.commonAncestorContainer))return;
+const marks=[...ed.querySelectorAll('mark')].filter(m=>r.intersectsNode(m));
+if(r.collapsed){if(!marks.length){toast('Select the text first.');return}if(c)marks.forEach(m=>{m.className='hl-'+c});else marks.forEach(m=>m.replaceWith(...m.childNodes));nxPop('');noteIn();return}
+if(marks.length){const s=[r.startContainer,r.startOffset,r.endContainer,r.endOffset];marks.forEach(m=>m.replaceWith(...m.childNodes));
+try{r=document.createRange();r.setStart(s[0],s[1]);r.setEnd(s[2],s[3]);sel.removeAllRanges();sel.addRange(r)}catch(x){}
+if(!ed.contains(r.commonAncestorContainer)){nxPop('');noteIn();return}}
+try{document.execCommand('styleWithCSS',false,true);document.execCommand('hiliteColor',false,c?HLH[c]:'transparent')}finally{document.execCommand('styleWithCSS',false,false)}
+nxNorm();nxPop('');noteIn()};
+window.nxHr=c=>{const ed=$('#ed');if(!ed)return;ed.focus();document.execCommand('insertHTML',false,`<hr class="dv-${c}"><div><br></div>`);nxPop('');nxNorm();noteIn()};
+window.nx=k=>{const ed=$('#ed');if(!ed)return;if(k=='hl'||k=='hr'){nxPop(k);return}nxPop('');ed.focus();
+try{switch(k){case 'undo':document.execCommand('undo');break;case 'redo':document.execCommand('redo');break;
+case 'bold':case 'italic':case 'underline':document.execCommand(k);break;case 'strike':document.execCommand('strikeThrough');break;
+case 'h2':case 'h3':nxBlock(k);break;case 'ul':nxList('insertUnorderedList');break;case 'ol':nxList('insertOrderedList');break;case 'ck':nxCk();break;
+case 'in':document.execCommand('indent');break;case 'out':document.execCommand('outdent');break;case 'qt':nxQuote();break;
+case 'dt':document.execCommand('insertText',false,new Date().toLocaleDateString('en',{weekday:'short',month:'short',day:'numeric',year:'numeric'}));break;
+case 'clr':{document.execCommand('removeFormat');const s=getSelection();if(s.rangeCount){const r=s.getRangeAt(0);[...ed.querySelectorAll('mark')].filter(m=>r.intersectsNode(m)).forEach(m=>m.replaceWith(...m.childNodes))}break}}}catch(x){console.error(x)}
+nxNorm();noteIn();nxSel()};
+function nxSel(){const ed=$('#ed');if(!ed||document.activeElement!==ed)return;const q=k=>{try{return document.queryCommandState(k)}catch(x){return false}},u=nxUp('ul'),ck=!!(u&&u.classList.contains('tdl')),
+bl=String((()=>{try{return document.queryCommandValue('formatBlock')}catch(x){return ''}})()||'').toLowerCase().replace(/[<>]/g,''),set=(k,v)=>{const b=document.querySelector('.nx-tb [data-k="'+k+'"]');if(b)b.classList.toggle('on',!!v)};
+set('ul',q('insertUnorderedList')&&!ck);set('ol',q('insertOrderedList'));set('ck',ck);set('h2',bl=='h2');set('h3',bl=='h3');set('qt',bl=='blockquote');let hl=!!nxUp('mark');if(!hl){try{const v=String(document.queryCommandValue('backColor')||'');hl=!!v&&!/^(rgba\(0, 0, 0, 0\)|transparent|initial)$/.test(v)}catch(x){}}set('hl',hl)}
+document.addEventListener('selectionchange',nxSel);
+function nxTog(li){li.setAttribute('data-c',li.getAttribute('data-c')=='1'?'0':'1');noteIn()}
+function nxDiv(){const s=getSelection();if(!s.rangeCount||!s.isCollapsed)return false;const n=s.anchorNode;if(!n||n.nodeType!=3||nxUp('li'))return false;const t=n.textContent;if(!/^\s*(-{3}|\*{3}|_{3})\s*$/.test(t)||s.anchorOffset!=t.length)return false;
+for(let i=0;i<t.length;i++)document.execCommand('delete');nxHr('s');return true}
+function nxMd(){const s=getSelection();if(!s.rangeCount||!s.isCollapsed)return;const n=s.anchorNode;if(!n||n.nodeType!=3||nxUp('li'))return;const pv=n.previousSibling;if(pv&&!/^(BR|DIV|P|UL|OL|H[1-6]|BLOCKQUOTE|HR)$/.test(pv.nodeName))return;
+const t=n.textContent.replace(/\u00a0/g,' '),m=t.match(/^(-|\*|\[ ?\]|\[[xX]\]|\d{1,2}[.)]|#{1,3}|>) $/);if(!m||s.anchorOffset!=n.textContent.length)return;const k=m[1];
+for(let i=0;i<t.length;i++)document.execCommand('delete');
+if(k=='-'||k=='*')document.execCommand('insertUnorderedList');else if(/^\d/.test(k))document.execCommand('insertOrderedList');
+else if(k[0]=='['){nxCk();if(/[xX]/.test(k)){const li=nxUp('li');if(li)li.setAttribute('data-c','1')}}
+else if(k[0]=='#')document.execCommand('formatBlock',false,'h'+k.length);else document.execCommand('formatBlock',false,'blockquote');
+nxNorm();noteIn()}
+function nxBind(){const ed=$('#ed');if(!ed||ed.dataset.nx)return;ed.dataset.nx='1';
+ed.addEventListener('pointerdown',ev=>{const li=ev.target&&ev.target.closest?ev.target.closest('li'):null;if(!li||!ed.contains(li))return;const p=li.parentNode;if(!p||p.tagName!='UL'||!p.classList.contains('tdl'))return;const rc=li.getBoundingClientRect();if(ev.clientX-rc.left>30||ev.clientY-rc.top>30)return;ev.preventDefault();nxTog(li)});
+ed.addEventListener('keydown',ev=>{if(ev.isComposing)return;
+if(ev.key=='Tab'&&!ev.ctrlKey&&!ev.metaKey&&!ev.altKey&&nxUp('li')){ev.preventDefault();document.execCommand(ev.shiftKey?'outdent':'indent');nxNorm();noteIn();return}
+if(ev.key=='Enter'&&!ev.shiftKey){if(nxDiv()){ev.preventDefault();return}const q=nxUp('blockquote');if(q&&!q.textContent.trim()&&!q.querySelector('hr')){ev.preventDefault();document.execCommand('formatBlock',false,'div');nxNorm();noteIn()}}});
+ed.addEventListener('input',ev=>{try{if(ev.inputType=='insertParagraph'){const li=nxUp('li');if(li&&li.parentNode.classList&&li.parentNode.classList.contains('tdl'))li.setAttribute('data-c','0')}
+else if(ev.inputType=='insertText'&&ev.data==' ')nxMd();nxNorm()}catch(x){console.error(x)}})}
+{const _r=render;render=function(){const r=_r.apply(this,arguments);try{nxBind()}catch(x){}return r}}
+
+/* ---------- performance helpers (Settings) ---------- */
+const fmtB=b=>b>=1048576?(b/1048576).toFixed(1)+' MB':Math.max(1,Math.round(b/1024))+' KB';
+function perfEst(){const el=$('#pf-st');if(!el)return;if(!(navigator.storage&&navigator.storage.estimate)){el.textContent='';return}navigator.storage.estimate().then(r=>{const x=$('#pf-st');if(x)x.textContent='Storage used on this device: '+fmtB(r.usage||0)+'.'}).catch(()=>{})}
+{const _r=render;render=function(){const r=_r.apply(this,arguments);try{perfEst()}catch(x){}return r}}
+window.perfRefresh=async()=>{if(navigator.onLine===false){toast('Connect to the internet first.');return}
+if(S.u&&S.u.role=='teacher'&&typeof syncSt!='undefined'&&syncSt!='saved'){toast('Wait for your changes to finish saving first.');return}
+if(!confirm('Download the latest TASKLY files? The app will reload. Your data is not affected.'))return;
+try{if(navigator.serviceWorker){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.unregister()))}if(window.caches){const ks=await caches.keys();await Promise.all(ks.map(k=>caches.delete(k)))}}catch(x){}
+location.reload()};
+let rfN=0;window.rfSkip=()=>{if(!(window.qSave&&window.qSave()))return false;return(++rfN%4)!=0};
+})();
+
 </script>
 </body>
 </html>
