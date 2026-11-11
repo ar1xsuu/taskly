@@ -2402,32 +2402,43 @@ html[data-theme=dark] .hw .hw-i.lk-n{background:linear-gradient(170deg,hsl(var(-
 .hw-pn{margin-top:0}
 </style>
 <style id="hw15">
-/* v15: liquid glass home */
-.hwh h1{font-size:clamp(30px,8.4vw,38px);letter-spacing:-.035em}
+/* v16: previous-interface look (status hero, paper notes), liquid glass cards, desktop grid */
+.hws-w{max-width:min(1120px,100%)}.hwc{max-width:none}
+.hw{grid-auto-rows:minmax(calc((100cqw - var(--g)*(var(--c) - 1))/var(--c)),auto)}
+.hwh h1{font-size:clamp(30px,8.4vw,40px);letter-spacing:-.035em}
+.hw-sub{margin:6px 0 0;font-size:15px}
 .hs-t{font:800 23px/1.1 var(--hf);letter-spacing:-.03em}
-.hs-b{background:none!important;padding:0!important;border-radius:0!important}
-.hs-b .hs-t{color:var(--tx)}.hs-b .hs-s,.hs-b .hs-em{color:var(--mu)}
+.hs-lk{font-weight:700;color:var(--pr);text-decoration:none;padding-bottom:2px}.hs-lk:hover{text-decoration:underline}
+html body .hs-b{background:linear-gradient(160deg,hsl(var(--h) 70% 94% / .65),hsl(var(--h) 55% 88% / .4));border:1px solid rgba(255,255,255,.7);-webkit-backdrop-filter:var(--bl);backdrop-filter:var(--bl);box-shadow:var(--gs)}
+html[data-theme=dark] body .hs-b{background:linear-gradient(160deg,hsl(var(--h) 30% 20% / .6),hsl(var(--h) 30% 14% / .5));border-color:rgba(255,255,255,.12)}
+html body .hs-b .hs-t{color:var(--tx)}html body .hs-b .hs-s,html body .hs-b .hs-em{color:var(--mu)}
 .hs-b .hw-dots i{background:#9aa3a0}.hs-b .hw-dots i.on{background:var(--pr)}
-html body .hw-i{border-radius:30px!important;border:1px solid rgba(255,255,255,.7)!important;background:radial-gradient(130px circle at var(--mx,88%) var(--my,6%),rgba(255,255,255,.75),transparent 70%),radial-gradient(90% 80% at 100% 0,hsl(var(--h) 95% 78% / .5),transparent 62%),linear-gradient(160deg,hsl(var(--h) 90% 97% / .7),hsl(var(--h) 80% 90% / .5))!important;-webkit-backdrop-filter:var(--bl);backdrop-filter:var(--bl);box-shadow:0 1px 0 #fff inset,0 -10px 20px -14px hsl(var(--h) 70% 45% / .4) inset,0 20px 32px -20px hsl(var(--h) 55% 28% / .5),0 2px 6px rgba(20,40,30,.06)!important;transition:transform .5s var(--sp),box-shadow .3s}
-html[data-theme=dark] body .hw-i{border-color:rgba(255,255,255,.14)!important;background:radial-gradient(130px circle at var(--mx,88%) var(--my,6%),rgba(255,255,255,.16),transparent 70%),radial-gradient(90% 80% at 100% 0,hsl(var(--h) 60% 45% / .28),transparent 62%),linear-gradient(160deg,hsl(var(--h) 26% 22% / .62),hsl(var(--h) 26% 14% / .55))!important;box-shadow:0 1px 0 rgba(255,255,255,.16) inset,0 20px 32px -20px #000a!important}
-html body .hw-i.lk-b,html[data-theme=dark] body .hw-i.lk-b{border-color:rgba(255,255,255,.35)!important;background:radial-gradient(160px circle at var(--mx,88%) var(--my,0%),rgba(255,255,255,.38),transparent 70%),radial-gradient(70% 90% at 0 100%,hsl(calc(var(--h) + 40) 90% 60% / .35),transparent 65%),linear-gradient(150deg,hsl(var(--h) 55% 40% / .94),hsl(var(--h) 60% 24% / .96))!important;box-shadow:0 1px 0 rgba(255,255,255,.45) inset,0 26px 36px -22px hsl(var(--h) 70% 18% / .85)!important}
-html[data-theme=dark] body .hw-i.lk-n,html[data-theme=dark] body .hw-i.lk-s{--tx:#2b2412;--mu:#6b6038;border-color:rgba(255,255,255,.7)!important;background:radial-gradient(130px circle at var(--mx,88%) var(--my,6%),rgba(255,255,255,.75),transparent 70%),linear-gradient(160deg,hsl(var(--h) 90% 90% / .9),hsl(var(--h) 85% 82% / .85))!important}
-html[data-theme=dark] body .lk-n .hw-sn,html[data-theme=dark] body .lk-s .hw-sn,html[data-theme=dark] body .lk-n .hw-h,html[data-theme=dark] body .lk-s .hw-h{color:#2b2412}
-.lk-f::before,.lk-f::after,.lk-s::before,.lk-s::after,.lk-p::before{content:none!important}
-html body .hw .hw-i.lk-s,html body .hw .hw-i.lk-s:nth-child(2n){transform:none}
+html body .hw-i:is(.lk-c,.lk-b){border-radius:30px!important;border:1px solid rgba(255,255,255,.7)!important;background:radial-gradient(130px circle at var(--mx,88%) var(--my,6%),rgba(255,255,255,.75),transparent 70%),radial-gradient(90% 80% at 100% 0,hsl(var(--h) 95% 78% / .5),transparent 62%),linear-gradient(160deg,hsl(var(--h) 90% 97% / .7),hsl(var(--h) 80% 90% / .5))!important;-webkit-backdrop-filter:var(--bl);backdrop-filter:var(--bl);box-shadow:0 1px 0 #fff inset,0 -10px 20px -14px hsl(var(--h) 70% 45% / .4) inset,0 20px 32px -20px hsl(var(--h) 55% 28% / .5),0 2px 6px rgba(20,40,30,.06)!important}
+html[data-theme=dark] body .hw-i:is(.lk-c,.lk-b){border-color:rgba(255,255,255,.14)!important;background:radial-gradient(130px circle at var(--mx,88%) var(--my,6%),rgba(255,255,255,.16),transparent 70%),radial-gradient(90% 80% at 100% 0,hsl(var(--h) 60% 45% / .28),transparent 62%),linear-gradient(160deg,hsl(var(--h) 26% 22% / .62),hsl(var(--h) 26% 14% / .55))!important;box-shadow:0 1px 0 rgba(255,255,255,.16) inset,0 20px 32px -20px #000a!important}
+html body .hw-i.lk-b,html[data-theme=dark] body .hw-i.lk-b{border-color:rgba(255,255,255,.35)!important;background:radial-gradient(160px circle at var(--mx,88%) var(--my,0%),rgba(255,255,255,.38),transparent 70%),linear-gradient(150deg,hsl(var(--h) 55% 44% / .94),hsl(var(--h) 60% 30% / .96))!important;box-shadow:0 1px 0 rgba(255,255,255,.45) inset,0 26px 36px -22px hsl(var(--h) 70% 18% / .85)!important}
+html body .hw-i{transition:transform .5s var(--sp),box-shadow .3s}
 @media(hover:hover){html body .hw:not(.hw-edit) .hw-i[role=button]:hover{transform:perspective(900px) translateY(-4px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))}}
 html body .hw:not(.hw-edit) .hw-i[role=button]:active{transform:scale(.955)}
-html body .hw-h{text-transform:none;letter-spacing:0;font-size:13.5px;font-weight:700}
+.hw-hero{height:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:flex-start}
+.hw-hero h2{margin:0;font:800 clamp(26px,7vw,34px)/1.1 var(--hf);letter-spacing:-.03em}
+.hw-hero p{margin:8px 0 0;color:var(--mu);font-size:15px}
+.hw-hero .hs-ch{margin-top:12px}.hw-hero .hw-bt{margin-top:16px}
+.hw-hero.live .hs-k::before{content:"";display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:#e5483a;animation:hwBlink 1.6s ease-in-out infinite}
+@keyframes hwBlink{50%{opacity:.3;transform:scale(.7)}}
+html body .hw-hero .btn{min-height:44px;padding:0 20px;border-radius:99px;font-weight:700;background:rgba(255,255,255,.72);border:1px solid rgba(255,255,255,.9);color:#0b2a1d;transition:transform .4s var(--sp)}
+html[data-theme=dark] body .hw-hero .btn:not(.pr){background:rgba(255,255,255,.12);color:var(--tx);border-color:rgba(255,255,255,.16)}
+html body .hw-hero .btn.pr{background:linear-gradient(180deg,#3fb87b,#14633f);border-color:rgba(255,255,255,.4);color:#fff;box-shadow:0 10px 18px -10px #14633f}
+html body .hw-hero .btn:active{transform:scale(.93)}
 html body .hw-ic{width:28px;height:28px;border-radius:50%;background:linear-gradient(160deg,hsl(var(--h) 85% 62%),hsl(var(--h) 80% 46%));color:#fff;box-shadow:0 4px 10px -4px hsl(var(--h) 80% 35% / .7),0 1px 0 rgba(255,255,255,.5) inset}
 html body .hw-ic svg{width:16px;height:16px}
 html body .lk-b .hw-ic{background:rgba(255,255,255,.22);box-shadow:0 1px 0 rgba(255,255,255,.4) inset}
+html body .hw-h{text-transform:none;letter-spacing:0;font-size:13.5px;font-weight:700}
 html body .hw-btn{padding:9px 16px;background:rgba(255,255,255,.55);color:hsl(var(--h) 55% 22%);box-shadow:0 1px 0 #fff inset,0 6px 12px -8px hsl(var(--h) 50% 30% / .6);transition:transform .4s var(--sp)}
 html[data-theme=dark] body .hw-btn{background:rgba(255,255,255,.14);color:hsl(var(--h) 70% 88%);box-shadow:0 1px 0 rgba(255,255,255,.14) inset}
 html body .hw-btn:active{transform:scale(.92)}
 html body .hw-btn.pr{background:linear-gradient(160deg,hsl(var(--h) 70% 52%),hsl(var(--h) 70% 38%));color:#fff}
 html body .lk-b .hw-btn{background:rgba(255,255,255,.2);color:#fff}
-html body .lk-b .hw-btn.pr{background:#fff;color:hsl(var(--h) 60% 24%);animation:hwPulse 2.6s ease-in-out infinite}
-@keyframes hwPulse{50%{box-shadow:0 0 0 7px rgba(255,255,255,.16)}}
+html body .lk-b .hw-btn.pr{background:#fff;color:hsl(var(--h) 60% 24%)}
 html body .hw-num b{font-size:clamp(40px,12cqw,54px);background:linear-gradient(160deg,hsl(var(--h) 90% 56%),hsl(calc(var(--h) - 18) 90% 40%));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .rg-f{stroke-width:10;filter:drop-shadow(0 0 5px hsl(var(--h) 90% 55% / .55))}
 html body .hw-bar{height:10px;background:hsl(var(--h) 40% 50% / .16);box-shadow:inset 0 1px 2px rgba(0,0,0,.08)}
@@ -2442,6 +2453,13 @@ html body .hw-wk button.td,html body .hw-mg button.td{background:linear-gradient
 html body .hw-qa button{background:rgba(255,255,255,.5);box-shadow:0 1px 0 #fff inset;transition:transform .4s var(--sp)}
 .hw-qa button:active,.hw-ap button:active{transform:scale(.9)}.hw-ap button{transition:transform .4s var(--sp)}
 .hw-dots{width:fit-content;margin:12px auto 0;padding:7px 10px;border-radius:99px;background:var(--gl);-webkit-backdrop-filter:var(--bl);backdrop-filter:var(--bl);box-shadow:var(--gs)}
+@container (min-width:760px){
+.hw{--c:6}
+.hw-m[data-t=nx],.hw-m[data-t=up]{grid-column:1/-1}
+.hw.hw-cr{display:grid;align-items:stretch;overflow:visible;scroll-snap-type:none;padding:0}
+.hw.hw-cr>.hw-i,.hw.hw-cr>.hw-m,.hw.hw-cr>.hw-l{aspect-ratio:auto}
+}
+@media(min-width:821px){.hw-dots{display:none}.hwh h1{font-size:42px}.hw-hero{padding:26px 28px 24px}.hw-hero h2{font-size:38px}}
 @keyframes hwDrift{to{transform:translate3d(2.5%,-2%,0) scale(1.08)}}
 body:has(.hws-w)::before{animation:hwDrift 16s ease-in-out infinite alternate}
 @keyframes hwIn{from{opacity:0;transform:translateY(24px) scale(.94)}}
@@ -2449,8 +2467,9 @@ body:has(.hws-w)::before{animation:hwDrift 16s ease-in-out infinite alternate}
 .hw-enter .hs{animation:hwIn .7s var(--ease) backwards;animation-delay:calc(var(--i,0)*60ms)}
 .hw-enter .hw-i{animation:hwIn .8s var(--sp) backwards;animation-delay:calc(var(--i,0)*50ms + 90ms)}
 .hw-enter .hw-bar i{transform-origin:left;animation:hwGrow 1s var(--ease) .3s backwards}
-@media(prefers-reduced-motion:reduce){body:has(.hws-w)::before,.hw-enter .hs,.hw-enter .hw-i,.hw-enter .hw-bar i,html body .lk-b .hw-btn.pr{animation:none!important}}
-html.lite body .hw-i,html.lite .hw-dots{-webkit-backdrop-filter:none;backdrop-filter:none}html.lite body::before{animation:none!important}
+@media(prefers-reduced-motion:reduce){body:has(.hws-w)::before,.hw-enter .hs,.hw-enter .hw-i,.hw-enter .hw-bar i,.hw-hero.live .hs-k::before{animation:none!important}}
+html.lite body .hw-i,html.lite .hw-dots,html.lite .hs-b{-webkit-backdrop-filter:none;backdrop-filter:none}html.lite body::before{animation:none!important}
+html body .hw:not(.hw-edit) .hw-i.hw-m[data-t=nx]{background:none!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none;backdrop-filter:none;padding:0;overflow:visible;border-radius:26px!important}
 </style>
 </head>
 <body>
@@ -4332,7 +4351,7 @@ const hwCtl=(w,d,z)=>`<div class="hw-ed"><button type="button" onclick="hwMv('${
 const hwItem=w=>{const d=HW[w.t];if(!d)return '';const z=d.z.includes(w.z)?w.z:d.df,h=w.c!=null?w.c:w.t=='cls'?cHue(w.o&&w.o.c):d.h,k=w.k||d.k||'c',go=d.go?d.go(w,z):'';
 return `<section class="hw-i hw-${z} lk-${k}${w.c!=null?' hw-cc':''}" data-id="${w.id}" data-t="${w.t}" style="--h:${h}"${S.he||!go?'':` onclick="${go}" role="button" tabindex="0" onkeydown="if(event.key=='Enter'){${go}}"`}>${S.he?`<button type="button" class="hw-rm" onclick="hwDel('${w.id}')" aria-label="Remove ${e(d.n)} widget">&minus;</button><button type="button" class="hw-pt" onclick="hwStyle('${w.id}')" aria-label="Color and look for ${e(d.n)}">${WI.paint}</button>`:''}<div class="hw-b">${d.r(z,w)}</div>${S.he?hwCtl(w,d,z):''}</section>`};
 window.hwHome=()=>{hwUpg();const h=new Date().getHours(),W=hwL();
-return `<div class="hwh${S.he?' hwe':''}"><div><p class="hm-d">${e(new Date().toLocaleDateString('en',{weekday:'long',month:'long',day:'numeric'}))}</p><h1>Good ${h<12?'morning':h<18?'afternoon':'evening'}, ${e((S.u&&S.u.name||'').split(' ')[0])}</h1></div><div class="hwa">${S.he?`<button type="button" class="btn sm" onclick="window.hwTgt=null;hwGal()">+ Widget</button><button type="button" class="btn sm pr" onclick="hwEdit(false)">Done</button>`:`<button type="button" class="btn sm" onclick="hwEdit(true)">Edit</button>`}</div></div>${S.he?`<p class="mu sm hw-tip">Drag a widget to move it, or use the arrows. Tap the red minus to remove one, or the paint button to change its color and look. The arrows also move a widget into another section. <button type="button" class="lnk" onclick="hwReset()">Reset to default</button></p>`:''}<div class="hws-w">${W.length?hwSecs(W):`<div class="hw-none">${empty('Your home screen is empty','Tap Edit, then + Widget to add widgets.')}</div>`}</div>`};
+return `<div class="hwh${S.he?' hwe':''}"><div><p class="hm-d">${e(new Date().toLocaleDateString('en',{weekday:'long',month:'long',day:'numeric'}))}</p><h1>Good ${h<12?'morning':h<18?'afternoon':'evening'}, ${e((S.u&&S.u.name||'').split(' ')[0])}</h1><p class="mu hw-sub">${hwSub()}</p></div><div class="hwa">${S.he?`<button type="button" class="btn sm" onclick="window.hwTgt=null;hwGal()">+ Widget</button><button type="button" class="btn sm pr" onclick="hwEdit(false)">Done</button>`:`<button type="button" class="btn sm" onclick="hwEdit(true)">Edit</button>`}</div></div>${S.he?`<p class="mu sm hw-tip">Drag a widget to move it, or use the arrows. Tap the red minus to remove one, or the paint button to change its color and look. The arrows also move a widget into another section. <button type="button" class="lnk" onclick="hwReset()">Reset to default</button></p>`:''}<div class="hws-w">${W.length?hwSecs(W):`<div class="hw-none">${empty('Your home screen is empty','Tap Edit, then + Widget to add widgets.')}</div>`}</div>`};
 {const _h=home;home=function(){return hwHome()}}
 window.hwEdit=on=>{S.he=!!on;render()};
 window.hwDel=id=>{const a=hwW(),i=a.findIndex(w=>w.id==id);if(i>=0)a.splice(i,1);render()};
@@ -4365,6 +4384,19 @@ g.addEventListener('click',ev=>{if(fired){ev.stopPropagation();ev.preventDefault
 let hwMin=-1;setInterval(()=>{if(!S.u||S.v!='home'||S.he||document.hidden||document.querySelector('dialog[open]'))return;const m=hwNow();if(m!==hwMin){hwMin=m;render()}},15000);
 /* ---------- v15: liquid glass home: entrance, count-up, ring, sheen, check animation ---------- */
 const hwLite=()=>document.documentElement.classList.contains('lite')||matchMedia('(prefers-reduced-motion:reduce)').matches;
+const hwSub=()=>{const n=hwTd().length,d=hwTk().filter(t=>dd(t.d)<=0).length;return n+(n==1?' class':' classes')+' today. '+d+' due or overdue.'};
+const _nx=HW.nx.r;
+HW.nx.r=function(z,w){if(z!='m')return _nx.apply(this,arguments);
+const td=hwTd(),x=nextCl(),
+hero=(k,cl,h,p,ch,b)=>`<div class="hs-hero hw-hero ${cl}"><span class="hs-k">${k}</span><h2>${h}</h2><p>${p}</p>${ch?`<div class="hs-ch">${ch}</div>`:''}<div class="hw-bt">${b}</div></div>`,
+chip=(c,t)=>`<span class="hs-c ${c}"><i></i>${t}</span>`,
+btn=(c,f,t)=>`<button type="button" class="btn ${c}" onclick="event.stopPropagation();${f}">${t}</button>`;
+if(!CL.length)return hero('Today','ok','No classes yet','Add your first class to see it here.','',btn('pr','newClass()','New class'));
+if(!td.length)return hero('Today','ok','No classes today','A good day to plan ahead. Your deadlines are below.',x?chip('',`Next: ${e(x.c.n)}, ${x.off==1?'Tomorrow':DY[(NOW()+x.off)%7]} ${x.c.tm}`):'',btn('pr','newTask()','New task'));
+if(!x||x.off)return hero('Today','ok','That was your last class today',(td.length==1?'Your class is done.':'All '+td.length+' classes are done.')+' See what is due next.','',btn('pr',"go('work')",'Open Work'));
+const {c,i,st}=x,m=mins(c.tm)-hwNow(),k=K[c.n]||{stu:[]},n=(k.stu||[]).length,live=st=='now';
+return hero(live?'Happening now':st=='ck'?'Checked in':'Next class',live?'live':'ok',e(c.n),c.tm+' to '+c.en+(c.rm?', '+e(c.rm):''),chip('a',n+(n==1?' student':' students'))+chip(live?'w':'',live?'Until '+c.en:st=='ck'?'Attendance taken':'Starts in '+hwIn(m)),(st!='ck'?btn('pr','start('+i+')','Start class'):'')+btn(st=='ck'?'pr':'',"go('cls');cOpen("+hwCi(c.n)+",'a')",'Attendance'))};
+const hwPost=()=>{if(S.he)return;document.querySelectorAll('.hws-w .hs-t').forEach(t=>{const h=t.closest('.hs-h');if(h&&/^your desk$/i.test(t.textContent.trim())&&!h.querySelector('.hs-lk')){const a=document.createElement('a');a.className='hs-lk';a.href='#';a.textContent='Open Work';a.onclick=ev=>{ev.preventDefault();go('work')};h.appendChild(a)}})};
 window.hwFx=enter=>{const w=document.querySelector('.hws-w');if(!w||S.he||!enter||hwLite())return;w.classList.add('hw-enter');
 w.querySelectorAll('.hs,.hw-i').forEach((x,i)=>x.style.setProperty('--i',Math.min(i,16)));
 w.querySelectorAll('.hw-num b').forEach(b=>{const n=parseInt(b.textContent,10);if(!(n>0))return;const t0=performance.now(),f=t=>{const p=Math.min(1,(t-t0)/800);b.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)};b.textContent='0';requestAnimationFrame(f)});
@@ -4373,7 +4405,7 @@ const hwSheen=e=>{const t=e.target.closest&&e.target.closest('.hws-w .hw-i');if(
 document.addEventListener('pointermove',hwSheen,{passive:true});document.addEventListener('pointerdown',hwSheen,{passive:true});
 document.addEventListener('pointerout',e=>{const t=e.target.closest&&e.target.closest('.hws-w .hw-i');if(t&&!t.contains(e.relatedTarget)){t.style.removeProperty('--rx');t.style.removeProperty('--ry')}},{passive:true});
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.hw-ck');if(!b||b.dataset.d||hwLite())return;e.stopPropagation();e.preventDefault();b.dataset.d=1;b.classList.add('on');const r=b.closest('.hw-tk');if(r)r.classList.add('hw-out');setTimeout(()=>b.click(),420)},true);
-{const _r2=render;let pv='';render=function(){const r=_r2.apply(this,arguments);try{hwFx(S.v=='home'&&pv!='home')}catch(x){}pv=S.v;return r}}
+{const _r2=render;let pv='';render=function(){const r=_r2.apply(this,arguments);try{if(S.v=='home'){hwPost();hwFx(pv!='home')}}catch(x){}pv=S.v;return r}}
 window.__v10=window.__v10||{};window.__v10.hw={HW,hwDef,hwL};
 window.hwW=hwW;
 
